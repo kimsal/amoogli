@@ -1,0 +1,113 @@
+{% include 'admin/header.html' %} 
+
+<style type="text/css">
+	.well{
+		border: none;
+		background-color: white;
+		box-shadow: inset 0 0px 0px rgba(0,0,0,.05);
+	}
+</style>
+
+
+ <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                    <div class="panel panel-default" style="padding:0px;">
+                      <div class="panel-heading">
+                        <a href="/admin/page/add" class="btn btn-default btn-sm pull-right">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              New 
+                           </a>
+                     <h3 class="panel-title">
+                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                           <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                          </a>
+                            Social Media
+                      </h3>
+                      </div>
+                      <div class="panel-body">
+                           <!--social media-->
+	                           	<div class="well well-lg">
+								   <div class="row">
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-info btn-twitter">
+											    <span class="fa fa-twitter"></span> Share to Twitter
+											    <span >
+											    	<input type="checkbox" name="twitter" value="">
+											    </span>
+											</a>
+								   		</div>
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-primary btn-facebook">
+											    <span class="fa fa-facebook"></span> Share to Facebook
+											    <span >
+											    	<input type="checkbox" name="facebook" value="">
+											    </span>
+											</a>
+								   		</div>
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-danger btn-google">
+											    <span class="fa fa-google"></span> Share to Google+
+											    <span >
+											    	<input type="checkbox" name="google" value="">
+											    </span>
+											</a>
+								   		</div>
+								   </div>
+								   <div class="row" style="padding-top:15px;"></div>
+								   <div class="row">
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-success btn-linkedin">
+											    <span class="fa fa-linkedin"></span> Share to Linkedin
+											    <span >
+											    	<input type="checkbox" name="linkedin" value="">
+											    </span>
+											</a>
+								   		</div>
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-success btn-facebook">
+											    <span class="fa fa-facebook"></span> 
+											    Share to Facebook
+											    <span >
+											    	<input type="checkbox" name="facebook" value="">
+											    </span>
+											</a>
+								   		</div>
+								   		<div class="col-xs-12 col-md-4 col-sm-4 col-lg-4">
+								   			<a class="btn btn-block btn-social btn-success btn-google">
+											    <span class="fa fa-google"></span> Share to  Google
+											    <span >
+											    	<input type="checkbox" name="google" value="">
+											    </span>
+											</a>
+								   		</div>
+								   </div>
+								</div>
+	                           	<!--end social media--> 
+                   
+                	  </div>     
+                    </div>    
+                </div>
+          </div>
+      </div>
+  </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<!-- Menu Toggle Script -->
+<script>
+  if($(".alert").length>0){
+    alert('d');
+    if(($(".alert").html()).indexOf("success")>=0){
+      $(".alert").addClass('alert-success');
+    }
+    else{
+      $(".alert").addClass('alert-danger');
+    }
+  }
+</script>
+{% include 'admin/footer.html' %} 

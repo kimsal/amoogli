@@ -1,0 +1,74 @@
+{% include 'admin/header.html' %} 
+<style type="text/css">
+	.template{
+		border-bottom:1px solid #3E4651;
+		padding:10px;
+	}
+	.template a{
+		color:black;
+	}
+	.template:hover{
+		background-color: #F6F7F2;
+	}
+	.template h5{
+		color:blue;
+	}
+	.template img{
+		max-height: 80px;
+	}
+	.title1{
+		color: #25373D;
+		font-size: 15px;
+	}
+</style>
+	 <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                    <div class="panel panel-default" style="padding:0px;">
+                      <div class="panel-heading">
+                        <a href="/admin/page/add" class="btn btn-default btn-sm pull-right">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              New 
+                           </a>
+                     <h3 class="panel-title">
+                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                           <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                          </a>
+                            Social Media
+                      </h3>
+                      </div>
+                      <div class="panel-body">
+						{%for template in templates_dir %}
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 template">
+							
+								<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+									<img src="/static/{{template}}/screenshoot.png" class="img-responsive"/>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<h5 class="title1">{{template}}</h5>
+									<p>
+										This is our first free template. 
+									</p>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									By Kimsal San
+									<a href="/admin/template/{{template}}">
+										<label class="btn btn-success">Install</label>
+									</a>
+								</div>
+								
+						</div> 
+
+					{%endfor%}
+					  </div>     
+                    </div>    
+                </div>
+          </div>
+      </div>
+  </div>
+    <!-- /#page-content-wrapper -->
+</div>
+{% include 'admin/footer.html' %} 

@@ -1,0 +1,195 @@
+.intro-header {
+	background-color: gray;
+	background: no-repeat center center;
+	background-attachment: scroll;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
+	margin-bottom: 10px;
+}
+
+.site-heading{
+	padding: 150px 0 50px;
+	color: white;
+}
+
+
+.sub-heading{
+	font-size: 24px;
+	line-height: 1.1;
+	display: block;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 300;
+	margin: 10px 0 0;
+}
+
+.small{
+	margin-left: auto;
+	margin-right: auto;
+	height: 1px;
+	color: #ffc857;
+	background-color: #ffc857;
+	border-radius: 8px 8px 8px 8px;
+}
+
+h1{
+	font-family: "Source Sans Pro";
+	font-weight: 300;
+	font-size: 28px;
+	color: #4d6892;
+	line-height: 50px;
+	margin-top: 24px;
+	text-align: center;
+}
+
+
+.padding{
+	padding: 0px;
+}
+
+.section1{
+	padding: 120px 20px;
+	font-weight: 400;
+	color: #4d6892;
+	height: 700px;
+	
+}
+
+.section2{
+	padding: 120px 20px;
+	font-weight: 400;
+	color: gray;
+	height: 700px;
+	
+	background-color: rgba(252, 252, 252, 0.21);
+}
+
+.list-box{
+	padding: 2rem;
+	margin: 0px;
+}
+
+.hr-amoogli{
+	width: 128px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 1px;
+	color: #ffc857;
+	background-color: #ffc857;
+	border-radius: 8px 8px 8px 8px;
+}
+
+/*svg*/
+
+.arrows {
+	width: 60px;
+	height: 72px;
+	position: absolute;
+	left: 50%;
+	margin-left: -30px;
+	bottom: 10px;
+}
+
+.arrows path {
+	stroke: #2994D1;
+	fill: transparent;
+	stroke-width: 1px;	
+	animation: arrow 2s infinite;
+	-webkit-animation: arrow 2s infinite; 
+}
+
+@keyframes arrow
+{
+	0% {opacity:0}
+	40% {opacity:1}
+	80% {opacity:0}
+	100% {opacity:0}
+}
+
+@-webkit-keyframes arrow /*Safari and Chrome*/
+{
+	0% {opacity:0}
+	40% {opacity:1}
+	80% {opacity:0}
+	100% {opacity:0}
+}
+
+.arrows path.a1 {
+	animation-delay: -1s;
+	-webkit-animation-delay: -1s; /* Safari 和 Chrome */
+}
+
+.arrows path.a2 {
+	animation-delay:-0.5s;
+	-webkit-animation-delay: -0.5s; /* Safari 和 Chrome */
+}
+
+.arrows path.a3 {	
+	animation-delay:0s;
+	-webkit-animation-delay:0s; /* Safari 和 Chrome */
+}
+/*footer*/
+footer {
+	background-color: #444B54;
+    color:#ddd;
+    min-height:200px;
+    padding-top:20px;
+    padding-bottom:40px;
+}
+
+footer .nav>li>a {
+    padding:3px;
+    color:#ccc;
+}
+
+footer .nav>li>a:hover {
+    background-color:transparent;
+	color:#fff;
+}
+.footer_logo{
+	width: 100px;
+	height: auto;
+}
+.hr_footer{
+	margin-top: 11px;
+	margin-bottom: 20px;
+	border: 0;
+	border-top: 1px solid #eee;
+}
+.banner{
+	background-color: #E7E7E7;
+	border-top: 10px solid #67aaec;
+	padding-top: 10px;
+}
+/*footer*/
+/*button start*/
+.orange-circle-button {
+	font-size: 1em;
+	line-height: 1.1em;
+	color: #ffffff;
+	background-color: #e84d0e;
+	margin: auto;
+	border-radius: 50%;
+	height: 7em;
+	width: 7em;
+	position: relative;
+	border:solid thin gray;
+	font-weight: bold;
+}
+.orange-circle-button:hover {
+	color:#ffffff;
+    background-color: #e84d0e;
+	text-decoration: none;
+	border-color: #ff7536;
+	
+}
+.orange-circle-button:visited {
+	color:#ffffff;
+    background-color: #e84d0e;
+	text-decoration: none;
+	
+}
+.orange-circle-link-greater-than {
+    font-size: 1em;
+}

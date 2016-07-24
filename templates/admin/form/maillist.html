@@ -1,0 +1,199 @@
+{% include 'admin/header.html' %}
+	<style type="text/css">
+	.profile{
+		width: 30%;
+		height: 50px;
+		float: left;
+	}
+	.user-name{
+		width: 60%;
+		height: 50px;
+		float: left;
+	}
+	.profil-panel{
+		margin-bottom: 20px;
+		background-color: #fff;
+		border: 0px solid transparent;
+		border-radius: 0px;
+		-webkit-box-shadow: 0 0px 0px rgba(0,0,0,.05);
+		box-shadow: 0 0px 0px rgba(0,0,0,.05);
+	}
+	.panel-body-mail{
+		padding: 3px;
+		background-color: #FFFFF7;
+		border: thin solid #f3f0f0 !important;
+		margin-top: 2px;
+	}
+	.panel-body-mail:hover{
+		background-color: #E7E7E7;
+		-webkit-transition: background-color 1000ms linear;
+	    -moz-transition: background-color 1000ms linear;
+	    -o-transition: background-color 1000ms linear;
+	    -ms-transition: background-color 1000ms linear;
+	    transition: background-color 1000ms linear;
+	}
+	.name{
+		font-weight: 500;
+		color: #25373D;
+		font-weight: 500;
+	}
+	.mail{
+		color: #888888;
+	}
+	.img{
+		width: 84%;
+		border-radius: 0px;
+	}
+	/*@media only screen
+		and (min-width : 700px){
+		.img{
+			width: 30%;
+			border-radius: 0px;
+		}
+	}
+	@media only screen
+		and (max-width :500px ){
+		    .img{
+			width: 60%;
+			border-radius: 0px;
+			}
+		}*/
+	</style>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                    <div class="panel panel-default" style="padding:0px;">
+                    	<div class="panel-heading">
+		                    <a href="/admin/mail/" class="btn btn-default btn-sm pull-right">
+		                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+		                        New 
+		                    </a>
+		                    <h4 class="panel-title">
+		                        <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+		                        <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+		                        </a>
+		                        Mail List
+		                    </h4>
+                    	</div>
+	                    <div class="panel-body" >
+	                    	<!-- <div class="container"> -->
+	                    		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    		</div>
+	                    		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    		</div>
+	                    		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    			<a href="#">
+	                    				<div class="profile-panel">
+											<div class="panel-body-mail panel-body">
+											   <div class="profile hidden-xs col-sm-12 col-md-12">
+											   	    <img src="/static/images/gmail.png" class="img-responsive img">
+											   </div>
+											   <div class="user-name col-xs-12 col-sm-12 col-md-12">
+											   		<div class="name">kimsal</div>
+											   		<div class="mail">kimsal@gmail.com</div>
+											   </div>
+											</div>
+										</div>
+	                    			</a>
+	                    		</div>
+	                    		
+	                    	<!-- </div> -->
+	                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- /#page-content-wrapper -->
+
+
+
+
+ <script src="js/jquery.js"></script>
+    <script src="js/scroll.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    var image_string='';
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    $(".off-canvas-submenu").hide();
+    $(".off-canvas-submenu-call").click(function() {
+    var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '':'';
+    $(this).parent().next(".off-canvas-submenu").slideToggle('slow');
+    $(this).find("span").text(icon);
+});
+</script>
+</body>
+</html>

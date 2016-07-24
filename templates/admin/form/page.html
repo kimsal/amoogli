@@ -1,0 +1,114 @@
+{% include 'admin/header.html' %}
+        <!-- Page Content-->
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12" style="padding:0px;">
+                  <br><br>
+                <div class="panel panel-default" style="padding:0px;">
+                  <div class="panel-heading">
+                    <a href="/admin/page/add" class="btn btn-default btn-sm pull-right">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        New 
+                    </a>
+                    <h3 class="panel-title">
+                      <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                     <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                      </a>
+                       Post Form
+                    </h3>
+                  </div>
+                  <div class="panel-body" >
+                    <div class="table-responsive" style="border:none;">
+                        <!--form upload-->
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" >
+                        <br/>
+                            <form class="form-horizontal" action="/admin/page/add/" method="POST" id="frm">
+                            {% with messages = get_flashed_messages() %}
+                              {% if messages %}
+                                {% for message in messages %}
+                                  <li class="alert alert-danger"> 
+                                    {{ message }}
+                                  </li>
+                                {% endfor %}
+                              {% endif %}
+                            {% endwith %}
+                            
+                  
+                              <!-- input title-->
+                             {{ form.hidden_tag() }}
+                              <div class="form-group">
+                                <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">
+                                  <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                  {{ form.title.label }}
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5">
+                                    {{ form.title(class_="form-control") }}
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><br/>
+                                  <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                  {{ form.description.label }}
+                                  </div>
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    {{ form.description(class_="form-control ckeditor",id="description") }}
+                                  </div>
+                                  <script type="text/javascript">
+                                      CKEDITOR.replace("description", {
+                                          filebrowserUploadUrl: '/admin/ckupload/',
+                                          filebrowserImageUploadUrl: '/ckupload/'
+                                      });
+                                  </script>
+                              </div>
+                              <!-- Message body -->
+                              <br/>
+                              <div class="form-group">
+                                <div class="col-md-6 text-right">
+                                  <center>
+                                    <button type="submit" class="btn btn-default btn-sm btn-primary">
+                                      <i class="fa fa-upload" aria-hidden="true"></i>
+                                        Save
+                                      </button>
+                                    <button type="reset" class="btn btn-default btn-sm">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                     Cancel
+                                    </button>
+                                  </center>
+                                </div>
+                              </div>
+                            </form>
+                          
+                        </div>
+                        
+                        <!--end form upload-->
+                    </div> 
+                  </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+
+<script src="static/admin/js/scroll.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="static/admin/js/bootstrap.min.js"></script>
+<!--script to load update page if page is "update" page-->
+{% for p in page %}
+ <script type="text/javascript">
+   $('input#title').attr('value',"{{p.title}}"); 
+   $('#frm').attr('action','/admin/page/edit/{{p.slug}}/');
+   var help="{{p.description.replace('\n', '').replace('\r','')}}";
+   //help=help.replace(/(&lt;br\/&gt;)+/gi,'')
+   //alert(help);
+   $('#description').html(help);  
+ </script>
+{% endfor %}
+{% include 'admin/footer.html' %} 
+

@@ -1,0 +1,154 @@
+{% include 'admin/header.html' %} 
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" style="padding:0px;">
+                        <br>
+                        <br>
+                        
+                        
+                        <div class="panel panel-default" style="padding:0px;">
+                          <div class="panel-heading">
+                           <a href="/admin/partner/add" class="btn btn-default btn-sm pull-right">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              New 
+                           </a>
+                            <h3 class="panel-title">
+                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+		                       <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+		                      </a>
+                            	Partners
+                            </h3>
+                          </div>
+                          <center>
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <li class="alert" style="list-style:none"> 
+                                {{ message }}
+                              </li>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+                        </center>
+                          <div class="panel-body">
+                                <div class="table-responsive">
+                                <table class="table table-hover ">
+                                  <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th class="hidden-xs">
+                                      	url
+                                      </th>
+                                      <th class="hidden-xs">		Image
+                                      </th>
+                                      <th>
+                                     	 Actions
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  {% for partner in partners %}
+	                                    <tr> 
+	                                      <td>
+	                                        <a href="/admin/partner/edit/{{partner.slug}}">
+	                                        <!-- <i class="fa fa-hand-o-right" aria-hidden="true"></i> -->
+	                                        {{ partner.name }}
+	                                        </a>
+	                                      </td>
+	                                      <td class="hidden-xs">
+	                                          <a href="{{partner.url}}" target="_blank">	{{partner.url}}
+	                                          </a>
+	                                      </td>
+	                                      <td class="hidden-xs">
+	                                      <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+	                                      <img src="{{partner.feature_image}}" class="img-responsive" style="max-width:70px"/>
+	                                      </td>
+	                                      <td>
+	                                        <!-- <a href="/admin/post/edit/{{partner.slug}}" class="">Edit</a> - -->
+	                                        <a href="/admin/partner/delete/{{partner.slug}}" class="" style="color:red">
+	                                        	<i  class="fa fa-trash-o" aria-hidden="true"></i>
+	                                        </a>
+	                                        
+	                                      </td>
+	                                    </tr>
+									{% endfor %}
+                                  </tbody>
+                                </table> 
+                        </div>
+                        <center>
+                        <ul class="pagination pagination-sm">
+                        {% if pagin > 1 %}
+	                        {% if pagin < 8 %}
+			                    	{% for page in range(1,pagin+1) %}
+				                    	{% if page == current_pagin %}
+				                    		<li class="active">
+				                    			<a href="/admin/partner/pagin/{{page}}">
+				                    				{{page}}
+				                    			</a>
+				                    		</li>
+				                    	{%else%}
+				                    		<li>
+				                    			<a href="/admin/partner/pagin/{{page}}">
+				                    				{{page}}
+				                    			</a>
+				                    		</li>
+				                    	{%endif%}
+									{%endfor%}
+								</ul>
+							{%else %}
+								<li class="{%if current_pagin==1 %}active{%endif%}">
+									<a href="/admin/partner/pagin/1">1</a>
+								</li>
+								<li class="{%if current_pagin==2 %}active{%endif%}">
+									<a href="/admin/partner/pagin/2">2</a>
+								</li>
+								<li class="{%if current_pagin==3 %}active{%endif%}">
+									<a href="/admin/partner/pagin/3">3</a>
+								</li>
+								<li class="{%if current_pagin==4 %}active{%endif%}">
+									<a href="/admin/partner/pagin/4">4</a>
+								</li>
+								<li>
+									<a href="#">...</a>
+								</li>
+								{% for page in range(pagin-4,pagin+1) %}
+									{% if current_pagin == page%}
+								  <li class="active">
+								  	<a href="/admin/partner/pagin/{{page}}">
+								  		{{page}}
+								  	</a>
+								  	</li>
+								 {%else%}
+								 	<li>
+								  	<a href="/admin/partner/pagin/{{page}}">
+								  		{{page}}
+								  	</a>
+								  	</li>
+								 {%endif%}
+								{%endfor%}
+							{%endif%}
+						{%endif%}
+						</ul>
+						</center>
+                      </div>
+                    </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="/static/admin/js/scroll.js"></script> -->
+<script>
+	if($(".alert").length>0){
+		if(($(".alert").html()).indexOf("success")>=0||($(".alert").html()).indexOf("Please check your email to recovery the password.")>=0){
+			$(".alert").addClass('alert-success');
+		}
+		else{
+			$(".alert").addClass('alert-danger');
+		}
+	}
+</script>
+{% include 'admin/footer.html' %} 

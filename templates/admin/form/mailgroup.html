@@ -1,0 +1,101 @@
+{% include 'admin/header.html' %} 
+<style type="text/css">
+	.name{
+		color:black;
+	}
+	.grp-name:hover{
+		background-color:#EEE;
+	}
+</style>
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12" style="padding:0px;">
+                <br><br>
+                <div class="panel panel-default" style="padding:0px;">
+                	<div class="panel-heading">
+	                    <a href="/admin/email/group/" class="btn btn-default btn-sm pull-right">
+	                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+	                        New 
+	                    </a>
+	                    <h4 class="panel-title">
+	                        <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+	                        <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+	                        </a>
+	                        Mail Groups
+	                    </h4>
+                	</div>
+                    <div class="panel-body" >
+                    	{% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <li class="alert">
+                                {{ message }}
+                              </li>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+                    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    		<form id="frm" role="form" action="/admin/email/group/" method="POST">
+                    		{{ form.hidden_tag() }}
+							  <div class="form-group">
+							    <label for="email">
+							    {{ form.name
+							    .label }}
+							    </label>
+							   <!--  <input type="text" class="form-control" id="group" placeholder="Group Name ..." required> -->
+							   {{ form.name(class_="form-control") }}
+							  </div>
+							  <button type="submit" class="btn btn-primary">Submit</button>
+							  <button type="reset" class="btn btn-default">Clear</button>
+							</form>
+                    	</div>
+
+                    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    		<table class="table">
+							    <thead>
+							      <tr>
+							        <th>Group Names</th>
+							        <th>Action</th>
+							      </tr>
+							    </thead>
+							    <tbody>
+							    {%for group in groups%}
+							      <tr class="grp-name">
+							        <td>
+							        	<a class="name" href="/admin/email/group/{{group.name}}/edit/">
+							        	{{group.name}}
+							        	
+							        </td>
+							        </a>
+							        <td>
+							        <a href="/admin/email/group/{{group.name}}/delete/" style="color:gray;">
+	                                    <i class="fa fa-trash-o" aria-hidden="true">
+	                                    	
+	                                    </i>
+	                                  </a>
+							        </td>
+							      </tr>
+							    {%endfor%}
+							    </tbody>
+							  </table>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	$('#name[name="name"]').attr('value',"{{name}}")
+	$('#frm').attr('action','/admin/email/group/{{name}}/edit/');
+	if($(".alert").length>0){
+		if(($(".alert").html()).indexOf("success")>=0){
+			$(".alert").addClass('alert-success');
+		}
+		else{
+			$(".alert").addClass('alert-danger');
+		}
+	}
+</script>
+{% include 'admin/footer.html' %} 

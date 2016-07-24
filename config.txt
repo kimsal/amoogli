@@ -1,0 +1,6 @@
+Template="amoogli";
+limit="3";
+email="kimsalsan007@gmail.com";
+password="";
+
+

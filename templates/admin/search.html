@@ -1,0 +1,104 @@
+{% include 'admin/header.html' %} 
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12" style="padding:0px;">
+                        <br>
+                        <br>
+                        
+                        
+                        <div class="panel panel-default" style="padding:0px;">
+                          <div class="panel-heading">
+                           <a href="/admin/post/add" class="btn btn-default btn-sm pull-right">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              New 
+                           </a>
+                            <h3 class="panel-title">
+                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+		                       <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+		                      </a>
+                            	Posts
+                            </h3>
+                          </div>
+                          <center>
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <li class="alert" style="list-style:none"> 
+                                {{ message }}
+                              </li>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+                        </center>
+                          <div class="panel-body">
+                                <div class="table-responsive">
+                                <table class="table table-hover ">
+                                  <thead>
+                                    <tr>
+                                      <th>Title</th>
+                                      <th class="hidden-xs">Published Date</th>
+                                      <th class="hidden-xs">Category</th>
+                                      <th class="hidden-xs">Views</th>
+                                      <th>Actions</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  {% for post in posts %}
+	                                    <tr> 
+	                                      <td>
+	                                        <a href="/admin/post/edit/{{post.slug}}">
+	                                        <!-- <i class="fa fa-hand-o-right" aria-hidden="true"></i> -->
+	                                        {{ post.title }}
+	                                        </a>
+	                                      </td>
+	                                      <td id="date_{{post.id}}" class="hidden-xs">
+	                                          {{post.published_at}}
+	                                      </td>
+	                                      <td class="hidden-xs">
+	                                          {{post.category.name}}
+	                                      </td>
+	                                      <td class="hidden-xs">
+	                                      <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+	                                      	{{post.views}}
+	                                      </td>
+	                                      <td>
+	                                        <a href="/{{post.slug}}" target="_blank">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                          </a> -
+	                                        <a href="/admin/post/delete/{{post.slug}}" class="" style="color:red">
+	                                        	<i  class="fa fa-trash-o" aria-hidden="true"></i>
+	                                        </a>
+	                                      </td>
+	                                    </tr>
+	                                    <script>
+		                                  $('#date_{{post.id}}').html(moment("{{post.published_at}}").format('LLL'));
+		                                  </script>
+									{% endfor %}
+                                  </tbody>
+                                </table> 
+                        </div>
+                        <center>
+                       		pagination not ready
+						</center>
+                      </div>
+                    </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="/static/admin/js/scroll.js"></script> -->
+<script>
+	if($(".alert").length>0){
+		if(($(".alert").html()).indexOf("success")>=0||($(".alert").html()).indexOf("Please check your email to recovery the password.")>=0){
+			$(".alert").addClass('alert-success');
+		}
+		else{
+			$(".alert").addClass('alert-danger');
+		}
+	}
+</script>
+{% include 'admin/footer.html' %} 

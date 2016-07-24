@@ -1,0 +1,94 @@
+{% include 'admin/header.html' %} 
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                    <div class="panel panel-default" style="padding:0px;">
+                      <div class="panel-heading">
+                        <a href="/admin/page/add" class="btn btn-default btn-sm pull-right">
+                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                              New 
+                           </a>
+                     <h3 class="panel-title">
+                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                           <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                          </a>
+                              Pages
+                      </h3>
+                      </div>
+                      <div class="panel-body">
+                            <div class="table-responsive">
+                            {% with messages = get_flashed_messages() %}
+                              {% if messages %}
+                                {% for message in messages %}
+                                  <li class="alert"> 
+                                    {{ message }}
+                                  </li>
+                                {% endfor %}
+                              {% endif %}
+                            {% endwith %}
+                            <table class="table table-hover ">
+                              <thead>
+                                <tr>
+                                  <th>Title</th>
+                                  <th>Published Date</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {% for page in pages %}
+                                  <tr> 
+                                    <td>
+                                      <a href="/admin/page/edit/{{page.slug}}">
+                                      <!-- <i class="fa fa-hand-o-right" aria-hidden="true"></i> -->
+                                      {{ page.title[:125] }}
+                                      </a>
+                                    </td>
+                                    
+                                    <td id="date_{{page.id}}">
+                                        {{page.published_at}}
+                                    </td>
+                                    <td>
+                                      <a href="/admin/page/edit/{{page.slug}}" class="">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                      </a> -
+                                      <a href="/admin/page/delete/{{page.slug}}" class="" style="color:red">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                      </a>
+                                    </td>
+                                  </tr>
+                                  <script>
+                                  $('#date_{{page.id}}').html(moment("{{page.published_at}}").format('LLL'));
+                                  </script>
+              {% endfor %}  
+                              </tbody>
+                            </table> 
+                    </div>
+                   
+                </div>     
+              </div>    
+              </div>
+          </div>
+      </div>
+  </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="/static/admin/js/scroll.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<!-- Menu Toggle Script -->
+<script>
+  if($(".alert").length>0){
+    if(($(".alert").html()).indexOf("success")>=0){
+      $(".alert").addClass('alert-success');
+    }
+    else{
+      $(".alert").addClass('alert-danger');
+    }
+  }
+</script>
+{% include 'admin/footer.html' %} 

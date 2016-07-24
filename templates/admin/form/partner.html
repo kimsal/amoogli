@@ -1,0 +1,166 @@
+{% include 'admin/header.html' %} 
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                  <div class="panel panel-default" style="padding:0px;">
+                    <div class="panel-heading">
+                      <a href="/admin/partner/add" class="btn btn-default btn-sm pull-right">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        New 
+                     </a>
+                      <h4 class="panel-title">
+                        <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                        <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                        </a>
+                         Partner Form
+                      </h4>
+                    </div>
+                    <div class="panel-body" >
+                      <div class="table-responsive" style="border:none;">
+                          <!--form upload-->
+                          <div class="col-md-12 col-xs-12 col-md-12 col-lg-12" >
+                          <br/>
+                              <form class="form-horizontal" action="/admin/partner/add/" method="POST" id="frm" enctype="multipart/form-data">
+                              {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                  {% for message in messages %}
+                                    <li class="alert alert-warning"> 
+                                      {{ message }}
+                                    </li>
+                                  {% endfor %}
+                                {% endif %}
+                              {% endwith %}
+                                <!-- input title-->
+                               {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                                    <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                    {{ form.name.label }}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                      {{ form.name(class_="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                                    <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                    {{ form.url.label }}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                      {{ form.url(class_="form-control") }}
+                                    </div>
+                                </div>
+                                <!--partner add feature image-->
+
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"><br/>
+                                    <b>Feature Image</b>
+                                  </div>
+
+                                  <input type="text" name="txt_temp_image" class="txt_temp_image" value="" style="display:none"/>
+
+                                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                     <div class="panel panel-body">
+                                       <div class="span4 cropme" id="landscape" style="width:430px; height: 300px;">
+                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <script>
+                                 // Init Simple Cropper
+                                $('.cropme').simpleCropper();
+                                $('#portrait').hide();
+                                $('.switch').click(function (){
+                                    $(this).text("Switch to "+($('#portrait').is(":visible") ? "Portrait" : "Landscape"));
+                                  $('#portrait').toggle();
+                                  $('#landscape').toggle();
+                                });    
+
+
+                                var _gaq = _gaq || [];
+                                _gaq.push(['_setAccount', 'UA-36251023-1']);
+                                _gaq.push(['_setDomainName', 'jqueryscript.net']);
+                                _gaq.push(['_trackPageview']);
+
+                                (function() {
+                                  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                                })();
+
+                              </script>
+                                <!--end phos add feature image -->
+                                <div class="form-group">
+                                  <div class="col-md-7 col-xs-12 co-md-8 col-lg-7">
+                                    
+                                   <!--  <script>
+                                      var loadFile = function(event) {
+                                        var output = document.getElementById('output');
+                                        output.src = URL.createObjectURL(event.target.files[0]);
+                                      };
+                                    </script> -->
+                                  </div>
+                                </div>
+                                <!--end feature image-->
+                                <!-- Form actions -->
+                                <div class="form-group">
+                                  <div class="col-md-12 text-right">
+                                    <center>
+                                      <button type="submit" class="btn btn-default btn-sm btn-primary">
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                          Publish
+                                        </button>
+                                      <button type="reset" class="btn btn-default btn-sm">
+                                      <i class="fa fa-ban" aria-hidden="true"></i>
+                                        Cancel
+                                      </button>
+                                    </center>
+                                  </div>
+                                </div>
+                              </form>
+                            
+                          </div>
+                          <!--end form upload-->
+                      </div> 
+                    </div>
+                  </div>
+
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- /#page-content-wrapper -->
+</div>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    var image_string='';
+    var feature_image='';
+    </script>
+  {% for partner in partner_object %}
+ <script type="text/javascript">
+   $('input#name').attr('value',"{{partner.name}}"); 
+   $('#frm').attr('action','/admin/partner/edit/{{partner.slug}}/');
+   var help="{{partner.url}}";
+   //help=help.replace(/(&lt;br\/&gt;)+/gi,'')
+   //alert(help);
+   $('#url').attr('value',"{{partner.url}}"); 
+   feature_image="{{partner.feature_image}}";
+   $("#landscape").html('<img src="'+feature_image+'"/>');
+     //alert(feature_image);
+   $(".txt_temp_image").attr('value',feature_image);
+
+ </script>
+ 
+{% endfor %}
+<script type="text/javascript">
+  if(feature_image==''){
+    feature_image='/static/{{template_name}}/img/no image.jpg';
+  }
+  $("#landscape").html('<img src="'+feature_image+'" style="width:280px;height:200px"/> ');
+</script>
+
+{% include 'admin/footer.html' %} 

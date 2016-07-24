@@ -1,0 +1,143 @@
+{% include '/admin/header.html' %} 
+
+
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                    <div class="panel panel-default" style="padding:0px;">
+                        <div class="panel-heading">
+                            <a href="/admin/post/add" class="btn btn-default btn-sm pull-right">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                New 
+                            </a>
+                            <h4 class="panel-title">
+                                <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                                <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                                </a>
+                                Limit Posts
+                            </h4>
+                        </div>
+                        <div class="panel-body" >
+                            <div class="table-responsive" style="border:none;">
+                            <!--form upload-->
+                            <div class="col-md-7 col-xs-12 col-md-6 col-lg-5" >
+                                <ul  class='alert alert-success message' style="list-style:none;display:none">
+                                </ul>
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                      <input id="txtlimit" name="txtlimit" type="text" placeholder="Limit of Post Per Page..." class="form-control" required value="{{limit}}"/>
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                      <input type="button" class="btn btn-primary navbar-right" id="btnlimit" value="Update Number"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-lg-7">
+                                    <h4>What is "Limit Post"?</h4>
+                                    <p style="font-size:17px;"> 
+                                        You can set up as many limits as you like, for different post types, different user roles, whatever you like. When a user tries to create a new post, the limits are checked, if the user has exceeded any of the limits, they wont be able to publish.
+                                    </p>
+                                </div>
+                            </div>
+                        </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- /#page-content-wrapper -->
+
+<script>
+    
+    //input only number
+    $("#txtlimit").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    //start to update "limit post"
+    $("#btnlimit").click(function(){
+        var number=parseInt($("#txtlimit").val());
+        if($("#txtlimit").val()!=''){
+            $.ajax({
+              type: "GET",
+              url: '/admin/limit/'+number,
+              success: function(response) {
+                console.log(":"+response);
+                if(response.success=='Ok'){
+                    $(".message").html('<li>Number updated successfully.</li>');
+                    $(".message").addClass('alert-success');
+                    $(".message").css('display',"block");
+                }
+                else{
+                    $(".message").html("<li>Can't Update limit number.</li>");
+                    $(".message").addClass('alert-danger');
+                    $(".message").css('display',"block");
+                }
+              }
+            });
+        }
+        else{
+            $(".message").html('<li>Number is required</li>');
+            $(".message").addClass('alert-danger');
+            $(".message").css('display',"block");
+        }
+    });
+</script>
+
+
+    <!-- Menu Toggle Script -->
+    <script>
+    var image_string='';
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    $(".off-canvas-submenu").hide();
+    $(".off-canvas-submenu-call").click(function() {
+    var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '':'';
+    $(this).parent().next(".off-canvas-submenu").slideToggle('slow');
+    $(this).find("span").text(icon);
+});
+</script>
+
+{% include 'admin/footer.html' %} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

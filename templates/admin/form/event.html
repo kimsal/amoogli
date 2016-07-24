@@ -1,0 +1,245 @@
+{% include 'admin/header.html' %} 
+    <link href="/static/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-12" style="padding:0px;">
+                    <br><br>
+                  <div class="panel panel-default" style="padding:0px;">
+                    <div class="panel-heading">
+                      <a href="/admin/event/add" class="btn btn-default btn-sm pull-right">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        New 
+                     </a>
+                      <h4 class="panel-title">
+                        <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
+                        <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
+                        </a>
+                         Event Form
+                      </h4>
+                    </div>
+                    <div class="panel-body" >
+                      <div class="table-responsive" style="border:none;">
+                          <!--form upload-->
+                          <div class="col-md-12 col-xs-12 col-md-12 col-lg-12" >
+                          <br/>
+                              <form class="form-horizontal" action="/admin/event/add/" method="POST" id="frm" enctype="multipart/form-data">
+                              {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                  {% for message in messages %}
+                                    <li class="alert alert-warning"> 
+                                      {{ message }}
+                                    </li>
+                                  {% endfor %}
+                                {% endif %}
+                              {% endwith %}
+                                <!-- input title-->
+                               {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+                                    <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                    {{ form.title.label }}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                      {{ form.title(class_="form-control") }}
+                                    </div>
+                                </div>
+                                <!-- Message body -->
+                                <div class="form-group">
+                                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                    {{ form.description.label }}
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-11 col-lg-11">
+                                      {{ form.description(class_="form-control ckeditor",id="description") }}
+                                    </div>
+                                    <input type="text" name="txt_temp_image" class="txt_temp_image" value="" style="display:none"/>
+                                  
+                                     <script type="text/javascript">
+                                        CKEDITOR.replace("description", {
+                                            filebrowserUploadUrl: '/admin/ckupload/',
+                                            filebrowserImageUploadUrl: '/ckupload/'
+                                        });
+                                    </script>
+                                </div>
+                                <!--select box-->
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"><br/>
+                                    <!-- <input id="name" name="name" type="text" placeholder="Type your title here..." class="form-control"> -->
+                                    {{ form.date.label }}
+                                  </div>
+
+                                  <div class="input-group date form_datetime col-md-5" data-date="2016-06-16T05:25:07Z" data-date-format="dd-MM-yyyy  hh:ii" data-link-field="dtp_input1">
+                                    <!-- <input class="form-control" size="16" type="text" value="" readonly> -->
+
+                                      {{ form.date(class_="form-control",readonly="",size="16") }}
+
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                          </div>
+                                  <input type="hidden" id="dtp_input1" value="" /><br/>
+                                </div>
+
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"><br/>
+                                    <b> Set Feature Image</b>
+                                  </div>
+                                  
+                                  <input type="text" name="txt_temp_image" class="txt_temp_image" value="" style="display:none"/>
+
+                                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                     <div class="panel panel-body">
+                                       <div class="span4 cropme" id="landscape" style="width:230px; height: 150px;">
+                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <script>
+                                 // Init Simple Cropper
+                                $('.cropme').simpleCropper();
+                                $('#portrait').hide();
+                                $('.switch').click(function (){
+                                    $(this).text("Switch to "+($('#portrait').is(":visible") ? "Portrait" : "Landscape"));
+                                  $('#portrait').toggle();
+                                  $('#landscape').toggle();
+                                });    
+
+
+                                var _gaq = _gaq || [];
+                                _gaq.push(['_setAccount', 'UA-36251023-1']);
+                                _gaq.push(['_setDomainName', 'jqueryscript.net']);
+                                _gaq.push(['_trackPageview']);
+
+                                (function() {
+                                  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                                })();
+
+                              </script>
+
+                                <div class="form-group">
+                                  <div class="col-md-12 text-right">
+                                    <center>
+                                      <button type="submit" class="btn btn-default btn-sm btn-primary">
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                          Publish
+                                        </button>
+                                      <button type="reset" class="btn btn-default btn-sm">
+                                      <i class="fa fa-ban" aria-hidden="true"></i>
+                                        Cancel
+                                      </button>
+                                    </center>
+                                  </div>
+                                </div>
+                              </form>
+                            
+                          </div>
+                          <!--end form upload-->
+                      </div> 
+                    </div>
+                  </div>
+
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- /#page-content-wrapper -->
+</div>
+    <script src="js/jquery.js"></script>
+    <script src="js/scroll.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    var image_string='';
+  
+    </script>
+{% for p in post %}
+ <script type="text/javascript">
+   $('input#title').attr('value',"{{p.title}}"); 
+   $('#frm').attr('action','/admin/post/edit/{{p.slug}}/');
+   var help="{{p.description.replace('\n', '').replace('\r','')}}";
+   //help=help.replace(/(&lt;br\/&gt;)+/gi,'')
+   //alert(help);
+   $('#description').html(help);  
+   $('select#category_id option[value="{{p.category_id}}"]').attr("selected","selected");
+   $(".feature_output").attr("src","/static/images/feature_images/{{p.feature_image}}");
+   var feature_image="{{p.feature_image}}";
+   if(feature_image!=''){
+     $("#landscape").html('<img src="'+feature_image+'"/>');
+     //alert(feature_image);
+   }
+
+ </script>
+ 
+{% endfor %}
+
+
+<script type="text/javascript" src="/static/admin/js/jquery-1.8.3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/admin/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/admin/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    forceParse: 0,
+        showMeridian: 1
+    });
+  $('.form_date').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+    });
+  $('.form_time').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 1,
+    minView: 0,
+    maxView: 1,
+    forceParse: 0
+    });
+</script>
+
+
+<!--edit event-->
+ <script>
+    var image_string='';
+  
+    </script>
+  {% for event in events %}
+ <script type="text/javascript">
+   $('input#title').attr('value',"{{event.title}}"); 
+   $('#frm').attr('action','/admin/event/edit/{{event.slug}}/');
+   var help="{{event.description.replace('\n', '').replace('\r','')}}";
+   //help=help.replace(/(&lt;br\/&gt;)+/gi,'')
+   //alert(help);
+   $('#description').html(help);  
+   $('input#date').attr("value","{{event.date}}");
+   // $(".feature_output").attr("src","/static/images/feature_images/{{event.feature_image}}");
+   var feature_image="{{event.feature_image}}";
+   if(feature_image!=''){
+     $("#landscape").html('<img src="'+feature_image+'"/>');
+     //alert(feature_image);
+   }
+   $(".txt_temp_image").attr('value',feature_image);
+
+ </script>
+ 
+{% endfor %}
+{% include 'admin/footer.html' %} 
