@@ -104,13 +104,9 @@ class Post(db.Model):
     slug=db.Column(db.String(255),nullable=True,unique=True)
     category_id=db.Column(db.Integer,db.ForeignKey('category.id'),nullable=True)
     user_id=db.Column(db.Integer,db.ForeignKey('user_member.id'))
-    duration=db.Column(db.String(255),nullable=True)
-    price=db.Column(db.Integer)
-    location=db.Column(db.Text,nullable=True)
     file=db.Column(db.String(255),nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     views = db.Column(db.Integer, nullable=True)
-    booking=db.relationship('Booking', backref="post", lazy='dynamic')
     def to_Json(self):
         return dict(id=self.id,
             title=self.title,
@@ -118,22 +114,16 @@ class Post(db.Model):
             feature_image=self.feature_image,
             slug=self.slug,
             category_id=self.category_id,
-            duration=self.duration,
-            price =self.price,
-            location=self.location,
             file=self.file,
             published_at="{}".format(self.published_at),
             view=self.view
             )
-    def __init__(self, title, description, category_id, feature_image, user_id,duration,price,location,file,views=0):
+    def __init__(self, title, description, category_id, feature_image, user_id,file,views=0):
         self.title = title
         self.slug =slugify(title)
         self.description = description
         self.feature_image = feature_image
         self.category_id = category_id
-        self.duration=duration,
-        self.price=price,
-        self.location=location,
         self.file=file,
         self.user_id = user_id
         self.views=views

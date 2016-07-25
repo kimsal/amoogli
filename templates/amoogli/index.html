@@ -1,38 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>home</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-	<!--custom css-->
-	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}//static/{{template_name}}/css/style1.css">
-	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/menu.css">
-	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/footer.css">
-	<!--end custom css-->
-	<!--custom js-->
-	<!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
-	<!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/static/{{template_name}}/s/script.js"></script>
-	<!--end custom js-->
-	
-</head>
-<body>
-<input type="checkbox" id="toggle" />
-<nav id="site-nav" class="site-nav">
-  <div class="container">
-    <div class="logo"><a href="index.html">my<strong>Nav</strong></a></div>
-    <label class="navBars" for="toggle"> <i class="fa fa-bars"></i> </label>
-    <ul id="menu" class="menu" style="z-index:300;">
-      <li><a href="template.html">Template</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-<header class="intro-header" style="background-image:url('/static/{{template_name}}/images/blog1.jpgimages/home-bg.jpg')">
+{% include template_name+'/header.html' %} 
+<header class="intro-header" style="background-image:url('/static/{{template_name}}/images/home-bg.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -58,52 +25,61 @@
             </div>
         </div>
 </header>
-<section class="section1" style="background-image:  url(/static/{{template_name}}/images/006.jpg);">
+<section class="section1"  style="background-image:  url(/static/{{template_name}}/images/006.jpg);">
 	<h2><center>Join the movement</center></h2>
 		<hr class="hr-amoogli">
 	<div class="container padding">
 		<ul class="padding">
 			<li class="col-xs-12 col-md-6 list-box">
 				<div class="col-xs-12 col-md-5">
-				<img src="/static/{{template_name}}/images/blog1.jpg" class="img-responsive">
+				<img src="/static/{{template_name}}/images/blogger.jpg/" class="img-responsive">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4><b>Blogger</b></h4>
+					<p>Write your own blog, advanture history, your trip days and your study life to publish to people around the world and earn rewards.  </p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
 				<div class="col-xs-12 col-md-5">
-				<img src="/static/{{template_name}}/images/blog1.jpg" class="img-responsive">
+				<img src="/static/{{template_name}}/images/amoogli_advertise.jpg" class="img-responsive">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4><b>Business</b></h4>
+					<p>Make your own website, advertise your business with us. </p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
 				<div class="col-xs-12 col-md-5">
-				<img src="/static/{{template_name}}/images/blog1.jpg" class="img-responsive">
+				<img src="/static/{{template_name}}/images/emoogli-email.jpg" class="img-responsive">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4><b>Email Service</b></h4>
+					<p>Send thousand of emails by email GUI to promote your business.</p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
 				<div class="col-xs-12 col-md-5">
-				<img src="/static/{{template_name}}/images/blog1.jpg" class="img-responsive">
+				<img src="/static/{{template_name}}/images/amoogli-sms.jpg" class="img-responsive">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4><b>Messaging Service</b></h4>
+					<p>Send sms to let people know what you are doing. </p>
+				</div>
+			</li>
+			<li class="col-xs-12 col-md-6 list-box">
+				<div class="col-xs-12 col-md-5">
+				<img src="/static/{{template_name}}/images/amoogli-template.png" class="img-responsive">
+				</div>
+				<div class="col-xs-12 col-md-7">
+					<h4><b>Web Templates</b></h4>
+					<p>Download template for your blog, business website... </p>
 				</div>
 			</li>
 		</ul>
 	</div>
 </section>
-<section class="section2" style="background-image: url(/static/{{template_name}}/images/floor.png);">
-	<h2><center>Team</center></h2>
+<section class="section2"  style="background-image: url(/static/{{template_name}}/images/floor.png);">
+	<h2><center>Our Team</center></h2>
 		<hr class="hr-amoogli">
 	<div class="container padding">
 		<ul class="padding">
@@ -112,8 +88,8 @@
 				<img src="/static/{{template_name}}/images/rith.jpg" class="img-responsive myimg">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4>Rithy Thul</h4>
+					<p>Mentor at Amoogli</p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
@@ -121,8 +97,8 @@
 				<img src="/static/{{template_name}}/images/kimsal.jpg" class="img-responsive myimg">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4>Kimsal San</h4>
+					<p>CTO at Amoogli</p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
@@ -130,8 +106,8 @@
 				<img src="/static/{{template_name}}/images/phos.jpg" class="img-responsive myimg">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4>Phos Krab</h4>
+					<p>Head of design at Amoogli</p>
 				</div>
 			</li>
 			<li class="col-xs-12 col-md-6 list-box">
@@ -139,65 +115,37 @@
 				<img src="/static/{{template_name}}/images/sela.jpg" class="img-responsive myimg">
 				</div>
 				<div class="col-xs-12 col-md-7">
-					<h4>Happy new year</h4>
-					<p>Earn STEEM every time you post content valued by others. </p>
+					<h4>Sela Thul</h4>
+					<p>CEO at Amoogli</p>
 				</div>
 			</li>
 		</ul>
 	</div>
 </section>
 <section class="section2" id="section2" style="clear:both;">
-	<h2><center>ABOUT</center></h2>
+	<h2><center><b>ABOUT</b></center></h2>
 		<hr class="hr-amoogli">
 	<div class="container padding">
 		<div class="hidden-xs col-md-2 col-lg-2"></div>
 		<div class="col-md-8 col-lg-8">
-			<h4>About Afilias</h4>
+			<h3><b>Amoogli is an engine for:</b></h3>
 			<p>
-				Afilias connects the world with reliable, secure, scalable and globally available technology that makes Internet addresses more accessible and useful.
-			</p>
-			<h4>About Afilias</h4>
-			<p>
-				Afilias connects the world with reliable, secure, scalable and globally available technology that makes Internet addresses more accessible and useful.
-			</p>
-			<h4>About Afilias</h4>
-			<p>
-				Afilias connects the world with reliable, secure, scalable and globally available technology that makes Internet addresses more accessible and useful.
-			</p>
+			<ul style="padding:0px;">
+				<li style="list-style:square;"> 
+					web publishing with backlings and URL tracking integration. Blogers and web publishers used the system with custom domain and host IP. 
+				</li>
+				<li style="list-style:square;">
+				landing page building for automate marking and SEO.
+				</li>
+				<li style="list-style:square;">
+	    		persionalize group mails communication using Gmail SMTP with its own WebmailUI.<!-- (UI example: https://mailtrack.io/en/dashboard). -->
+	    		</li> 
+	    		<li style="list-style:square;">
+	    		social medias Facebook, LinkedIn, Twitter publishing direct from WebmailUi.
+	    		</li>
+	    	</ul>
 		</div>
 		<div class="hidden-xs col-md-2 col-lg-2"></div>
 	</div>
 </section>
-<footer id="footer" style="clear:both;">
-  <div class="container">
-    <div class="row">    
-      <div class="col-xs-6 col-sm-6 col-md-3 column"> 
-      </div>
-      <div class="col-xs-12 col-md-6 column" id="contact">          
-        <center>
-          <ul class="nav">
-            <li>
-            <a href="#">
-              <img src="/static/{{template_name}}/images/NormanReedusCat12.png" class="footer_logo img-responsive brand">
-            </a>
-            </li>
-            <li><a href="#">
-                    
-            </a></li>
-            <li style="font-size:18px;color:white;"><a href="#">
-            	Contact: (+855) 78-785-044
-            </a></li>
-            <li style="font-size:18px;color:white;"><a href="#">
-            	Email: chhunny@anakot.asia 
-            </a></li>
-
-          </ul> 
-        </center>
-      </div>
-      <div class="col-xs-6 col-md-6 column">           
-      </div>
-    </div><!--/row-->
-  </div>
-</footer>
-</body>
-</html>
+{% include template_name+'/footer.html' %} 

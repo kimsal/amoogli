@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Amoogli web publishing and communication plateform</title>
+	 <link rel="icon" href="/static/{{template_name}}/images/logo.png" type="image/x-icon">
+	<link rel="stylesheet" href="/static/{{template_name}}/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0//static/{{template_name}}/css/font-awesome.min.css">
+	<!--custom css-->
+	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/style1.css">
+	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/menu.css">
+	<link rel="stylesheet" type="text/css" href="/static/{{template_name}}/css/footer.css">
+	<!--end custom css-->
+	<!--custom js-->
+	<!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
+	<!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<!--end custom js-->
+	
+</head>
+<body>
+<input type="checkbox" id="toggle" />
+<nav id="site-nav" class="site-nav">
+  <div class="container">
+    <div class="logo"><a href="/">Amoogli<strong></strong></a></div>
+    <label class="navBars" for="toggle"> <i class="fa fa-bars"></i> </label>
+    <ul id="menu" class="menu" style="z-index:300;">
+    	<li><a href="/">Home</a></li>
+	    {%for category in categories%}
+	      <li><a href="/{{category.slug}}">{{category.name}}</a></li>
+      {%endfor%}
+      {%for page in pages%}
+      	<li><a href="/{{page.slug}}">{{page.title}}</a></li>
+      {%endfor%}
+    </ul>
+  </div>
+</nav>

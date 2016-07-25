@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: af5a3f37822b
+Revision ID: 854ddec9d8e9
 Revises: None
-Create Date: 2016-07-23 08:15:58.795699
+Create Date: 2016-07-25 09:19:35.229949
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'af5a3f37822b'
+revision = '854ddec9d8e9'
 down_revision = None
 
 from alembic import op
@@ -105,9 +105,6 @@ def upgrade():
     sa.Column('slug', sa.String(length=255), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('duration', sa.String(length=255), nullable=True),
-    sa.Column('price', sa.Integer(), nullable=True),
-    sa.Column('location', sa.Text(), nullable=True),
     sa.Column('file', sa.String(length=255), nullable=True),
     sa.Column('published_at', sa.TIMESTAMP(), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('views', sa.Integer(), nullable=True),

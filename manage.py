@@ -99,7 +99,7 @@ def admin_login():
 		return render_template('admin/form/login.html',form = form)
 @app.route('/admin/logout', methods=['POST', 'GET'])
 @app.route('/admin/logout/', methods=['POST', 'GET'])
-@auth.login_required
+# @auth.login_required
 def logout():
 	response = make_response(redirect('/'))
 	response.set_cookie("blog_id","", expires=0)
@@ -411,9 +411,10 @@ def admin_post_add(slug=""):
 		   			if file:
 		   				if filedownload!="":
 		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
+		   					file_download=now+"_"+filedownload
 		   				else:
 		   					file_download=''
-		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),request.form['duration'],request.form['price'],request.form['location'],file_download)
+		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
 			        	status=Post.add(obj)
 				        if not status:
 				            flash("Post added was successfully")
@@ -425,12 +426,12 @@ def admin_post_add(slug=""):
 		   			if not not file: 
 		   				# return filedownload
 		   				if filedownload == "":
-		   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename ,'duration':request.form['duration'],'price':request.form['price'],'location':request.form['location']})
+		   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename })
 		   					status = db.session.commit()
 		   				else:
 		   					# return now+"_"+filedownload
 		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
-			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename ,'duration':request.form['duration'],'price':request.form['price'],'location':request.form['location'],'file': now+"_"+filedownload})
+			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename,'file': now+"_"+filedownload})
 		   					status = db.session.commit()
 		   				if not status:
 		   					flash("Post updated was successfully")
@@ -870,6 +871,8 @@ def single(slug='',pagination=1):
 				if(math.ceil(Post.query.filter_by(category_id=cat_id).count())%limit != 0 ):
 					pagin=int(pagin+1)
 				#return str(limit)
+				if category_name=='Blog':
+					return render_template(template+'/blog.html',page_name='category',category_slug=category_slug,category_name=category_name,posts=posts,pagin=int(pagin),current_pagin=int(pagination))
 				return render_template(template+'/category.html',page_name='category',category_slug=category_slug,category_name=category_name,posts=posts,pagin=int(pagin),current_pagin=int(pagination))
 			
 	except Exception as e:

@@ -7,9 +7,6 @@ class PostForm(Form,CKEditor):
    description = TextAreaField("Description",[validators.Required("Please enter your description.")])   
    feature_image = FileField("Feature Image")
    category_id = SelectField('Category', choices=[], coerce=int)
-   duration = TextField("Duration")
-   price = TextField("Price")
-   location = TextField("Location")
    file = FileField("File")
    submit = SubmitField("Publish")
 

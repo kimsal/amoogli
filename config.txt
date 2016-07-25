@@ -1,5 +1,5 @@
 Template="amoogli";
-limit="3";
+limit="20";
 email="kimsalsan007@gmail.com";
 password="";
 
