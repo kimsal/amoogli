@@ -414,10 +414,10 @@ def admin_post_add(slug=""):
 		   					file_download=now+"_"+filedownload
 		   				else:
 		   					file_download=''
-		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
+		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
 			        	status=Post.add(obj)
 				        if not status:
-				            flash("Post added was successfully")
+				            flash("Post added successfully")
 				            return redirect(url_for('admin_index'))
 				        else:
 				        	flash("Fail to add post !")
@@ -431,15 +431,15 @@ def admin_post_add(slug=""):
 		   				else:
 		   					# return now+"_"+filedownload
 		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
-			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename,'file': now+"_"+filedownload})
+			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'category_id':request.form['category_id'],'feature_image':filename,'file': now+"_"+filedownload})
 		   					status = db.session.commit()
 		   				if not status:
-		   					flash("Post updated was successfully")
+		   					flash("Post updated successfully")
 		   					return redirect(url_for('admin_index'))
 		   			for post in obj:
 		   				tempFileName=post.feature_image
 	   				filename=tempFileName
-	   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'feature_image':filename })
+	   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'category_id':request.form['category_id'],'feature_image':filename })
 	   				status = db.session.commit()
 	   				if not status:
 	   					flash("Post updated was successfully")
