@@ -10,7 +10,7 @@
 }
 
 .site-heading{
-	padding: 150px 0 50px;
+	padding: 130px 0 50px;
 	color: white;
 }
 
@@ -43,33 +43,22 @@ h1{
 	text-align: center;
 }
 
-
+h3,h2 {
+	color: #6C8784;
+}
 .padding{
 	padding: 0px;
-}
-
-.section1{
-	padding: 120px 20px;
-	font-weight: 400;
-	color: #4d6892;
-	height: 700px;
-	
-}
-
-.section2{
-	padding: 120px 20px;
-	font-weight: 400;
-	color: gray;
-	height: 700px;
-	
-	background-color: rgba(252, 252, 252, 0.21);
 }
 
 .list-box{
 	padding: 2rem;
 	margin: 0px;
 }
-
+.list-join {
+	list-style: outside none none;
+	padding: 6px;
+	padding-top: 18px;
+}
 .hr-amoogli{
 	width: 128px;
 	margin-left: auto;
