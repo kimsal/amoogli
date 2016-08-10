@@ -919,12 +919,6 @@ def search():
 	query_result=(Post.query.filter((Post.title).match("'%"+search+"%'"),(Post.description).match("%'"+search+"'%"))).count()
 	posts=Post.query.filter((Post.title).match("'%"+search+"%'")).all()#.limit(limit).offset(int(int(int(limit)-1)*limit))
 	return render_template(template+"/search.html",search=search,query_result=query_result,posts=posts)
-# @app.route('/search', methods=['POST', 'GET'])
-# @app.route('/search/', methods=['POST', 'GET'])
-# def booking():
-# 	return render_template(template+'/booking.html')
 #end client
 if __name__ == '__main__':
 	 app.run(debug = True,host='0.0.0.0')
-#replace white space:
-#http://docs.python-requests.org/en/master/user/quickstart/
