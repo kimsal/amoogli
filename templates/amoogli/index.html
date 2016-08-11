@@ -1,33 +1,99 @@
-{% include template_name+'/header.html' %} 
+{% include template_name+'/header.html' %}
+
 <header class="intro-header" style="background-image:url('/static/{{template_name}}/images/home-bg.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
                         <h1 class="post">
-                        Amoogli is a blockchain-based web-publishing and communication platform where anyone can earn rewards. 
+                        Amoogli is a blockchain-based web-publishing and communication platform where anyone can earn rewards.
                         </h1>
                         <hr class="small">
-                       <!--svg-->
-				        <svg class="arrows">
-							<path class="a3" d="M0 40 L30 72 L60 40"></path>
-						</svg>
-				       <!--end svg-->
-				       <!--button start-->
-				       	<div class="row">
-					        <div class="col-md-12">
-					        	<center>
-							    <button class="btn btn-default orange-circle-button post" href="">Get Started<span class="orange-circle-greater-than"></span></button>
-							    </center>
-					        </div>   
-						</div>
-				       <!--end button start-->
+               <!--button start-->
+                <div class="row">
+                  <div class="col-md-12">
+                    <center>
+                    <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">
+                    Get Started
+                  </button>
+                  </center>
+                  </div>
+            </div>
+               <!--end button start-->
                     </div>
                 </div>
             </div>
         </div>
 </header>
-<section class="section1"  style="background-image:  url(/static/{{template_name}}/images/006.jpg);">
+<!--pop up send request-->
+<div id="id01" class="modal">
+  <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <center><h2>Start With Us Now</h2></center>
+    </div>
+    <div class="container">
+        <div class="check alert" style="text-align:center;display:none">
+        </div>
+        <input type="text" placeholder="Your First Name ..." id="first-name" name="first-name" required/>
+        <input type="text" placeholder="Your Last Name ..." id="last-name" name="last-name" required/>
+        <input type="text" placeholder="Your Email ..." id="email" name="psw" required/>
+        <textarea class="form-control hresize" name="request" placeholder="Write your request here ..." rows="4" id="request"></textarea>
+        <button type="button" class="btn-send">Send</button>
+        <!-- <input type="checkbox" checked="checked"/> Remember me -->
+        <div>
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        </div>
+    </div>
+  </form>
+</div>
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+<!--end pop up send request-->
+<section class="section2"  style="background-image: url(/static/{{template_name}}/images/floor.png);">
+  <h2><center class="post">Our Team</center></h2>
+    <hr class="hr-amoogli">
+  <div class="container padding">
+    <ul class="padding post">
+      <li class="margin-top " style="list-style:none;">
+        <div class="col-lg-3 col-sm-3 text-center">
+          <img src="/static/{{template_name}}/images/sela.jpg" class="img-responsive myimg img-circle">
+          <h3>Sela Thul</h3>
+          <p>CEO at Amoogli</p>
+        </div>
+      </li>
+      <li class="margin-top " style="list-style:none;">
+        <div class="col-lg-3 col-sm-3 text-center">
+          <img src="/static/{{template_name}}/images/kimsal.jpg" class="img-responsive myimg img-circle">
+          <h3>Kimsal San</h3>
+          <p>CTO at Amoogli</p>
+        </div>
+      </li>
+      <li class="margin-top " style="list-style:none;">
+        <div class="col-lg-3 col-sm-3 text-center">
+          <img src="/static/{{template_name}}/images/phos.jpg" class="img-responsive myimg img-circle">
+          <h3>Phos Krab</h3>
+          <p>Head of Design at Amoogli</p>
+        </div>
+      </li>
+      <li class="margin-top " style="list-style:none;">
+        <div class="col-lg-3 col-sm-3 text-center">
+          <img src="/static/{{template_name}}/images/rith.jpg" class="img-responsive myimg img-circle">
+          <h3>Rithy Thul </h3>
+          <p>Promoter and Founder Amoogli</p>
+        </div>
+      </li>
+    </ul>
+  </div>
 	<h2><center class="post">Join the movement</center></h2>
 		<hr class="hr-amoogli">
 	<div class="container padding">
@@ -81,75 +147,90 @@
 		</ul>
 	</div>
 </section>
-<section class="section2"  style="background-image: url(/static/{{template_name}}/images/floor.png);">
-	<h2><center class="post">Our Team</center></h2>
-		<hr class="hr-amoogli">
-	<div class="container padding">
-		<ul class="padding post">
-			<li class="margin-top " style="list-style:none;">
-				<div class="col-lg-3 col-sm-3 text-center">
-					<img src="/static/{{template_name}}/images/sela.jpg" class="img-responsive myimg img-circle">
-					<h3>Sela Thul</h3>
-					<p>CEO at Amoogli</p>
-				</div>
-			</li>
-			<li class="margin-top " style="list-style:none;">
-				<div class="col-lg-3 col-sm-3 text-center">
-					<img src="/static/{{template_name}}/images/kimsal.jpg" class="img-responsive myimg img-circle">
-					<h3>Kimsal San</h3>
-					<p>CTO at Amoogli</p>
-				</div>
-			</li>
-			<li class="margin-top " style="list-style:none;">
-				<div class="col-lg-3 col-sm-3 text-center">
-					<img src="/static/{{template_name}}/images/rith.jpg" class="img-responsive myimg img-circle">
-					<h3>Rith Thul </h3>
-					<p>Promoter and Founder Amoogli</p>
-				</div>
-			</li>
-			<li class="margin-top " style="list-style:none;">
-				<div class="col-lg-3 col-sm-3 text-center">
-					<img src="/static/{{template_name}}/images/phos.jpg" class="img-responsive myimg img-circle">
-					<h3>Phos Krab</h3>
-					<p>Head of Design at Amoogli</p>
-				</div>
-			</li>
-		</ul>
-	</div>
-</section>
+
 <section class="section2" id="section2" style="clear:both;">
-	<h2><center><b>ABOUT</b></center></h2>
-		<hr class="hr-amoogli">
-	<div class="container padding post">
-		<div class="hidden-xs col-md-2 col-lg-2"></div>
-		<div class="col-md-8 col-lg-8">
-			<h3><b>Amoogli is an engine for:</b></h3>
-			<p>
-			<ul style="padding:0px;font-size:17px;">
-				<li style="list-style:square;"> 
-					web publishing with backlings and URL tracking integration. Blogers and web publishers used the system with custom domain and host IP. 
-				</li>
-				<li style="list-style:square;">
-				landing page building for automate marking and SEO.
-				</li>
-				<li style="list-style:square;">
-	    		persionalize group mails communication using Gmail SMTP with its own WebmailUI.<!-- (UI example: https://mailtrack.io/en/dashboard). -->
-	    		</li> 
-	    		<li style="list-style:square;">
-	    		social medias Facebook, LinkedIn, Twitter publishing direct from WebmailUi.
-	    		</li>
-	    	</ul>
-		</div>
-		<div class="hidden-xs col-md-2 col-lg-2"></div>
-	</div>
+  <h2><center><b>ABOUT</b></center></h2>
+    <hr class="hr-amoogli">
+  <div class="container padding post">
+    <div class="hidden-xs col-md-2 col-lg-2"></div>
+    <div class="col-md-8 col-lg-8">
+      <h3><b>Amoogli is an engine for:</b></h3>
+      <p>
+      <ul style="padding:0px;font-size:17px;">
+        <li style="list-style:square;">
+          web publishing with backlings and URL tracking integration. Blogers and web publishers used the system with custom domain and host IP.
+        </li>
+        <li style="list-style:square;">
+        landing page building for automate marking and SEO.
+        </li>
+        <li style="list-style:square;">
+          persionalize group mails communication using Gmail SMTP with its own WebmailUI.<!-- (UI example: https://mailtrack.io/en/dashboard). -->
+          </li>
+          <li style="list-style:square;">
+          social medias Facebook, LinkedIn, Twitter publishing direct from WebmailUi.
+          </li>
+        </ul>
+    </div>
+    <div class="hidden-xs col-md-2 col-lg-2"></div>
+  </div>
 </section>
 <script src="/static/{{template_name}}/js/viewportchecker.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	jQuery('.post').addClass("hidden").viewportChecker({
-	    classToAdd: 'visible animated fadeInDown', // Class to add to the elements when they are visible
-	    offset: 100    
-	   });   
-});            
+  jQuery('.post').addClass("hidden").viewportChecker({
+      classToAdd: 'visible animated fadeInDown', // Class to add to the elements when they are visible
+      offset: 100
+     });
+});
+//write contact:
+function check_email(email){
+   if(email.indexOf("@")<1&&email.indexOf(".")<2){
+      $('.alert').addClass('alert-danger');
+         $('.alert').html("Your email is not valid");
+         $('.alert').css("display",'block')
+         return false;
+    }
+    return true;
+}
+$(".btn-send").click(function(){
+  $(".alert").removeClass('alert-danger');
+  $(".alert").removeClass('alert-success');
+  var firstname=$("#first-name").val();
+  var lastname=$("#last-name").val();
+  var email=$("#email").val();
+  var request=$("#request").val()
+  var dt=[];
+  dt[0]=firstname;
+  dt[1]=lastname;
+  dt[2]=email;
+  dt[3]=request;
+  if(firstname!=''&&lastname!=''&&email!=''){
+    if(check_email(email)){
+      $.ajax({
+         type: "POST",
+         url: "/add/contact/ajax/",
+         data: {json_str:JSON.stringify(dt)},
+         success: function(msg){
+           // $('.alert').addClass('alert-success');
+           // $('.alert').html(msg);
+           // $('.alert').css("display",'block');
+           window.location = "{{request.url}}templates";
+
+         },
+         error:function(msg){
+          $('.alert').addClass('alert-danger');
+           $('.alert').html(msg);
+           $('.alert').css("display",'block');
+         }
+         // dataType: "json"
+      });
+    }
+  }
+  else{
+      $('.alert').addClass('alert-danger');
+      $('.alert').html("All fields are required");
+      $('.alert').css("display",'block');
+    }
+});
 </script>
-{% include template_name+'/footer.html' %} 
+{% include template_name+'/footer.html' %}

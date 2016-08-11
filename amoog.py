@@ -267,16 +267,17 @@ def contact(type_submit=''):
 			firstname=data[0]
 			lastname=data[1]
 			email=data[2]
+			request_data=data[3]
 			check=Contact.query.filter_by(email=email)
 			if check.count()>0:
-				return 'email already exists.'
+				return 'Email already exists.'
 			else:
-				contact=Contact(firstname,lastname,email)
+				contact=Contact(firstname,lastname,email,request_data)
 				status = Contact.add(contact)
 		        if not status:
-		            return "Contact saved was successfully"
+		            return "Your information saved was successfully"
 		       	else:
-		       		return "Fail to add contact !"
+		       		return "Fail to save information! !"
 		except Exception as e:
 			return e.message
 ############ End Contact List ##########
@@ -836,6 +837,13 @@ def index(pagination=1):
 def single(slug='',pagination=1):
 	# session.clear()
 	# return 'd'
+	if slug=="templates":
+		posts=Post.query.join(Category,Post.category_id == Category.id).filter((Category.name).match("template")).order_by(Post.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
+		
+		pagin=math.ceil((Post.query.join(Category,Post.category_id == Category.id).filter((Category.name).match("template")).count())/limit)
+		if(math.ceil(Post.query.join(Category,Post.category_id == Category.id).filter((Category.name).match("template")).count())%limit != 0 ):
+			pagin=int(pagin+1)
+		return render_template(template+'/templates.html',pagin=pagin,posts=posts)
 	form=BookingForm()
 	try:
 		post_object=Post.query.filter_by(slug=slug)#.limit(1)
