@@ -107,6 +107,7 @@ class Post(db.Model):
     file=db.Column(db.String(255),nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     views = db.Column(db.Integer, nullable=True)
+    bookings=db.relationship('Booking', backref="post", lazy='dynamic')
     def to_Json(self):
         return dict(id=self.id,
             title=self.title,

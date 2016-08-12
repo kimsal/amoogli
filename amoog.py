@@ -299,7 +299,6 @@ def booking(type_submit=''):
 			phone=data[2]
 			amount=data[3]
 			post_id=data[4]
-			return str(amount)
 			booking=Booking(name,email,phone,post_id,amount)
 			status = Booking.add(booking)
 			if not status:

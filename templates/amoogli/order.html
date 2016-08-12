@@ -5,6 +5,7 @@
 <form class="form-horizontal" method="post" action="templates/order/send">
   <fieldset>
     <legend><a href="#"><b>Order us now!</b></a></legend>
+    <div class="alert" style="display:none;text-align:center;"></div>
     <div class="form-group">
       <label for="inputEmail" class="col-lg-3 control-label hidden-xs">User Name</label>
       <div class="col-lg-9">
@@ -18,23 +19,29 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-lg-3 control-label hidden-xs">Phone</label>
+      <div class="col-lg-9">
+        <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone Number (Optional)">
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-lg-3 control-label hidden-xs">Selected Template</label>
       <div class="col-lg-9">
-        <input type="text" class="form-control" name="template" value=''  id="template" placeholder="Template" readonly>
+        <input type="text" class="form-control" name="template" value=''  id="template" placeholder="Template" readonly style="font-weight:bold;">
         <input type="text" class="form-control" name="post_id" value='' id="post_id" style="display:none">
       </div>
     </div>
     <div class="form-group">
       <label for="textArea" class="col-lg-3 control-label hidden-xs">Request</label>
       <div class="col-lg-9">
-        <textarea class="form-control" name="request" rows="3" id="request"></textarea>
+        <textarea class="form-control" name="detail" rows="3" id="detail"></textarea>
         <span class="help-block">If you have any request or any idea please write it down. We will read you request carefully and we will contact you as soon as possible. Thank you.</span>
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn-send btn btn-primary">Submit</button>
+         <button type="reset" class="btn btn-default">Cancel</button>
       </div>
     </div>
   </fieldset>
@@ -51,6 +58,67 @@
 <script type="text/javascript">
 	$("#template").val("{{post.title}}");
 	$("#post_id").val("{{post.id}}");
+
+//save Booking
+function check_email(email){
+   if(email.indexOf("@")<1&&email.indexOf(".")<2){
+      $('.alert').addClass('alert-danger');
+         $('.alert').html("Your email is not valid");
+         $('.alert').css("display",'block')
+         return false;
+    }
+    return true;
+}
+localStorage.setItem("check_order",false);
+$(".btn-send").click(function(){
+  $(".alert").removeClass('alert-danger');
+  $(".alert").removeClass('alert-success');
+  var name=$("#name").val();
+  var email=$("#email").val();
+  var phone=$("#phone").val();
+  var post_id=$("#post_id").val();
+  var detail=$("#detail").val()
+  var dt=[];
+  dt[0]=name;
+  dt[1]=email;
+  dt[2]=phone;
+  dt[3]=1;
+  dt[4]=post_id;  
+  if(localStorage.getItem("check_order")=='false'){
+	    if(name!=''&&email!=''){
+		    if(check_email(email)){
+		      $.ajax({
+		         type: "POST",
+		         url: "/add/booking/ajax/",
+		         data: {json_str:JSON.stringify(dt)},
+		         success: function(msg){
+		           $('.alert').addClass('alert-success');
+		           $('.alert').html(msg);
+		           $('.alert').css("display",'block');
+		           localStorage.setItem("check_order", true);
+
+		         },
+		         error:function(msg){
+		          $('.alert').addClass('alert-danger');
+		           $('.alert').html(msg);
+		           $('.alert').css("display",'block');
+		         }
+		         // dataType: "json"
+		      });
+		    }
+		}
+		else{
+	      $('.alert').addClass('alert-danger');
+	      $('.alert').html("All fields are required");
+	      $('.alert').css("display",'block');
+		}
+	}
+	else{
+	   $('.alert').addClass('alert-danger');
+       $('.alert').html("Your info saved already.Refresh your page and try again.");
+       $('.alert').css("display",'block');
+	}
+});
 </script>
 {%endfor%}
 {% include template_name+'/footer.html' %} 
