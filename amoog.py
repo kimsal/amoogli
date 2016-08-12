@@ -829,6 +829,11 @@ def index(pagination=1):
 	home_posts=Post.query.join(UserMember).order_by(Post.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
 	pagin=math.ceil((Post.query.count())/limit)
 	return render_template(template+'/index.html',form=form,page_name='home',posts_top=posts_top,home_posts=home_posts,posts_bottom = posts_bottom,pagin=int(pagin),current_pagin=int(pagination))
+@app.route('/templates/order/<slug>')
+@app.route('/templates/order/<slug>/')
+def book_template(slug=''):
+	posts=Post.query.filter_by(slug=slug).all()
+	return render_template(template+'/order.html',posts=posts,page_name="temp",title="Order website or blog")
 @app.route('/<slug>')
 @app.route('/<slug>/')
 @app.route('/<slug>/<pagination>')

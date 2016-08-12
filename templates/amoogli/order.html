@@ -1,0 +1,56 @@
+{% include template_name+'/header.html' %} 
+<div class="container">
+<div class="hidden-xs col-sm-1 col-sm-1 col-lg-2"></div>
+<section class="col-xs-12 col-sm-8 col-lg-8 col-md-8 centered">
+<form class="form-horizontal" method="post" action="templates/order/send">
+  <fieldset>
+    <legend><a href="#"><b>Order us now!</b></a></legend>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-3 control-label hidden-xs">User Name</label>
+      <div class="col-lg-9">
+        <input type="text" class="form-control" name="name" id="name" placeholder="User Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-3 control-label hidden-xs">Email</label>
+      <div class="col-lg-9">
+        <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-3 control-label hidden-xs">Selected Template</label>
+      <div class="col-lg-9">
+        <input type="text" class="form-control" name="template" value=''  id="template" placeholder="Template" readonly>
+        <input type="text" class="form-control" name="post_id" value='' id="post_id" style="display:none">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="textArea" class="col-lg-3 control-label hidden-xs">Request</label>
+      <div class="col-lg-9">
+        <textarea class="form-control" name="request" rows="3" id="request"></textarea>
+        <span class="help-block">If you have any request or any idea please write it down. We will read you request carefully and we will contact you as soon as possible. Thank you.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</section>
+<div>
+</div>
+</div>
+<script type="text/javascript">
+	$("#name").val(localStorage.getItem("name"));
+	$("#email").val(localStorage.getItem("email"));
+</script>
+{%for post in posts%}
+<script type="text/javascript">
+	$("#template").val("{{post.title}}");
+	$("#post_id").val("{{post.id}}");
+</script>
+{%endfor%}
+{% include template_name+'/footer.html' %} 

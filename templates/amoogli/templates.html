@@ -14,16 +14,18 @@
 		<!--Pop up menu here-->
 		<div class="row">
 			{%for post in posts%}
-			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 margin-top">
-			    <div class="hovereffect">
-			        <img class="img-responsive" src="{{post.feature_image}}" alt="">
-		            <div class="overlay">
-		                <h3><!-- <a  href="/{{post.slug}}" data-toggle="modal" data-target="#myModal"> -->{{post.title}}
-		                <!-- </a> -->
-		                </h3>
-		            </div>
-			   	</div>
-			</div>
+			<a href="/templates/order/{{post.slug}}/">
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 margin-top">
+				    <div class="hovereffect">
+				        <img class="img-responsive" src="{{post.feature_image}}" alt="Image not Found">
+			            <div class="overlay">
+			                <h3><!-- <a  href="/{{post.slug}}" data-toggle="modal" data-target="#myModal"> -->{{post.title}}
+			                <!-- </a> -->
+			                </h3>
+			            </div>
+				   	</div>
+				</div>
+			</a>
 			{%endfor%}
 		</div>
 		<div>

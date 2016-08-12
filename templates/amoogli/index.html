@@ -211,6 +211,8 @@ $(".btn-send").click(function(){
          url: "/add/contact/ajax/",
          data: {json_str:JSON.stringify(dt)},
          success: function(msg){
+          localStorage.setItem("name", firstname);
+          localStorage.setItem("email", email);
            // $('.alert').addClass('alert-success');
            // $('.alert').html(msg);
            // $('.alert').css("display",'block');
