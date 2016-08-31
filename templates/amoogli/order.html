@@ -40,7 +40,7 @@
     </div>
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button type="button" class="btn-send btn btn-primary">Submit</button>
+        <button type="button" class="btn-send btn btn-primary">Send</button>
          <button type="reset" class="btn btn-default">Cancel</button>
       </div>
     </div>
@@ -84,6 +84,7 @@ $(".btn-send").click(function(){
   dt[2]=phone;
   dt[3]=1;
   dt[4]=post_id;  
+  dt[5]=detail;  
   if(localStorage.getItem("check_order")=='false'){
 	    if(name!=''&&email!=''){
 		    if(check_email(email)){

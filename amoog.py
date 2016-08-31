@@ -38,11 +38,10 @@ app.config.update(
 mail=Mail(app)
 #####################
 #Middleware
-arr_header_image=['anakot.asea-1.jpg','anakot.asea-2.jpg','anakot.asea-3.jpg']
 # header_image=random.choice (arr_header_image)
 @app.context_processor
 def inject_dict_for_all_templates():
-    return dict(searchform=SearchForm(),header_image=random.choice (arr_header_image),logined_name=request.cookies.get('blog_name'),template_name= template,categories = Category.query.filter_by(is_menu=1),pages = Page.query.filter_by(is_menu=1),partners=Partner.query.order_by(Partner.id.desc()).all())
+    return dict(searchform=SearchForm(),logined_name=request.cookies.get('blog_name'),template_name= template,categories = Category.query.filter_by(is_menu=1),pages = Page.query.filter_by(is_menu=1),partners=Partner.query.order_by(Partner.id.desc()).all())
 #========================================================
 @auth.verify_token
 def verify_token(token):
@@ -299,7 +298,8 @@ def booking(type_submit=''):
 			phone=data[2]
 			amount=data[3]
 			post_id=data[4]
-			booking=Booking(name,email,phone,post_id,amount)
+			detail=data[5]
+			booking=Booking(name,email,phone,post_id,amount,detail)
 			status = Booking.add(booking)
 			if not status:
 				return "Your info saved was successfully"
@@ -414,8 +414,8 @@ def admin_post_add(slug=""):
 		   					file_download=now+"_"+filedownload
 		   				else:
 		   					file_download=''
-		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
-			        	status=Post.add(obj)
+		   				temp_obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
+			        	status=Post.add(temp_obj)
 				        if not status:
 				            flash("Post added successfully")
 				            return redirect(url_for('admin_index'))
