@@ -29,7 +29,7 @@ ALLOWED_EXTENSIONS = set(['pdf','docx','txt','rar','zip','jpg','png'])
 app.config['UPLOAD_FOLDER'] = 'static/files/'
 expire_date = datetime.now()
 expire_date = expire_date + timedelta(days=90)
-
+app.config['MAX_CONTENT_LENGTH'] = 10240000
 SECRET_KEY="!Amok123#smallworld_common_toursanak_amok"
 def init_db():
     import BLOG.models

@@ -13,6 +13,8 @@ import math
 from models import *
 from forms import *
 from models import *
+import bottle
+bottle.BaseRequest.MEMFILE_MAX =1024*102400000 # (or whatever you want)
 template ="template-2016"
 config=""
 email=''
@@ -420,7 +422,7 @@ def admin_post_add(slug=""):
 				            flash("Post added successfully")
 				            return redirect(url_for('admin_index'))
 				        else:
-				        	flash("Fail to add post !")
+				        	flash("Fail to add post!")
 				        	return redirect(url_for('admin_post_add'))
 				elif slug:
 		   			if not not file: 

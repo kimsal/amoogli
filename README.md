@@ -33,7 +33,7 @@ python models.py db upgrade
 #admin:
 sudo pip install passlib
 sudo pip install flask_httpauth
-
+sudo pip install bottle
 sudo pip install flask_mail
 
 
