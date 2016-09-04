@@ -159,7 +159,7 @@
      {% for booking in bookings %}
      <script type="text/javascript">
       temp=moment().from("{{booking.published_at}}");
-      jqgrid_data.push({"name":"{{booking.name}}","published_at":temp,"email":"{{booking.email}}","phone":"{{booking.phone}}","tour":"{{booking.location.title}}","detail":"{{booking.detail}}","action":"<a href='/admin/booking/delete/{{booking.name}}' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a> "});
+      jqgrid_data.push({"name":"{{booking.name}}","published_at":temp,"email":"{{booking.email}}","phone":"{{booking.phone}}","post":"{{booking.post.title}}","detail":"{{booking.detail}}","action":"<a href='/admin/booking/delete/{{booking.name}}' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a> "});
      </script>
      {%endfor%}
 
@@ -170,7 +170,7 @@
         jQuery("#jqgrid").jqGrid({
           data : jqgrid_data,
           datatype : "local",
-          colNames : ['Name','Published', 'Email','Phone','Tour','Detail','Actions'],
+          colNames : ['Name','Published', 'Email','Phone','Post','Detail','Actions'],
           colModel : [{
             name : 'name',
             index : 'name',
@@ -186,8 +186,8 @@
             name : 'phone',
             index : 'phone'
           }, {
-            name : 'tour',
-            index : 'tour'
+            name : 'post',
+            index : 'post'
           }, {
             name : 'detail',
             index : 'detail'
