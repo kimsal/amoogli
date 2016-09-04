@@ -369,7 +369,8 @@ def booking(type_submit=''):
 			phone=data[2]
 			amount=data[3]
 			post_id=data[4]
-			booking=Booking(name,email,phone,post_id,amount)
+			detail = data[5]
+			booking=Booking(name,email,phone,post_id,amount,detail)
 			status = Booking.add(booking)
 			if not status:
 				return "Your info saved was successfully"
@@ -1151,7 +1152,7 @@ def index(pagination=1):
 def book_template(slug=''):
 	posts=Post.query.filter_by(slug=slug).all()
 	return render_template(template+'/order.html',posts=posts,page_name="temp",title="Order website or blog")
-	
+
 @app.route('/<slug>')
 @app.route('/<slug>/')
 @app.route('/<slug>/<pagination>')

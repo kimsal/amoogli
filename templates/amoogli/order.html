@@ -50,10 +50,6 @@
 <div>
 </div>
 </div>
-<script type="text/javascript">
-	$("#name").val(localStorage.getItem("name"));
-	$("#email").val(localStorage.getItem("email"));
-</script>
 {%for post in posts%}
 <script type="text/javascript">
 	$("#template").val("{{post.title}}");
@@ -93,6 +89,10 @@ $(".btn-send").click(function(){
 		         url: "/add/booking/ajax/",
 		         data: {json_str:JSON.stringify(dt)},
 		         success: function(msg){
+              //local storage
+               $("#name").val(localStorage.getItem("name"));
+               $("#email").val(localStorage.getItem("email"));
+
 		           $('.alert').addClass('alert-success');
 		           $('.alert').html(msg);
 		           $('.alert').css("display",'block');
