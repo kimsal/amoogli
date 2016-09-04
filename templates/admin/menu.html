@@ -4,48 +4,135 @@
 	padding: 10px;
 	font-size: 20px;
 }
-</style>
-<div class="container" style="margin-top:50px;">
-	<div class="row" style="margin-top:10px;border-bottom: solid thin #ececec !important;">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<legend >
-				<center>
-					<b>
-					Select Category and Page to show on menu
-					</b>
-				</center>
-			</legend>
-			<br/>
-		</div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        	<legend>Select Category</legend>
-        	 <form role="form" name="frmcategory" id="category">
-        	 	{%for category in cats%}
-			    <div class="checkbox">
-			      <label>
-			      <input {%if category.is_menu %} checked {%endif%} type="checkbox" value="{{category.id}}">
-			      	{{category.name}}
-			      </label>
-			    </div>
-			    {%endfor%}
-			  </form>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-        	<legend>Select Page</legend>
-        	 <form role="form" name="frmpage" id="page">
-			    {%for page in ps %}
-			    <div class="checkbox">
-			      <label>
-			      <input {%if page.is_menu %} checked {%endif%} type="checkbox" value="{{page.id}}">
-			      	{{page.title}}
-			      </label>
-			    </div>
-			    {%endfor%}
-			  </form>
-        </div>
-    </div>
-</div>
+.checkbx {
+	padding: 5px;
+	width: 100%;
+}
+
+</style>
+
+
+
+
+
+<!-- MAIN PANEL -->
+
+
+<div id="main" role="main">
+
+            <!-- RIBBON -->
+            <div id="ribbon">
+
+                <span class="ribbon-button-alignment"> <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true"> <i class="fa fa-refresh"></i> </span> </span>
+            </div>
+            <!-- END RIBBON -->
+
+            <!-- MAIN CONTENT -->
+            <div id="content">
+
+                <!-- row -->
+                <div class="row">
+                    <button class="btn btn-default pull-right btn-add" >
+                        <span class="fa fa-plus-circle" aria-hidden="true"></span>
+                        New
+                    </button>
+                    <!-- col -->
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                        <h1 class="page-title txt-color-blueDark"><!-- PAGE HEADER --><i class="fa-fw fa fa-home"></i>Menu</h1>
+                    </div>
+                     {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        {% for message in messages %}
+                          <div class="alert"> 
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                    <!-- end col -->
+
+                    <!-- right side of the page with the sparkline graphs -->
+                    <!-- col -->
+                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+                        <!-- sparks -->
+                        
+                        <!-- end sparks -->
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+
+                <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+
+                <!-- widget grid -->
+                <section id="widget-grid" class="">
+                    <!-- row -->
+                    <div class="row">
+                        <!-- NEW WIDGET START -->
+                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <!-- Widget ID (each widget will need unique ID)-->
+                                <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                                    <header>
+                                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                                        <h2>Menu</h2>
+                                    </header>
+                                    <div class="row">
+                                    	<div class="col-xs-12 col-sm-4 col-lg-4">
+                                    		<h2 class="page-title txt-color-blueDark">
+                                    		<center>SELECT CATEGORIES</center>
+                                    		</h2>
+	                                    	<form role="form" name="frmcategory" id="category">
+							        	 	{%for category in cats%}
+										    <div class="">
+										     	<label class="checkbox1 btn btn-default">
+												    <div >
+													    <input style="margin-top:0px;" {%if category.is_menu %} checked {%endif%} type="checkbox" value="{{category.id}}">
+													     {{category.name}}
+											    	</div>
+											    </label>
+										    </div>
+										    {%endfor%}
+										  </form>
+										</div>
+
+										<div class="col-xs-12 col-sm-8 col-lg-8">
+												<h2 class="page-title txt-color-blueDark">
+												<center>SELECT PAGES</center>
+												</h2>
+												<form role="form" name="frmpage" id="page">
+												    {%for page in ps %}
+												    <div class="checkbox col-xs-12 col-sm-6 col-md-6">
+												      <label class="btn btn-default">
+												      <div class="checkbx">
+												      <input  style="margin-top:0px;" {%if page.is_menu %} checked {%endif%} type="checkbox" value="{{page.id}}">
+												      	{{page.title}}
+												      </div>
+												      </label>
+												    </div>
+												    {%endfor%}
+												</form>
+										</div>
+                                    </div>
+                                </div>
+                            </article>
+                        <!-- WIDGET END -->
+                    </div>
+                   <!-- end row -->
+
+                </section>
+                <!-- end widget grid -->
+
+            </div>
+            <!-- END MAIN CONTENT -->
+
+ </div>
+        <!-- END MAIN PANEL -->
+
 <script>
 	//save and update data 
 	$("#category input").change(function(){

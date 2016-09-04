@@ -2,5 +2,6 @@ Template="amoogli";
 limit="20";
 email="kimsalsan007@gmail.com";
 password="";
+name="Kimsal";
 
 

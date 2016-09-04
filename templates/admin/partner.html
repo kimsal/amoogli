@@ -1,97 +1,109 @@
-{% include 'admin/header.html' %} 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12" style="padding:0px;">
-                        <br>
-                        <br>
-                        
-                        
-                        <div class="panel panel-default" style="padding:0px;">
-                          <div class="panel-heading">
-                           <a href="/admin/partner/add" class="btn btn-default btn-sm pull-right">
-                              <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                              New 
-                           </a>
-                            <h3 class="panel-title">
-                             <a href="#menu-toggle" style="border:none;font-size:20px;" class="" id="menu-toggle">
-		                       <i class="fa fa-arrow-circle-o-left hidden-sm hidden-md hidden-lg " aria-hidden="true"></i>
-		                      </a>
-                            	Partners
-                            </h3>
+{% include '/admin/header.html' %} 
+		<!-- END NAVIGATION -->
+
+		<!-- MAIN PANEL -->
+		<div id="main" role="main">
+
+			<!-- RIBBON -->
+			<div id="ribbon">
+
+				<span class="ribbon-button-alignment"> <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true"> <i class="fa fa-refresh"></i> </span> </span>
+<!-- Demo purpose only -->
+      
+				
+				<!-- You can also add more buttons to the
+				ribbon for further usability
+
+				Example below:
+
+				<span class="ribbon-button-alignment pull-right">
+				<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+				<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+				<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+				</span> -->
+
+			</div>
+			<!-- END RIBBON -->
+
+			<!-- MAIN CONTENT -->
+			<div id="content">
+				<div class="row">
+			          <a href="/admin/partner/add" class="btn btn-default pull-right btn-add" >
+			            <span class="fa fa-plus-circle" aria-hidden="true"></span>
+			            New
+			          </a>
+			          <!-- col -->
+			          <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+			            <h1 class="page-title txt-color-blueDark"><!-- PAGE HEADER --><i class="fa-fw fa fa-home"></i> Page</h1>
+			          </div>
+			          <!-- end col -->
+
+			          <!-- right side of the page with the sparkline graphs -->
+			          <!-- col -->
+			          <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+			            <!-- sparks -->
+			            
+			            <!-- end sparks -->
+			          </div>
+			          <!-- end col -->
+			        </div>
+				<!-- row -->
+				<div class="row">
+
+					<!-- col -->
+					 {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        {% for message in messages %}
+                          <div class="alert"> 
+                            {{ message }}
                           </div>
-                          <center>
-                        {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                            {% for message in messages %}
-                              <li class="alert" style="list-style:none"> 
-                                {{ message }}
-                              </li>
-                            {% endfor %}
-                          {% endif %}
-                        {% endwith %}
-                        </center>
-                          <div class="panel-body">
-                                <div class="table-responsive">
-                                <table class="table table-hover ">
-                                  <thead>
-                                    <tr>
-                                      <th>Name</th>
-                                      <th class="hidden-xs">
-                                      	url
-                                      </th>
-                                      <th class="hidden-xs">		Image
-                                      </th>
-                                      <th>
-                                     	 Actions
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                  
-                                  {% for partner in partners %}
-	                                    <tr> 
-	                                      <td>
-	                                        <a href="/admin/partner/edit/{{partner.slug}}">
-	                                        <!-- <i class="fa fa-hand-o-right" aria-hidden="true"></i> -->
-	                                        {{ partner.name }}
-	                                        </a>
-	                                      </td>
-	                                      <td class="hidden-xs">
-	                                          <a href="{{partner.url}}" target="_blank">	{{partner.url}}
-	                                          </a>
-	                                      </td>
-	                                      <td class="hidden-xs">
-	                                      <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
-	                                      <img src="{{partner.feature_image}}" class="img-responsive" style="max-width:70px"/>
-	                                      </td>
-	                                      <td>
-	                                        <!-- <a href="/admin/post/edit/{{partner.slug}}" class="">Edit</a> - -->
-	                                        <a href="/admin/partner/delete/{{partner.slug}}" class="" style="color:red" onclick="return confirm('Are you sure ?')">
-	                                        	<i  class="fa fa-trash-o" aria-hidden="true"></i>
-	                                        </a>
-	                                        
-	                                      </td>
-	                                    </tr>
-									{% endfor %}
-                                  </tbody>
-                                </table> 
-                        </div>
-                        <center>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+					<!-- end col -->
+
+					<!-- right side of the page with the sparkline graphs -->
+					<!-- col -->
+					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+						<!-- sparks -->
+						
+						<!-- end sparks -->
+					</div>
+					<!-- end col -->
+
+				</div>
+				<!-- end row -->
+
+				<!--
+				The ID "widget-grid" will start to initialize all widgets below
+				You do not need to use widgets if you dont want to. Simply remove
+				the <section></section> and you can use wells or panels instead
+				-->
+
+				<!-- widget grid -->
+				<section id="widget-grid" class="">
+
+					<!-- row -->
+					<div class="row">
+
+						<!-- NEW WIDGET START -->
+						<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+							<table id="jqgrid"></table>
+							<center>
                         <ul class="pagination pagination-sm">
                         {% if pagin > 1 %}
 	                        {% if pagin < 8 %}
 			                    	{% for page in range(1,pagin+1) %}
 				                    	{% if page == current_pagin %}
 				                    		<li class="active">
-				                    			<a href="/admin/partner/pagin/{{page}}">
+				                    			<a href="/admin/{{page}}">
 				                    				{{page}}
 				                    			</a>
 				                    		</li>
 				                    	{%else%}
 				                    		<li>
-				                    			<a href="/admin/partner/pagin/{{page}}">
+				                    			<a href="/admin/{{page}}">
 				                    				{{page}}
 				                    			</a>
 				                    		</li>
@@ -100,16 +112,16 @@
 								</ul>
 							{%else %}
 								<li class="{%if current_pagin==1 %}active{%endif%}">
-									<a href="/admin/partner/pagin/1">1</a>
+									<a href="/admin/1">1</a>
 								</li>
 								<li class="{%if current_pagin==2 %}active{%endif%}">
-									<a href="/admin/partner/pagin/2">2</a>
+									<a href="/admin/2">2</a>
 								</li>
 								<li class="{%if current_pagin==3 %}active{%endif%}">
-									<a href="/admin/partner/pagin/3">3</a>
+									<a href="/admin/3">3</a>
 								</li>
 								<li class="{%if current_pagin==4 %}active{%endif%}">
-									<a href="/admin/partner/pagin/4">4</a>
+									<a href="/admin/4">4</a>
 								</li>
 								<li>
 									<a href="#">...</a>
@@ -117,13 +129,13 @@
 								{% for page in range(pagin-4,pagin+1) %}
 									{% if current_pagin == page%}
 								  <li class="active">
-								  	<a href="/admin/partner/pagin/{{page}}">
+								  	<a href="/admin/{{page}}">
 								  		{{page}}
 								  	</a>
 								  	</li>
 								 {%else%}
 								 	<li>
-								  	<a href="/admin/partner/pagin/{{page}}">
+								  	<a href="/admin/{{page}}">
 								  		{{page}}
 								  	</a>
 								  	</li>
@@ -133,22 +145,153 @@
 						{%endif%}
 						</ul>
 						</center>
-                      </div>
-                    </div> 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- <script src="/static/admin/js/scroll.js"></script> -->
-<script>
-	if($(".alert").length>0){
-		if(($(".alert").html()).indexOf("success")>=0||($(".alert").html()).indexOf("Please check your email to recovery the password.")>=0){
-			$(".alert").addClass('alert-success');
-		}
-		else{
-			$(".alert").addClass('alert-danger');
-		}
-	}
-</script>
-{% include 'admin/footer.html' %} 
+							<div id="pjqgrid"></div>
+
+							<br>
+							<a href="javascript:void(0)" id="m1"></a>
+							<br>
+							<a href="javascript:void(0)" id="m1s"></a>
+
+						</article>
+						<!-- WIDGET END -->
+
+					</div>
+
+					<!-- end row -->
+
+				</section>
+				<!-- end widget grid -->
+
+			</div>
+			<!-- END MAIN CONTENT -->
+
+		</div>
+		<!-- END MAIN PANEL -->
+
+		
+		<!-- END SHORTCUT AREA -->
+		<script type="text/javascript">
+			var jqgrid_data =[];
+			var temp;
+		</script>
+		 {% for partner in partners %}
+		 <script type="text/javascript">
+		 	temp=moment().from("{{partner.published_at}}");
+		 	jqgrid_data.push({"name":"{{partner.name}}","url":"{{partner.url}}","image":"<img src='{{partner.feature_image}}' style='width:50px;'/>","published_at":temp,"action":"<a href='/admin/partner/delete/{{partner.slug}}' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a> <a href='/admin/partner/edit/{{partner.slug}}' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
+		 </script>
+		 {%endfor%}
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				pageSetUp();
+
+				jQuery("#jqgrid").jqGrid({
+					data : jqgrid_data,
+					datatype : "local",
+					colNames : ['Name','URL', 'Image',"Published_at",'Actions'],
+					colModel : [{
+						name : 'name',
+						index : 'name',
+						editable : false
+					},{
+						name : 'url',
+						index : 'url',
+						editable : false
+					}, {
+						name : 'image',
+						index : 'email',
+						editable : false
+					}, {
+						name : 'published_at',
+						index : 'published_at',
+						editable : false
+					}, {
+						name : 'action',
+						index : 'action'
+					}],
+					rowList: [],        // disable page size dropdown
+				    pgbuttons: false,     // disable page control like next, back button
+				    pgtext: null,         // disable pager text like 'Page 0 of 10'
+				    // viewrecords: false    // disable current view record text like 'View 1-10 of 100'
+					viewrecords : true,
+					sortorder : "asc",
+					gridComplete : function() {
+						var ids = jQuery("#jqgrid").jqGrid('getDataIDs');
+						for (var i = 0; i < ids.length; i++) {
+							var cl = ids[i];
+							be = "<a href='/admin/partner/delete/' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>";
+							se = "";
+							ca = "<a href='' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>";
+							jQuery("#jqgrid").jqGrid('setRowData', ids[i], {
+								act : be + se + ca
+							});
+						}
+					},
+					editurl : "/",
+					caption : "partner",
+					multiselect : false,
+					autowidth : true,
+					height: 3000,
+
+				});
+				jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
+					edit : false,
+					add : false,
+					del : true
+				});
+				jQuery("#jqgrid").jqGrid('inlineNav', "#pjqgrid");
+				/* Add tooltips */
+				$('.navtable .ui-pg-button').tooltip({
+					container : 'body'
+				});
+
+				jQuery("#m1").click(function() {
+					var s;
+					s = jQuery("#jqgrid").jqGrid('getGridParam', 'selarrrow');
+					alert(s);
+				});
+				jQuery("#m1s").click(function() {
+					jQuery("#jqgrid").jqGrid('setSelection', "13");
+				});
+
+				// remove classes
+				$(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+				$(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+				$(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+				$(".ui-jqgrid-pager").removeClass("ui-state-default");
+				$(".ui-jqgrid").removeClass("ui-widget-content");
+
+				// add classes
+				$(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+				$(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+				$(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+				$(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+				$(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+				$(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+				$(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+				$(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+				$(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+				$(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+				$(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+				$(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+				$(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+				$(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+				$(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+				$(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+				$(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+				$(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+			})
+
+			$(window).on('resize.jqGrid', function() {
+				$("#jqgrid").jqGrid('setGridWidth', $("#content").width());
+			})
+
+		</script>
+
+{% include '/admin/footer.html' %} 

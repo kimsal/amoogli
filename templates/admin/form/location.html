@@ -1,0 +1,231 @@
+{% include '/admin/header.html' %} 
+    <!-- END NAVIGATION -->
+
+    <!-- MAIN PANEL -->
+    <div id="main" role="main">
+
+      <!-- RIBBON -->
+      <div id="ribbon">
+
+        <span class="ribbon-button-alignment"> <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true"> <i class="fa fa-refresh"></i> </span> </span>
+
+      </div>
+      <!-- END RIBBON -->
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-12" style="padding:0px;">
+                  <div class="panel panel-default" style="padding:0px;">
+                    <article class="col-sm-12 col-md-12 col-lg-12">
+                      <a href="/admin/location/add" class="btn btn-default pull-right btn-add" >
+                        <span class="fa fa-plus-circle" aria-hidden="true"></span>
+                        New
+                      </a>
+                      <!-- col -->
+                      <div>
+                        <h1 class="page-title txt-color-blueDark"><!-- PAGE HEADER --><i class="fa icon-location-arrow"></i> Location</h1>
+                      </div>
+                      <!-- end col -->
+                      <!-- right side of the page with the sparkline graphs -->
+                      <!-- col -->
+                      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+                        <!-- sparks -->
+                        <!-- end sparks -->
+                      </div>
+                      <!-- end col -->
+                    </article>
+                    <div class="panel-body" >
+                      <div class="table-responsive" style="border:none;">
+                          <!--form upload-->
+                          <div class="col-md-12 col-xs-12 col-md-12 col-lg-12" >
+                          <br/>
+                              <form class="form-horizontal" action="/admin/location/add/" method="POST" id="frm" enctype="multipart/form-data">
+                              {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                  {% for message in messages %}
+                                    <li class="alert alert-warning"> 
+                                      {{ message }}
+                                    </li>
+                                  {% endfor %}
+                                {% endif %}
+                              {% endwith %}
+                                <!-- input title-->
+                               {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                
+                                    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                                      {{ form.title(class_="form-control",placeholder="Title") }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  
+                                    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                                      {{ form.address(class_="form-control",placeholder="Address") }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  
+                                    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                                      {{ form.hour(class_="form-control",placeholder='Working Hours') }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  
+                                    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                                      {{ form.contact(class_="form-control",placeholder="Contact") }}
+                                    </div>
+                                </div>
+
+                                <!--location add feature image-->
+
+                                <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"><br/>
+                                    <b>Feature Image 1</b>
+                                  </div>
+
+                                  <input type="text" name="txt_temp_image" class="txt_temp_image" value="" style="display:none"/>
+                                  <input type="text" name="txt_temp_image2" class="txt_temp_image2" value="" style="display:none"/>
+
+
+                                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                     <div class="panel panel-body">
+                                       <div class="span4 cropme" id="landscape" >
+                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <script>
+                                 // Init Simple Cropper
+                                $('.cropme').simpleCropper('feature_image','feature_image','txt_temp_image');
+                                $('#portrait').hide();
+                                $('.switch').click(function (){
+                                    $(this).text("Switch to "+($('#portrait').is(":visible") ? "Portrait" : "Landscape"));
+                                  $('#portrait').toggle();
+                                  $('#landscape').toggle();
+                                });    
+
+
+                                var _gaq = _gaq || [];
+                                _gaq.push(['_setAccount', 'UA-36251023-1']);
+                                _gaq.push(['_setDomainName', 'jqueryscript.net']);
+                                _gaq.push(['_trackPageview']);
+
+                                (function() {
+                                  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                                })();
+
+                              </script>
+
+
+
+
+                              <div class="form-group">
+                                  <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"><br/>
+                                    <b>Feature Image 2</b>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                     <div class="panel panel-body">
+                                       <div class="span4 cropme" id="landscape2" style="">
+                                       </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <script>
+                                 // Init Simple Cropper
+                                $('.cropme#landscape2').location2('feature_image2','feature_image2','txt_temp_image2');
+                                $('#portrait').hide();
+                                $('.switch').click(function (){
+                                    $(this).text("Switch to "+($('#portrait').is(":visible") ? "Portrait" : "Landscape"));
+                                  $('#portrait').toggle();
+                                  $('#landscape2').toggle();
+                                });    
+
+
+                                var _gaq = _gaq || [];
+                                _gaq.push(['_setAccount', 'UA-36251023-1']);
+                                _gaq.push(['_setDomainName', 'jqueryscript.net']);
+                                _gaq.push(['_trackPageview']);
+
+                                (function() {
+                                  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                                })();
+
+                              </script>
+                                
+                                <!--end feature image-->
+                                <!-- Form actions -->
+                                <div class="form-group">
+                                  <div class="col-md-12 text-right">
+                                    <center>
+                                      <button type="submit" class="btn btn-default btn-sm btn-primary">
+                                        <i class="fa fa-upload" aria-hidden="true"></i>
+                                          Publish
+                                        </button>
+                                      <button type="reset" class="btn btn-default btn-sm">
+                                      <i class="fa fa-ban" aria-hidden="true"></i>
+                                        Cancel
+                                      </button>
+                                    </center>
+                                  </div>
+                                </div>
+                              </form>
+                            
+                          </div>
+                          <!--end form upload-->
+                      </div> 
+                    </div>
+                  </div>
+
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- /#page-content-wrapper -->
+</div>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    var image_string='';
+    var feature_image1='';
+    var feature_image2='';
+    </script>
+  {% for location in location_object %}
+ <script type="text/javascript">
+   $('input#title').attr('value',"{{location.title|safe}}"); 
+   $('input#address').attr('value',"{{location.address|safe}}"); 
+   $('input#hour').attr('value',"{{location.hour|safe}}"); 
+   $('#contact').append("{{location.contact.replace('\n', ' ').replace('\r',' ')}}"); 
+   $('#frm').attr('action','/admin/location/edit/{{location.slug}}/');
+   feature_image1="{{location.feature_image1}}"; 
+   $("#landscape").html('<img src="'+feature_image1+'"/>');
+     //alert(feature_image1);
+   $(".txt_temp_image").attr('value',feature_image1);
+
+
+   feature_image2="{{location.feature_image2}}";
+   $("#landscape2").html('<img src="'+feature_image2+'"/>');
+     //alert(feature_image1);
+   $(".txt_temp_image2").attr('value',feature_image2);
+
+ </script>
+ 
+{% endfor %}
+<script type="text/javascript">
+  if(feature_image1==''){
+    feature_image1='/static/images/no image.jpg';
+  }
+  $("#landscape").html('<img src="'+feature_image1+'" style="width:280px;height:200px"/> ');
+
+  if(feature_image2==''){
+    feature_image2='/static/images/no image.jpg';
+  }
+  $("#landscape2").html('<img src="'+feature_image2+'" style="width:280px;height:200px"/> ');
+</script>
+
+{% include 'admin/footer.html' %} 

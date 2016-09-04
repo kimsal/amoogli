@@ -13,24 +13,25 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 from flask_httpauth import HTTPTokenAuth
 from datetime import datetime, timedelta
 from flask_mail import Mail,Message
+from apscheduler.scheduler import Scheduler
 import random
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql://blog:blog@localhost:5432/amoogli'
 auth = HTTPTokenAuth(scheme='Token')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
-app.secret_key = 'Hello@AmokCamSmallworld$Cambodia&*&'
+app.secret_key = 'Hello@AmoogliCamSmallworld$Cambodia&*&'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 #template is the url of selected template 
-ALLOWED_EXTENSIONS = set(['pdf','docx','txt','rar','zip','jpg','png'])
+ALLOWED_EXTENSIONS = set(['pdf','docx','zip','rar','jpg'])
 #upload url for feature images
-app.config['UPLOAD_FOLDER'] = 'static/files/'
+app.config['UPLOAD_FOLDER'] = 'static/images/images/'
 expire_date = datetime.now()
 expire_date = expire_date + timedelta(days=90)
-app.config['MAX_CONTENT_LENGTH'] = 10240000
-SECRET_KEY="!Amok123#smallworld_common_toursanak_amok"
+
+SECRET_KEY="Hello@AmoogliCamSmallworld$Cambodia&*&"
 def init_db():
     import BLOG.models
     Base.metadata.create_all(bind=engine)

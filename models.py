@@ -44,6 +44,29 @@ class UserMember(db.Model):
             return None # invalid token
         user = UserMember.query.get(data['id'])
         return user
+class Member(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    slug= db.Column(db.String(50),nullable=True)
+    feature_image=db.Column(db.Text)
+    possition = db.Column(db.String(300),nullable=True)
+    detail=db.Column(db.String(1000),nullable=True)
+    created_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    def __init__(self, name, possition,detail,feature_image):
+        self.name = name
+        self.slug=slugify(name)
+        self.feature_image = feature_image
+        self.possition = possition
+        self.detail = detail
+    def add(member):
+        db.session.add(member)
+        return db.session.commit()
+    def update(self):
+        return session_commit()
+    def delete(member):
+        db.session.delete(member)
+        return session_commit()
+
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name=  db.Column(db.String(100),nullable=True,unique=True)
@@ -103,11 +126,11 @@ class Post(db.Model):
     feature_image=db.Column(db.Text,nullable=True)
     slug=db.Column(db.String(255),nullable=True,unique=True)
     category_id=db.Column(db.Integer,db.ForeignKey('category.id'),nullable=True)
+    images = db.Column(db.Text,nullable=True)
     user_id=db.Column(db.Integer,db.ForeignKey('user_member.id'))
-    file=db.Column(db.String(255),nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     views = db.Column(db.Integer, nullable=True)
-    bookings=db.relationship('Booking', backref="post", lazy='dynamic')
+
     def to_Json(self):
         return dict(id=self.id,
             title=self.title,
@@ -115,19 +138,19 @@ class Post(db.Model):
             feature_image=self.feature_image,
             slug=self.slug,
             category_id=self.category_id,
-            file=self.file,
             published_at="{}".format(self.published_at),
-            view=self.view
+            view=self.view,
+            images=self.images
             )
-    def __init__(self, title, description, category_id, feature_image, user_id,file,views=0):
+    def __init__(self, title, description, category_id, feature_image, user_id,images='',views=0):
         self.title = title
         self.slug =slugify(title)
         self.description = description
         self.feature_image = feature_image
         self.category_id = category_id
-        self.file=file,
         self.user_id = user_id
-        self.views=views
+        self.views=views,
+        self.images=images
     def add(post):
         db.session.add(post)
         return db.session.commit()
@@ -136,11 +159,53 @@ class Post(db.Model):
     def delete(post):
         db.session.delete(post)
         return db.session.commit()
+class Location(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255),nullable=True,unique=True)
+    address = db.Column(db.String(300),nullable=True)
+    hour = db.Column(db.String(300),nullable=True)
+    contact = db.Column(db.String(300),nullable=True)
+    feature_image1=db.Column(db.Text,nullable=True)
+    feature_image2=db.Column(db.Text,nullable=True)
+    slug=db.Column(db.String(255),nullable=True,unique=True)
+    user_id=db.Column(db.Integer,db.ForeignKey('user_member.id'))
+    published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    bookings=db.relationship('Booking', backref="location", lazy='dynamic')
+    def to_Json(self):
+        return dict(id=self.id,
+            title=self.title,
+            address=self.address,
+            hour=self.hour,
+            slug=self.slug,
+            contact=self.contact,
+            feature_image1=self.feature_image1,
+            feature_image2=self.feature_image2,
+            user_id=self.user_id,
+            published_at="{}".format(self.published_at)
+            )
+    def __init__(self, title, address, hour,contact, feature_image1,feature_image2, user_id):
+        self.title = title
+        self.slug =slugify(title)
+        self.address = address
+        self.hour=hour
+        self.contact=contact
+        self.feature_image1 = feature_image1
+        self.feature_image2 = feature_image2
+        self.user_id = user_id
+    def add(location):
+        db.session.add(location)
+        return db.session.commit()
+    def update(self):
+        return session_commit()
+    def delete(location):
+        db.session.delete(location)
+        return db.session.commit()
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255),unique=True)
-    name  = db.Column(db.String(255),nullable=True)
-    published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    email = db.Column(db.String(255), unique=True)
+    name  = db.Column(db.String(255), nullable=True)
+    published_at = db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    emailgroup=db.relationship('Emailgroup', backref="email", lazy='dynamic')
     def __str__(self):
         return self.name
     def update(self):
@@ -162,7 +227,8 @@ class Email(db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name  = db.Column(db.String(255))
-    published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    published_at = db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    emailgroups=db.relationship('Emailgroup', backref='"group"', lazy='dynamic')
     def __str__(self):
         return self.name
     # def update(self):
@@ -181,8 +247,8 @@ class Group(db.Model):
         return db.session.commit()
 class Emailgroup(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email_id  = db.Column(db.Integer)
-    group_id  = db.Column(db.Integer)
+    email_id  = db.Column(db.Integer,db.ForeignKey('email.id'),nullable=True)
+    group_id  = db.Column(db.Integer,db.ForeignKey("group.id"),nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.email_id
@@ -205,7 +271,6 @@ class Contact(db.Model):
     firstname  = db.Column(db.String(255))
     lastname  = db.Column(db.String(255))
     email  = db.Column(db.String(255),unique=True)
-    request = db.Column(db.Text,nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.name
@@ -215,14 +280,12 @@ class Contact(db.Model):
         return dict(id=self.id,
             firstname=self.firstname,
             lastname=self.lastname,
-            email=self.email,
-            request=self.request
+            email=self.email
             )
-    def __init__(self,firstname,lastname,email,request=''):
+    def __init__(self,firstname,lastname,email):
         self.firstname =firstname,
         self.lastname =lastname,
-        self.email =email,
-        self.request = request
+        self.email =email
     def add(contact):
         db.session.add(contact)
         return db.session.commit()
@@ -235,8 +298,7 @@ class Booking(db.Model):
     email  = db.Column(db.String(255))
     phone  = db.Column(db.String(255),nullable=True)
     amount = db.Column(db.Integer,nullable=True)
-    post_id=db.Column(db.Integer,db.ForeignKey('post.id'))
-    detail = db.Column(db.Text,nullable=True)
+    location_id=db.Column(db.Integer,db.ForeignKey('location.id'))
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.name
@@ -247,17 +309,15 @@ class Booking(db.Model):
             name=self.name,
             email=self.email,
             phone=self.phone,
-            post_id=self.post_id,
-            amount=self.amount,
-            detail=self.detail
+            location_id=self.location_id,
+            amount=self.amount
             )
-    def __init__(self,name,email,phone,post_id,amount=1,detail=''):
+    def __init__(self,name,email,phone,location_id,amount=1,):
         self.name =name,
         self.email =email,
         self.phone =phone,
         self.amount=amount,
-        self.post_id=post_id,
-        self.detail=detail  
+        self.location_id=location_id
     def add(booking):
         db.session.add(booking)
         return db.session.commit()
@@ -331,16 +391,38 @@ class Partner(db.Model):
     def delete(partner):
         db.session.delete(partner)
         return db.session.commit()
-#need when migrate database 
+class EmailList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name  = db.Column(db.String(255))
+    email  = db.Column(db.String(255))
+    subject = db.Column(db.String(1000))
+    description = db.Column(db.Text)
+    def __str__(self):
+        return self.name
+    # def update(self):
+    #     return session_commit()    
+    def to_Json(self):
+        return dict(id=self.id,
+            name=self.name,
+            email=self.email,
+            subject = self.subject,
+            description = self.description
+            )
+    def __init__(self,name,email,subject,description):
+        self.name =name,
+        self.email =email,
+        self.subject = subject,
+        self.description = description
+    def add(messagelist):
+        db.session.add(messagelist)
+        return db.session.commit()
+    def delete(messagelist):
+        db.session.delete(messagelist)
+        return db.session.commit()
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
     app.config['DEBUG'] = True
-    app.config['SESSION_TYPE'] = 'filesystem'
+    # app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     manager.run()
     app.run()
-# @manager.command
-# def init_db():
-#     db.drop_all()
-#     db.create_all()
-#http://techarena51.com/index.php/one-to-many-relationships-with-flask-sqlalchemy/
