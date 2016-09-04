@@ -29,7 +29,7 @@
   <form class="modal-content animate">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <center><h2>Start With Us Now</h2></center>
+      <center><h2>Keep In Touch</h2></center>
     </div>
     <div class="container">
         <div class="check alert" style="text-align:center;display:none">
@@ -38,11 +38,15 @@
         <input type="text" placeholder="Your Last Name ..." id="last-name" name="last-name" required/>
         <input type="text" placeholder="Your Email ..." id="email" name="psw" required/>
         <textarea class="form-control hresize" name="request" placeholder="Write your request here ..." rows="4" id="request"></textarea>
-        <button type="button" class="btn-send coll-xs-12 col-sm-6 col-md-6 col-lg-6">Send</button>
+        <button type="button" class="btn-send coll-xs-12 col-sm-6 col-md-6 col-lg-6">Send</button> 
+
+        <div class="coll-xs-12 col-sm-5 col-md-5 col-lg-5 pull-right">
+          <br/> 
+          <a href="/templates/" class="pull-right">
+            <b> Not Now<b>
+          </a>
+        </div> 
         <!-- <input type="checkbox" checked="checked"/> Remember me -->
-        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn coll-xs-12 col-sm-6 col-md-6 col-lg-6">Cancel</button>
-        <a href="/templates" style="color:#006;font-weight:bold;">Not now</a>
-        </div>
   </form>
 </div>
 <script>

@@ -22,9 +22,11 @@
 		                <h3><!-- <a  href="/{{post.slug}}" data-toggle="modal" data-target="#myModal"> -->{{post.title}}
 		                <!-- </a> -->
 		                </h3>
+		                {% if post.file !='' %}
 						<p> 
-							<a href="/download/{{post.file}}" class="btn btn-success">Download</a>
+							<!-- <a href="/download/{{post.file}}" class="btn btn-success">Download</a> -->
 						</p> 
+						{% endif %}
 		            </div>
 			   	</div>
 			</div>

@@ -184,14 +184,24 @@
     </article>
 <!-- WIDGET END -->
     <article class="col-sm-9 col-md-9 col-lg-9">
-      
-    </article>
-    <article class="col-sm-9 col-md-9 col-lg-9">
       <div class="form-group">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             {{ form.category_id(class_="form-control") }}
           </div>
       </div>
+    </article>
+    <article class="col-sm-9 col-md-9 col-lg-9">
+       <div class="form-group">
+          <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+            <b> File </b>
+          </div>
+          <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+            {{ form.file(class_="form-control") }}
+          </div>
+      </div>
+    </article>
+
+
     <article class="col-sm-9 col-md9 col-lg-9">
       <div class="col-md-12 col-xs-12 co-md-12 col-lg-12 other_image">
         More Images (optional)

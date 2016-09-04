@@ -7,7 +7,8 @@ class PostForm(Form,CKEditor):
    description = TextAreaField("Description",[validators.Required("Please enter your description.")])   
    feature_image = FileField("Feature Image")
    category_id = SelectField('Category', choices=[], coerce=int)
-   submit = SubmitField("Publish")
+   file = FileField("File")
+   submit = SubmitField("Save")
 
 class CategoryForm(Form):
    name = TextField("Name",[validators.Required("Please enter category name.")])
@@ -49,10 +50,10 @@ class MemberForm(Form):
   possition = TextField("Position")
   detail = TextAreaField("Detail")
 
-class LocationForm(Form):
-  title = TextField("Title",[validators.Required("Please enter your title.")])
-  feature_image1 = FileField("Feature Image 1")
-  feature_image2 = FileField("Feature Image 2")
-  address = TextField("Address")
-  hour = TextField("Working Hour")
-  contact = TextAreaField("Contact")
+# class LocationForm(Form):
+#   title = TextField("Title",[validators.Required("Please enter your title.")])
+#   feature_image1 = FileField("Feature Image 1")
+#   feature_image2 = FileField("Feature Image 2")
+#   address = TextField("Address")
+#   hour = TextField("Working Hour")
+#   contact = TextAreaField("Contact")

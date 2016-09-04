@@ -289,9 +289,9 @@ def admin_booking(pagination=1,action='',name=''):
 			flash('Fail to delete booking. '+ e.message)
 			return redirect(url_for('admin_booking'))
 	else:
-		bookings=Booking.query.join(Location,Booking.location_id == Location.id).order_by(Booking.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
-		pagin=math.ceil((Booking.query.join(Location,Booking.location_id == Location.id).count())/limit)
-		if((Booking.query.join(Location,Booking.location_id == Location.id).count())%limit != 0 ):
+		bookings=Booking.query.join(Post,Booking.post_id == Post.id).order_by(Booking.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
+		pagin=math.ceil((Booking.query.join(Post,Booking.post_id == Post.id).count())/limit)
+		if((Booking.query.join(Post,Booking.post_id == Post.id).count())%limit != 0 ):
 			pagin=int(pagin+1)
 		return render_template('admin/booking.html',bookings=bookings,current_pagin=int(pagination),pagin=int(pagin))
 
@@ -368,8 +368,8 @@ def booking(type_submit=''):
 			email=data[1]
 			phone=data[2]
 			amount=data[3]
-			location_id=data[4]
-			booking=Booking(name,email,phone,location_id,amount)
+			post_id=data[4]
+			booking=Booking(name,email,phone,post_id,amount)
 			status = Booking.add(booking)
 			if not status:
 				return "Your info saved was successfully"
@@ -379,69 +379,69 @@ def booking(type_submit=''):
 			return e.message
 ############ End Booking ################
 ########### location  ##########
-@app.route('/admin/location', methods=['POST', 'GET'])
-@app.route('/admin/location/', methods=['POST', 'GET'])
-@app.route('/admin/location/<action>', methods=['POST', 'GET'])
-@app.route('/admin/location/<action>/', methods=['POST', 'GET'])
-@app.route('/admin/location/<action>/<slug>/', methods=['POST', 'GET'])
-@app.route('/admin/location/<action>/<slug>', methods=['POST', 'GET'])
-@app.route('/admin/location/pagin/<pagination>/')
-@app.route('/admin/location/pagin/<pagination>')
-@auth.login_required
-def admin_location(pagination=1,action='',slug=''):
-	form = LocationForm()
-	if action=='add':
-		#add event
-		# return str(request.method)
-		if request.method == 'GET':
-			return render_template("admin/form/location.html",form=form)
-		else:
-			#try:
-			filename1=str(request.form['txt_temp_image'])
-			filename2=str(request.form['txt_temp_image2'])
-			location = Location(request.form['title'],request.form['address'],request.form['hour'],request.form['contact'],filename1,filename2,request.cookies.get('blog_id'))
-        	# return str('event')
-        	status = Location.add(location)
-	        if not status:
-	            flash("Location added successfully")
-	            return redirect(url_for('admin_location'))
-	       	else:
-	       		flash("Fail to add location !")
-	       		return redirect(url_for('admin_location'))
-		    # except Exception as e:
-		    # 	flask(e.message)
-		    # 	return redirect(url_for("admin_event"))
-	elif action=='edit':
-		#return 'update'+ slug
-		locations=Location.query.filter_by(slug=slug)
-		if request.method == 'GET':
-			return render_template("admin/form/location.html",form=form,location_object=locations)
-		else:
-			try:
-				locations.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'address':request.form['address'],'hour':request.form['hour'],'contact':request.form['contact'],'feature_image1':request.form['txt_temp_image'],'feature_image2':request.form['txt_temp_image2'] })
-		   		status = db.session.commit()
-				flash("Location updated successfully.")
-				return redirect(url_for("admin_location"))
-			except Exception as e:
-				flash(e.message)
-				return redirect(url_for("admin_location"))
-	elif action=='delete':
-		# return action+"...."
-		try:
-			location=Location.query.filter_by(slug=slug).first()
-			status = Location.delete(location)
-			flash('location deleted successfully.')
-			return redirect(url_for('admin_location'))
-		except Exception as e:
-			flash('Fail to delete location. '+ e.message)
-			return redirect(url_for('admin_location'))
-	else:
-		locations=Location.query.all()
-		location=Location.query.order_by(Location.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
-		pagin=math.ceil((Location.query.count())/limit)
-		if((Location.query.count())%limit != 0 ):
-			pagin=int(pagin+1)
-		return render_template("admin/location.html",current_pagin=int(pagination),locations=locations,pagin=int(pagin))
+# @app.route('/admin/location', methods=['POST', 'GET'])
+# @app.route('/admin/location/', methods=['POST', 'GET'])
+# @app.route('/admin/location/<action>', methods=['POST', 'GET'])
+# @app.route('/admin/location/<action>/', methods=['POST', 'GET'])
+# @app.route('/admin/location/<action>/<slug>/', methods=['POST', 'GET'])
+# @app.route('/admin/location/<action>/<slug>', methods=['POST', 'GET'])
+# @app.route('/admin/location/pagin/<pagination>/')
+# @app.route('/admin/location/pagin/<pagination>')
+# @auth.login_required
+# def admin_location(pagination=1,action='',slug=''):
+# 	form = LocationForm()
+# 	if action=='add':
+# 		#add event
+# 		# return str(request.method)
+# 		if request.method == 'GET':
+# 			return render_template("admin/form/location.html",form=form)
+# 		else:
+# 			#try:
+# 			filename1=str(request.form['txt_temp_image'])
+# 			filename2=str(request.form['txt_temp_image2'])
+# 			location = Location(request.form['title'],request.form['address'],request.form['hour'],request.form['contact'],filename1,filename2,request.cookies.get('blog_id'))
+#         	# return str('event')
+#         	status = Location.add(location)
+# 	        if not status:
+# 	            flash("Location added successfully")
+# 	            return redirect(url_for('admin_location'))
+# 	       	else:
+# 	       		flash("Fail to add location !")
+# 	       		return redirect(url_for('admin_location'))
+# 		    # except Exception as e:
+# 		    # 	flask(e.message)
+# 		    # 	return redirect(url_for("admin_event"))
+# 	elif action=='edit':
+# 		#return 'update'+ slug
+# 		locations=Location.query.filter_by(slug=slug)
+# 		if request.method == 'GET':
+# 			return render_template("admin/form/location.html",form=form,location_object=locations)
+# 		else:
+# 			try:
+# 				locations.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'address':request.form['address'],'hour':request.form['hour'],'contact':request.form['contact'],'feature_image1':request.form['txt_temp_image'],'feature_image2':request.form['txt_temp_image2'] })
+# 		   		status = db.session.commit()
+# 				flash("Location updated successfully.")
+# 				return redirect(url_for("admin_location"))
+# 			except Exception as e:
+# 				flash(e.message)
+# 				return redirect(url_for("admin_location"))
+# 	elif action=='delete':
+# 		# return action+"...."
+# 		try:
+# 			location=Location.query.filter_by(slug=slug).first()
+# 			status = Location.delete(location)
+# 			flash('location deleted successfully.')
+# 			return redirect(url_for('admin_location'))
+# 		except Exception as e:
+# 			flash('Fail to delete location. '+ e.message)
+# 			return redirect(url_for('admin_location'))
+# 	else:
+# 		locations=Location.query.all()
+# 		location=Location.query.order_by(Location.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
+# 		pagin=math.ceil((Location.query.count())/limit)
+# 		if((Location.query.count())%limit != 0 ):
+# 			pagin=int(pagin+1)
+# 		return render_template("admin/location.html",current_pagin=int(pagination),locations=locations,pagin=int(pagin))
 
 ############ End location ##########
 
@@ -534,77 +534,42 @@ def admin_post_add(slug=""):
 	if request.method == 'POST':
 		try:
 			if form.validate() == False:
-		   		flash('Please try to fill form again.')
+		   		flash('All fields are required.')
 		   		return redirect(url_for('admin_post_add'))
 		   	else:
 		   		obj=Post.query.filter_by(slug=slug)
-		   		for post in obj:
-		   			old_images=post.images
 		   		now = str(datetime.now())
 				now= now.replace(':',"",10).replace(' ','',4).replace('.','',5).replace('-','',5)
 		   		result = request.form
 				filename=str(request.form['txt_temp_image'])
-				# return filename
+				filepdf = request.files['file']
+				filedownload=secure_filename(filepdf.filename)
 				if not slug:
 		   			if file:
-		   				images=''
-		   				help=1
-	   					uploaded_files = flask.request.files.getlist("other_image[]")
-		   				# return filename
-		   				for f in uploaded_files:
-		   					imagename = secure_filename(f.filename)
-		   					if imagename!="":
-			   					f.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"-"+imagename))
-			   					if help==1:
-			   						images=now+"-"+imagename
-			   					else:
-			   						images=images+"$$$$$"+(now+"-"+imagename)
-			   					help=help+1
-			   			if(images[0:5]=='$$$$$'):
-				   			images=images[5:len(images)]
-		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),images,0)
-			        	status=Post.add(obj)
+		   				if filedownload!="":
+		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
+		   					file_download=now+"_"+filedownload
+		   				else:
+		   					file_download=''
+		   				temp_obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
+			        	status=Post.add(temp_obj)
 				        if not status:
 				            flash("Post added successfully")
 				            return redirect(url_for('admin_index'))
 				        else:
-				        	flash("Fail to add post !")
+				        	flash("Fail to add post!")
 				        	return redirect(url_for('admin_post_add'))
 				elif slug:
-					# return str(request.form["image1"])
 		   			if not not file: 
-		   				images=''
-		   				help=1
-	   					uploaded_files = flask.request.files.getlist("other_image[]")
-		   				# return filename
-		   				
-		   				for f in uploaded_files:
-		   					imagename = secure_filename(f.filename)
-		   					if imagename!="":
-			   					f.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"-"+imagename))
-			   					if help==1:
-			   						images=now+"-"+imagename
-			   					else:
-			   						images=images+"$$$$$"+(now+"-"+imagename)
-			   					help=help+1
-			   			if old_images!='':
-				   			if images!='':
-				   				images=old_images+"$$$$$"+images
-				   			else:
-				   				images=old_images
-			   			#keep old other images
-
-				   		for post in obj:
-				   			old_images=post.images
-				   		arr_to_remove=(request.form['all_removed_images']).split("$$$$$")
-				   		for item in arr_to_remove:
-				   			images=images.replace(item,'')
-				   		images=images.replace('$$$$$$$$$$','$$$$$')
-				   		#end keep old images
-				   		if(images[0:5]=='$$$$$'):
-				   			images=images[5:len(images)]
-	   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],"category_id":request.form['category_id'],'feature_image':filename,'images':images })
-	   					status = db.session.commit()
+		   				# return filedownload
+		   				if filedownload == "":
+		   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],"category_id":request.form['category_id'],'description':request.form['description'],'feature_image':filename })
+		   					status = db.session.commit()
+		   				else:
+		   					# return now+"_"+filedownload
+		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
+			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'category_id':request.form['category_id'],'feature_image':filename,'file': now+"_"+filedownload})
+		   					status = db.session.commit()
 		   				if not status:
 		   					flash("Post updated successfully")
 		   					return redirect(url_for('admin_index'))
@@ -1178,10 +1143,9 @@ def index(pagination=1):
 	# posts_bottom=Post.query.all()
 	home_posts=Post.query.join(UserMember).order_by(Post.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
 	pagin=math.ceil((Post.query.count())/limit)
-	locations=Location.query.order_by(Location.id.desc()).all()
 	events=Event.query.order_by(Event.id.desc()).all()
 	members=Member.query.order_by(Member.id.desc()).all()
-	return render_template(template+'/index.html',members=members,events=events,locations=locations,form=form,page_name='home',posts_top=posts_top,home_posts=home_posts,posts_bottom = posts_bottom,pagin=int(pagin),current_pagin=int(pagination))
+	return render_template(template+'/index.html',members=members,events=events,form=form,page_name='home',posts_top=posts_top,home_posts=home_posts,posts_bottom = posts_bottom,pagin=int(pagin),current_pagin=int(pagination))
 @app.route('/<slug>')
 @app.route('/<slug>/')
 @app.route('/<slug>/<pagination>')
@@ -1192,10 +1156,6 @@ def single(slug='',pagination=1):
 	# return 'd'
 	form=BookingForm()
 	try:
-		location=Location.query.filter_by(slug=slug)
-		if location.count()>0:
-			return render_template(template+'/location.html',page_name='location',form=form,location_object=location)
-
 		event=Event.query.filter_by(slug=slug)
 		if event.count()>0:
 			return render_template(template+'/event.html',page_name='event',event_object=event)
