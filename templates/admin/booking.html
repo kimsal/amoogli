@@ -201,6 +201,7 @@
             // viewrecords: false    // disable current view record text like 'View 1-10 of 100'
           viewrecords : true,
           sortorder : "asc",
+          rowNum:10,
           gridComplete : function() {
             var ids = jQuery("#jqgrid").jqGrid('getDataIDs');
             for (var i = 0; i < ids.length; i++) {

@@ -203,7 +203,8 @@ class Post(db.Model):
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
-    name  = db.Column(db.String(255), nullable=True)
+    firstname  = db.Column(db.String(255), nullable=True)
+    lastname  = db.Column(db.String(255), nullable=True)
     published_at = db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     emailgroup=db.relationship('Emailgroup', backref="email", lazy='dynamic')
     def __str__(self):
@@ -215,9 +216,10 @@ class Email(db.Model):
             email=self.email,
             name=self.name
             )
-    def __init__(self, email,name):
+    def __init__(self, email,firstname,lastname):
         self.email = email
-        self.name =name
+        self.firstname =firstname
+        self.lastname = lastname
     def add(email):
         db.session.add(email)
         return db.session.commit()

@@ -955,47 +955,116 @@ def admin_mail(id=0,action=''):
 	email_to_send = EmailList.query.count()
 	emails=Email.query.order_by(Email.id.desc())
 	groups=Group.query.order_by(Group.id.desc())
-	if action=='edit':
-		if request.method=='GET':
-			email=Email.query.filter_by(id=id)
-			return render_template("admin/form/maillist.html",email_to_send=email_to_send,email_object=email,groups=groups,emails=emails)
-		else:
-			obj = Email.query.filter_by(id=id)
-			obj.update({"name" : request.form['name'],'email':request.form['email']})
-		   	status = db.session.commit()
-		   	if not status:
-				flash("Email updated successfully")
+	try:
+		if action=='edit':
+			if request.method=='GET':
+				email=Email.query.filter_by(id=id)
+				return render_template("admin/form/maillist.html",email_to_send=email_to_send,email_object=email,groups=groups,emails=emails)
+			else:
+				obj = Email.query.filter_by(id=id)
+				obj.update({"firstname" : request.form['firstname'],"lastname" : request.form['lastname'],'email':request.form['email']})
+			   	status = db.session.commit()
+			   	if not status:
+					flash("Email updated successfully")
+					return redirect(url_for('admin_mail'))
+				else:
+					flash("Error in updating email !")
+					return redirect(url_for('admin_mail'))
+		elif action=='delete':
+			obj=Email.query.filter_by(id=id).first()
+			status = Email.delete(obj)
+			if not status:
+				flash("Email deleted successfully")
 				return redirect(url_for('admin_mail'))
 			else:
-				flash("Error in updating email !")
+				flash("Error in deleting email !")
 				return redirect(url_for('admin_mail'))
-	elif action=='delete':
-		obj=Email.query.filter_by(id=id).first()
-		status = Email.delete(obj)
-		if not status:
-			flash("Email deleted successfully")
-			return redirect(url_for('admin_mail'))
+		elif request.method=="GET":
+			return render_template("admin/form/maillist.html",email_to_send=email_to_send,groups=groups,emails=emails)
 		else:
-			flash("Error in deleting email !")
+			obj=Email(request.form['email'],request.form['firstname'],request.form['lastname'])
+	   		status=Email.add(obj)
+			if not status:
+				flash("Email added successfully")
+				return redirect(url_for('admin_mail'))
+			else:
+				flash("Error in adding email !")
+				return redirect(url_for('admin_mail'))	
+		
 			return redirect(url_for('admin_mail'))
-	elif request.method=="GET":
-		return render_template("admin/form/maillist.html",email_to_send=email_to_send,groups=groups,emails=emails)
-	else:
-		obj=Email(request.form['email'],request.form['name'])
-   		status=Email.add(obj)
-		if not status:
-			flash("Email added successfully")
-			return redirect(url_for('admin_mail'))
-		else:
-			flash("Error in adding email !")
-			return redirect(url_for('admin_mail'))	
-	
-		return redirect(url_for('admin_mail'))
+	except Exception as e:
+		flash("Error:"+e.message)
+		return redirect(url_for('admin_mail'))	
 email_count=0
 subject=''
 description=''
 group_send=[]
 sched = Scheduler()
+@app.route('/admin/import/<pagination>', methods = ['GET', 'POST'])
+@app.route('/admin/import/<pagination>/', methods = ['GET', 'POST'])
+@app.route('/admin/import/', methods = ['GET', 'POST'])
+@app.route('/admin/import', methods = ['GET', 'POST'])
+@auth.login_required
+def importContact(pagination=1):
+	count = 0
+	emails=Email.query.order_by(Email.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
+	pagin=math.ceil((Email.query.count())/limit)
+	if(math.ceil(Email.query.count())%limit != 0 ):
+		pagin=int(pagin+1)
+	# emails=Email.query.order_by(Email.id.desc())
+	groups = Group.query.all()
+	if request.method == 'GET':
+		return render_template('admin/form/import.html',current_pagin=int(pagination),pagin=pagin,count=count,groups=groups,emails=emails)
+	else:
+		#add upload and add new email list
+		now = str(datetime.now())
+		now= now.replace(':',"",10).replace(' ','',4).replace('.','',5).replace('-','',5)
+   		
+		group_id=request.form['category_id']
+		file_csv = request.files['contact_file']
+		csv=secure_filename(file_csv.filename)
+		# return group+"-"+csv
+		filename = now+"_"+csv
+		if csv!="":
+			file_csv.save(os.path.join(app.config['UPLOAD_FOLDER_CONTACT'], filename))
+			with open('static/files/contacts/'+filename,'r') as f:
+				config=str(f.read())
+				# config=config.replace('"\n','"')
+				data=config.split('\n')
+				help2=1
+				for all_rows in data:
+					try:
+						data_row=all_rows.split(",")
+						contact_email = data_row[28]
+						# return str(len(data_row))
+						firstname = data_row[1]
+						lastname=data_row[3]
+						if firstname=="":
+							firstname=data_row[0]
+						if firstname=="":
+							firstname = contact_email.split("@")[0]
+						if contact_email!="":
+							obj=Email.query.filter_by(email=contact_email).limit(1)
+							if obj.count()<=0:
+								obj=Email(contact_email,firstname,lastname)
+		   						status=Email.add(obj)
+		   						count = count + 1
+							# print "===>"+str(help2)+":"+contact_email+" : "+firstname+":"+lastname+":"+str(group_id)+"-->"
+							help2 = help2 + 1
+						# else:
+						# 	print "============================="
+
+					except:
+						set_error=0
+			if count ==0:
+				flash("No email added")
+			elif count == 1:
+				flash(str(count)+" email add successfully")
+			else:
+				flash(str(count)+" emails add successfully")
+		else:
+			print "CSV file is null."		
+		return render_template('admin/form/import.html',groups=groups,emails=emails,count=count)
 #after send need to clear variables
 def sendEmail():
 	with app.app_context():
