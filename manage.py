@@ -872,7 +872,7 @@ def sendingList(id=0,action='none',pagination=1):
 		except Exception as e:
 			print e.message
 	sendnigEmails = EmailList.query.limit(limit).offset(int(int(int(pagination)-1)*limit))
-	pagin=math.ceil((Email.query.count())/limit)
+	pagin=math.ceil((EmailList.query.count())/limit)
 	if((EmailList.query.count())%limit != 0 ):
 		pagin=int(pagin+1)
 	return render_template('/admin/emailsending.html',current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,emails=sendnigEmails)
@@ -991,7 +991,7 @@ def admin_mail(id=0,action='',pagination=1):
 		if action=='edit':
 			if request.method=='GET':
 				email=Email.query.filter_by(id=id)
-				return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=pagin,email_to_send=email_to_send,email_object=email,groups=groups,emails=emails)
+				return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,email_object=email,groups=groups,emails=emails)
 			else:
 				obj = Email.query.filter_by(id=id)
 				obj.update({"firstname" : request.form['firstname'],"lastname" : request.form['lastname'],'email':request.form['email']})
@@ -1012,7 +1012,7 @@ def admin_mail(id=0,action='',pagination=1):
 				flash("Error in deleting email !")
 				return redirect(url_for('admin_mail'))
 		elif request.method=="GET":
-			return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=pagin,email_to_send=email_to_send,groups=groups,emails=emails)
+			return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,groups=groups,emails=emails)
 		else:
 			obj=Email(request.form['email'],request.form['firstname'],request.form['lastname'])
 	   		status=Email.add(obj)
@@ -1046,7 +1046,7 @@ def importContact(pagination=1):
 	# emails=Email.query.order_by(Email.id.desc())
 	groups = Group.query.all()
 	if request.method == 'GET':
-		return render_template('admin/form/import.html',current_pagin=int(pagination),pagin=pagin,count=count,groups=groups,emails=emails)
+		return render_template('admin/form/import.html',current_pagin=int(pagination),pagin=int(pagin),count=count,groups=groups,emails=emails)
 	else:
 		#add upload and add new email list
 		now = str(datetime.now())

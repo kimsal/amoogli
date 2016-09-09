@@ -1,5 +1,5 @@
 Template="amoogli";
-limit="30";
+limit="10";
 email="kimsalsan12@gmail.com";
 password="11101999sal";
 name="Kimsal";
