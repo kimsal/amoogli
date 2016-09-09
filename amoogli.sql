@@ -1,6 +1,15 @@
 --
 -- PostgreSQL database dump
 --
+CREATE TABLE email_list (
+    id integer NOT NULL,
+    name character varying(255),
+    email character varying(255),
+    subject character varying(1000),
+    description text,
+    published_at timestamp without time zone DEFAULT now()
+);
+alter table email_list add column published_at timestamp DEFAULT now();
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

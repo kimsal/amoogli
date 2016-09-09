@@ -36,7 +36,7 @@
 
         <div class="inbox-nav-bar no-content-padding">
         
-          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Email &nbsp;
+          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Senging emails &nbsp;
             <span class="btn-group">
               <a href="#" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span class="caret single"></span></a>
               <ul class="dropdown-menu">
@@ -53,7 +53,15 @@
                   <a href="/admin/import">Import contact</a>
                 </li>
                 <li>
-                  <a href="/admin/email/sending">Sending</a>
+                  <a href="/admin/email/sending">
+                    {%if email_to_send==0 %}
+                       No email sending 
+                    {%elif email_to_send==1%}
+                      {{email_to_send}} sending email ... 
+                    {%else%}
+                      {{email_to_send}} sending emails ... 
+                    {%endif%}
+                  </a>
                 </li>
               </ul>
             </span>
@@ -122,79 +130,83 @@
             <!-- ajax will fill this area -->
             <!-- LOADING... -->
 
-            <div style="height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight"><table id="inbox-table" class="table table-striped table-hover">
-              <tbody>
-                {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                     {% for message in messages %}
-                      <tr id="msg29">
-                        <div class="col-md-12 col-xs-12 alert">
-                          {{ message }}
-                        </div>
-                       </tr>
-                   {% endfor %}
-                  {% endif %}
-                 {% endwith %}
+            <div style="height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight">
+              <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                         {% for message in messages %}
+                          <tr id="msg29">
+                            <div class="col-md-12 col-xs-12 alert">
+                              {{ message }}
+                            </div>
+                           </tr>
+                       {% endfor %}
+                      {% endif %}
+                     {% endwith %}
+                    <table id="jqgrid" class="col-xs-12"></table>
+                    <center>
+                      <ul class="pagination pagination-sm">
+                      {% if pagin > 1 %}
+                        {% if pagin < 8 %}
+                          {% for page in range(1,pagin+1) %}
+                            {% if page == current_pagin %}
+                              <li class="active">
+                                <a href="/admin/import/{{page}}">
+                                  {{page}}
+                                </a>
+                              </li>
+                            {%else%}
+                              <li>
+                                <a href="/admin/import/{{page}}">
+                                  {{page}}
+                                </a>
+                              </li>
+                            {%endif%}
+                        {%endfor%}
+                      </ul>
+                    {%else %}
+                      <li class="{%if current_pagin==1 %}active{%endif%}">
+                        <a href="/admin/import/1">1</a>
+                      </li>
+                      <li class="{%if current_pagin==2 %}active{%endif%}">
+                        <a href="/admin/import/2">2</a>
+                      </li>
+                      <li class="{%if current_pagin==3 %}active{%endif%}">
+                        <a href="/admin/import/3">3</a>
+                      </li>
+                      <li class="{%if current_pagin==4 %}active{%endif%}">
+                        <a href="/admin/import/4">4</a>
+                      </li>
+                      <li>
+                        <a href="#">...</a>
+                      </li>
+                      {% for page in range(pagin-4,pagin+1) %}
+                        {% if current_pagin == page%}
+                        <li class="active">
+                          <a href="/admin/import/{{page}}">
+                            {{page}}
+                          </a>
+                          </li>
+                       {%else%}
+                        <li>
+                          <a href="/admin/import/{{page}}">
+                            {{page}}
+                          </a>
+                          </li>
+                       {%endif%}
+                      {%endfor%}
+                    {%endif%}
+                  {%endif%}
+                  </ul>
+                  </center>
+                    <div id="pjqgrid"></div>
 
-                 <tr id="msg29">
-                  <td class="inbox-table-icon">
-                    <div class="checkbox">
-                      <label>
-                        <span></span> </label>
-                    </div>
-                  </td>
-                  <td class="inbox-data-from">
-                    <div>
-                        <b>Name</b>
-                    </div>
-                  </td>
-                  <td class="inbox-data-date hidden-xs">
-                    <div>
-                       <b>Email</b>
-                    </div>
-                  </td>
-                   <td class="inbox-data-date">
-                    <div>
-                      <b>Action</b>
-                    </div>
-                  </td>
-                </tr>
-                {%for email in sendnigEmails%}
-                <tr id="msg29">
-                  <td class="inbox-table-icon">
-                    <div class="checkbox">
-                      <label>
-                        <input class="checkbox style-2" checked="true" type="checkbox">
-                        <span></span> </label>
-                    </div>
-                  </td>
-                  <td class="inbox-data-from">
-                    <div>
-                      <a class="name" href="#">
-                        {{email.name}}
-                      </a>
-                    </div>
-                  </td>
-                  <td class="inbox-data-date hidden-xs">
-                    <div>
-                       {{email.email}}
-                    </div>
-                  </td>
-                   <td class="inbox-data-date">
-                    <div>
-                       <a href="/admin/email/sending/{{email.id}}/delete/" style="color:gray;" onclick="return confirm('Are you sure ?')">
-                        <i class="fa fa-trash-o" aria-hidden="true">
-                          
-                        </i>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              {%endfor%}
-              </tbody>
-            </table>
+                    <br>
+                    <a href="javascript:void(0)" id="m1"></a>
+                    <br>
+                    <a href="javascript:void(0)" id="m1s"></a>
 
-           
+              </article>
             </div>
         
           <!-- </div> -->
@@ -232,6 +244,184 @@
 
     </div>
     <!-- END MAIN PANEL -->
+
+      <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
+    <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
+   <script type="text/javascript">
+     if("{{name}}"!=''){
+        $('input[name="name"]').attr('value',"{{name|safe}}")
+        $('#frm').attr('action','/admin/email/group/{{name}}/edit/');
+      }
+   </script>
+<script type="text/javascript">
+      var jqgrid_data =[];
+      var temp;
+    </script>
+     {% for email in emails %}
+     <script type="text/javascript">
+      temp=moment().from("{{email.published_at}}");
+      jqgrid_data.push({"name":"{{email.name}}","email":"{{email.email}}",'published_at':temp,"action":"<a href='/admin/email/sending/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>"});
+     </script>
+
+      <!-- pop up modal group email-->
+      <div class="modal" id="myModal_{{email.id}}" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"></button>
+              <label><b>{{email.name}} </b> &nbsp; - {{email.email}}</label><br>
+              
+            </div>
+            <div class="modal-body">
+                <form>
+
+                  {%for group in groups%}
+                    <div class="checkbox groups group_{{group.id}}">
+                    <h5>
+                    <label><input type="checkbox" name="groups" id="group_{{group.id}}" value="{{group.id}}" class="group_{{email.id}}">
+                      {{group.name}}
+                    </label>
+                    </h5>
+                  </div>
+                <script type="text/javascript">
+                  //Tick check box
+                  $.ajax({
+                   type: "GET",
+                   async: false,
+                   url: "/admin/checkemail/{{email.id}}/{{group.id}}/check",
+                   success: function(msg){
+                    if(msg.status==true){
+                      $('.group_{{email.id}}[value="{{group.id}}"]').attr("checked", true);
+                    }
+                    },
+                   error:function(msg){
+                    console.log(msg);
+                   }
+               });
+                </script>
+                    {%endfor%}
+
+                    <button class="btn btn-info pull-right btn_{{email.id}}" style="margin-top:-20px;" type="button">Save</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--end pop up modal group email-->
+
+     {%endfor%}
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        pageSetUp();
+
+        jQuery("#jqgrid").jqGrid({
+          data : jqgrid_data,
+          datatype : "local",
+          colNames : ['Name','Email',"Published", 'Actions'],
+          colModel : [{
+            name : 'name',
+            index : 'name',
+            editable : false
+          }, {
+            name : 'email',
+            index : 'email',
+            editable : false
+          }, {
+            name : 'published_at',
+            index : 'published_at',
+            editable : false
+          }, {
+            name : 'action',
+            index : 'action'
+          }],
+          rowList: [],        // disable page size dropdown
+            pgbuttons: false,     // disable page control like next, back button
+            pgtext: null,         // disable pager text like 'Page 0 of 10'
+            // viewrecords: false    // disable current view record text like 'View 1-10 of 100'
+          viewrecords : true,
+          rowNum:10000,
+          sortorder : "asc",
+          gridComplete : function() {
+            var ids = jQuery("#jqgrid").jqGrid('getDataIDs');
+            for (var i = 0; i < ids.length; i++) {
+              var cl = ids[i];
+              be = "<a href='/admin/page/delete/' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>";
+              se = "";
+              ca = "<a href='' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>";
+              jQuery("#jqgrid").jqGrid('setRowData', ids[i], {
+                act : be + se + ca
+              });
+            }
+          },
+          editurl : "/",
+          caption : "Email Info",
+          multiselect : false,
+          autowidth : true,
+          height: 3000,
+
+        });
+        jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
+          edit : false,
+          add : false,
+          del : true
+        });
+        jQuery("#jqgrid").jqGrid('inlineNav', "#pjqgrid");
+        /* Add tooltips */
+        $('.navtable .ui-pg-button').tooltip({
+          container : 'body'
+        });
+
+        jQuery("#m1").click(function() {
+          var s;
+          s = jQuery("#jqgrid").jqGrid('getGridParam', 'selarrrow');
+          alert(s);
+        });
+        jQuery("#m1s").click(function() {
+          jQuery("#jqgrid").jqGrid('setSelection', "13");
+        });
+
+        // remove classes
+        $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+        $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+        $(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+        $(".ui-jqgrid-pager").removeClass("ui-state-default");
+        $(".ui-jqgrid").removeClass("ui-widget-content");
+
+        // add classes
+        $(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+        $(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+        $(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+        $(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+        $(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+        $(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+        $(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+        $(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+        $(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+        $(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+        $(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+        $(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+        $(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+        $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+      })
+
+      $(window).on('resize.jqGrid', function() {
+        // $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
+      })
+</script>
+
+
+
     <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
     <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
    <script type="text/javascript">

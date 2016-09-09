@@ -402,6 +402,7 @@ class EmailList(db.Model):
     email  = db.Column(db.String(255))
     subject = db.Column(db.String(1000))
     description = db.Column(db.Text)
+    published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.name
     # def update(self):

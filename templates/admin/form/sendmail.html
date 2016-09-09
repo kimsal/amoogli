@@ -1,4 +1,38 @@
 {% include 'admin/header.html' %}
+<script type="text/javascript">
+  pageSetUp();
+  var arr_email=[];
+  function addSendTo(){
+    $('.select2-choices').html("");
+    for(var i=0;i<arr_email.length;i++){
+      $('.select2-choices').append('<li class="select2-search-choice"><div>'+arr_email[i]+'</div></li>');
+    }
+  }
+  var group_id;
+  function checkGroupToSend(){
+    arr_email=[];
+    $('input[name="groups"]').each(function(){
+      if($(this).is(":checked")){
+      //add more email to "send to"
+        group_id = $(this).val();
+        $.ajax({
+          type: "GET",
+          url: '/admin/mail/'+group_id+'/group/',
+          async: false,
+          success: function(response) {
+            response = JSON.parse(response);
+            for(var i=0;i<response.length;i++){
+              if(arr_email.indexOf(response[i].email)<0){
+                arr_email.push(response[i].email);
+              }
+            }
+          }
+        });
+      }
+    });
+    addSendTo();
+  }
+</script>
    <!-- MAIN PANEL -->
     <div id="main" role="main">
 
@@ -13,7 +47,7 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-          <li>Home</li><li>Inbox</li>
+          <li>Home</li><li>Compose</li>
         </ol>
         <!-- end breadcrumb -->
 
@@ -53,7 +87,15 @@
                   <a href="/admin/import">Import contact</a>
                 </li>
                 <li>
-                  <a href="/admin/email/sending">Sending</a>
+                  <a href="/admin/email/sending">
+                    {%if email_to_send==0 %}
+                     No email sending 
+                    {%elif email_to_send==1%}
+                      {{email_to_send}} sending email ... 
+                    {%else%}
+                      {{email_to_send}} sending emails ... 
+                    {%endif%}
+                  </a>
                 </li>
               </ul>
             </span>
@@ -116,8 +158,19 @@
         
           </div>
           <!-- LOADING compose box -->
-             <div style="height: auto; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight"><h2 class="email-open-header">
-              Compose New Email <!-- <span class="label txt-color-white">DRAFT</span> -->
+            <div style="height: auto; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight">
+            <div class="col-xs-6 col-sm-9">
+              <h2 class="email-open-header">
+                New Email <!-- <span class="label txt-color-white">DRAFT</span> -->
+
+              </h2>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+              <button data-loading-text="&lt;i class='fa fa-refresh fa-spin'&gt;&lt;/i&gt; &nbsp; Sending..." class="btn btn-primary btn-send pull-left" type="submit" id="send" style="clear:both;float:none" >
+                    Send
+                <i class="fa fa-arrow-circle-right fa-lg"></i>
+              </button>
+            </div>
               {% with messages = get_flashed_messages() %}
                   {% if messages %}
                      {% for message in messages %}
@@ -129,98 +182,115 @@
                    {% endfor %}
                   {% endif %}
                  {% endwith %}
-            </h2>
             <!--form email write-->
             <form action="/admin/email/" method="POST" id="frm" enctype="multipart/form-data" id="email-compose-form">
+              <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+              
               <!--temp textbox-->
-              <textarea class="form-control ckeditor" id="description" name="description" style="display:none"></textarea>
-              <!--End help form-->
-              <div class="inbox-info-bar no-padding">
-                <div class="row">
-                  <!-- <div class="form-group">
-                    <label class="control-label col-md-1"><strong>To</strong></label>
-                    <div class="col-md-11">
-                    <input type="text" name="to" style="width:100%;height:100%;border:none;">
+                <textarea class="form-control ckeditor" id="description" name="description" style="display:none"></textarea>
+                <!--End help form-->
 
-                      <select multiple style="width:100%" class="select2" data-select-search="true">
-                        <option value="sunny.orlaf@smartadmin.com">sadi.orlaf@smartadmin.com</option>
-                        <option value="rachael.hawi@smartadmin.com">rachael.hawi@smartadmin.com</option>
-                        <option value="michael.safiel@smartadmin.com">michael.safiel@smartadmin.com</option>
-                        <option value="alex.jones@infowars.com">alex.jones@infowars.com</option>
-                        <option value="oruf.matalla@gmail.com">oruf.matalla@gmail.com</option>
-                        <option value="hr@smartadmin.com">hr@smartadmin.com</option>
-                        <option value="IT@smartadmin.com">IT@smartadmin.com</option>
-                      </select>
+                <!-- <div class="inbox-info-bar no-padding">
+                  <div class="row">
+                    <div class="form-group">
+                      <label class="control-label col-md-1"><strong>To</strong></label>
+                      <div class="col-md-11">
+                      <input type="text" name="to" style="width:100%;height:100%;border:none;">
+
+                        <select multiple style="width:100%" class="select2" data-select-search="true">
+                          <option value="sunny.orlaf@smartadmin.com">sadi.orlaf@smartadmin.com</option>
+                          <option value="rachael.hawi@smartadmin.com">rachael.hawi@smartadmin.com</option>
+                          <option value="michael.safiel@smartadmin.com">michael.safiel@smartadmin.com</option>
+                          <option value="alex.jones@infowars.com">alex.jones@infowars.com</option>
+                          <option value="oruf.matalla@gmail.com">oruf.matalla@gmail.com</option>
+                          <option value="hr@smartadmin.com">hr@smartadmin.com</option>
+                          <option value="IT@smartadmin.com">IT@smartadmin.com</option>
+                        </select>
+                      </div>
                     </div>
-                  </div> -->
-                </div>  
-              </div>
-              
-              
-             
-              
-              <div class="inbox-info-bar no-padding">
-                <div class="row">
-                  <div class="form-group">
-                    <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
-                    <div class="col-md-11">
-                      <input class="form-control" placeholder="Email Subject" type="text" name="subject" id="subject">
-                      
+                  </div>  
+                </div> -->
+                
+                
+               
+                <div class="inbox-info-bar no-padding1">
+                  <div class="row">
+                    <div class="form-group">
+                      <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
+                      <div class="col-md-11">
+                        <input class="form-control" placeholder="Email Subject" type="text" name="subject" id="subject">
+                      </div>
                     </div>
-                  </div>
-                </div>  
+                  </div>  
+                </div>
+
+                <div class="inbox-message no-padding">
+                  <div id="emailbody">
+                      <br><br><br><br><br>Thanks,<br><strong>Amoogli Team</strong><br><br><small><br> No. 17, St. 604, 12152 Phnom Penh<br><i class="fa fa-phone"> (855) 77 504 106</i></small><br>    
+                  </div>  
+                </div>
+                <div class="inbox-info-bar no-padding">
+                  <div class="row">
+                    <div class="form-group">
+                      <label class="control-label col-md-1"><strong><br/>To</strong></label>
+                       <div class="select2-container select2-container-multi " id="s2id_autogen1" style="width: 100%;display:inline;">
+                         <ul class="select2-choices" style="display:inline;">  
+                            <!--Email here-->
+                         </ul>
+                       </div>
+                    </div>
+                  </div>  
+                </div>
+                
+                
+                
+
+            
+
               </div>
-              <div class="inbox-message no-padding">
-              
-                <div id="emailbody">
-                    <br><br><br><br><br>Thanks,<br><strong>Amoogli Team</strong><br><br><small><br> No. 17, St. 604, 12152 Phnom Penh<br><i class="fa fa-phone"> (855) 77 504 106</i></small><br>    
-                </div>  
-              </div>
-              
-              <div class="inbox-compose-footer" style="min-height:50px;">
+             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="margin-top:15px;">
+                <style type="text/css">
+                  ul.list-unstyled li{
+                    padding: 10px 10px;
+                    background-color: #0a6970;
+                    margin: 2px 5px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    color: white;
+                    font-weight: bold;
+                  }
+                </style>
                 <div class="well well-sm well-light">
-                  <h5><b>Select group to send</b></h5>
+                  <h5><b><center>Select Groups</center></b></h5>
                   <ul class="list-unstyled">
                    {%for group in groups%}
-                    <li>
-                      <input type="checkbox" name="groups"  id="group_{{group.id}}" value="{{group.id}}">{{group.name}}
+                    <li id="grp_{{group.id}}">
+                      <input type="checkbox" name="groups"  id="group_{{group.id}}" value="{{group.id}}"> {{group.name}}
                     </li>
                     <script type="text/javascript">
-                      $("input#group_{{group.id}}").change(function(){
-                        var value = $(this).val();
-                        var help;
-                        if($('input#group_{{group.id}}').is(':checked')){
-                          //add email to send
-                          help=false;
-                        }
-                        else
-                        {
-                          //remove from sending box
-                          help=true;
-                        }
-                      });
+                    $("#grp_{{group.id}}").click(function(){
+                      // alert('set check box');
+                      if($(this).add("input#group_{{group.id}}").is(":checked")){
+                        //add more email to "send to"
+                        $(this).add("input#group_{{group.id}}").prop('checked', false);
+                      }
+                      else{
+                        //remove email from "send to"
+                        $(this).add("input#group_{{group.id}}").prop('checked', true);
+                      }
+                      checkGroupToSend();
+;                    });
                     </script>
                     {%endfor%}
                   </ul>
                 </div>
+              
               </div>
-              <div class="">
-              <br/>
-                <button data-loading-text="&lt;i class='fa fa-refresh fa-spin'&gt;&lt;/i&gt; &nbsp; Sending..." class="btn btn-primary btn-send pull-right" type="submit" id="send" style="clear:both;float:none">
-                  Send
-                  <i class="fa fa-arrow-circle-right fa-lg"></i>
-                </button>
-
-
-              </div>
-
             </form>
       <script type="text/javascript">
         $(".btn-send").click(function(){
           var temp=$("div.note-editable.custom-scroll").html();
           $('textarea[name="description"]').html(temp);
-          // alert(temp);
-          // return false;
         });
       </script>
             <!--end form email write -->
@@ -261,9 +331,6 @@
 
 
                 // Load inbox once send is complete
-        
-            loadURL("ajax/email/email-list.html", $('#inbox-content > .table-wrap'))
-
 
             }, 1000); // how long do you want the delay to be? 
         });
@@ -286,10 +353,6 @@
 
     <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
     <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
-
-    <script src="/static/admin/js/plugin/summernote/summernote.min.js"></script>
-    <script src="/static/admin/js/plugin/delete-table-row/delete-table-row.min.js"></script>
-
    
 
 {% include 'admin/footer.html' %}

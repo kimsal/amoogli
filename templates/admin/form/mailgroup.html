@@ -13,7 +13,7 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-          <li>Home</li><li>Inbox</li>
+          <li>Home</li><li>Group</li>
         </ol>
         <!-- end breadcrumb -->
 
@@ -36,7 +36,7 @@
 
         <div class="inbox-nav-bar no-content-padding">
         
-          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Email &nbsp;
+          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Group &nbsp;
             <span class="btn-group">
               <a href="#" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span class="caret single"></span></a>
               <ul class="dropdown-menu">
@@ -53,7 +53,15 @@
                   <a href="/admin/import">Import contact</a>
                 </li>
                 <li>
-                  <a href="/admin/email/sending">Sending</a>
+                  <a href="/admin/email/sending">
+                    {%if email_to_send==0 %}
+                   No email sending 
+                {%elif email_to_send==1%}
+                  {{email_to_send}} sending email ... 
+                {%else%}
+                  {{email_to_send}} sending emails ... 
+                {%endif%}
+                  </a>
                 </li>
               </ul>
             </span>
@@ -129,9 +137,15 @@
             <!-- ajax will fill this area -->
             <!-- LOADING... -->
 
-            <div style="height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight"><table id="inbox-table" class="table table-striped table-hover">
-              <tbody>
-                {% with messages = get_flashed_messages() %}
+            <div style="min-height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight">
+              <section id="widget-grid" class="">
+
+          <!-- row -->
+          <div class="row">
+
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              {% with messages = get_flashed_messages() %}
                   {% if messages %}
                      {% for message in messages %}
                       <tr id="msg29">
@@ -142,99 +156,26 @@
                    {% endfor %}
                   {% endif %}
                  {% endwith %}
+              <table id="jqgrid"></table>
+              
+              <div id="pjqgrid"></div>
 
-                 <tr id="msg29">
-                  <td class="inbox-table-icon">
-                    <div class="checkbox">
-                      <label>
-                        <span></span> </label>
-                    </div>
-                  </td>
-                  <td class="inbox-data-from">
-                    <div>
-                        <b>Group Name</b>
-                    </div>
-                  </td>
-                  <td class="inbox-data-date hidden-xs">
-                    <div>
-                       <b>Created date</b>
-                    </div>
-                  </td>
-                   <td class="inbox-data-date">
-                    <div>
-                      <b>Action</b>
-                    </div>
-                  </td>
-                </tr>
-                {%for group in groups%}
-                <tr id="msg29">
-                  <td class="inbox-table-icon">
-                    <div class="checkbox">
-                      <label>
-                        <input class="checkbox style-2" checked="true" type="checkbox">
-                        <span></span> </label>
-                    </div>
-                  </td>
-                  <td class="inbox-data-from">
-                    <div>
-                      <a class="name" href="/admin/email/group/{{group.id}}/view/" title="View members">
-                        {{group.name}}
-                      </a>
-                    </div>
-                  </td>
-                  <td class="inbox-data-date hidden-xs">
-                    <div>
-                       {{group.published_at.strftime('%d-%h-%Y')}}
-                    </div>
-                  </td>
-                   <td class="inbox-data-date">
-                    <div>
-                       <a href="/admin/email/group/{{group.name}}/delete/" style="color:gray;" onclick="return confirm('Are you sure ?')" title="Delete">
-                        <i class="fa fa-trash-o" aria-hidden="true">
-                          
-                        </i>
-                      </a>
-                      <a class="name" href="/admin/email/group/{{group.name}}/edit/" style="margin-left:10px;" title="Edit">
-                         <i class="fa fa-edit" aria-hidden="true">
-                          </i>
-                       </a>
-                    </div>
-                  </td>
-                </tr>
-              {%endfor%}
-              </tbody>
-            </table>
+              <br>
+              <a href="javascript:void(0)" id="m1"></a>
+              <br>
+              <a href="javascript:void(0)" id="m1s"></a>
 
-           
+            </article>
+            <!-- WIDGET END -->
+
+          </div>
+
+          <!-- end row -->
+
+        </section>
             </div>
         
           <!-- </div> -->
-        
-          <div class="inbox-footer">
-        
-            <div class="row">
-        
-              <div class="col-xs-6 col-sm-1">
-        
-                <div class="txt-color-white hidden-desktop visible-mobile">
-                  3.5GB of <strong>10GB</strong>
-        
-                  <div class="progress progress-micro">
-                    <div class="progress-bar progress-primary" style="width: 34%;"></div>
-                  </div>
-                </div>
-              </div>
-        
-              <div class="col-xs-6 col-sm-11 text-right">
-                <div class="txt-color-white inline-block">
-                  <i class="txt-color-blueLight hidden-mobile">Last account activity <i class="fa fa-clock-o"></i> 52 mins ago |</i> Displaying <strong>44 of 259</strong>
-                </div>
-              </div>
-        
-            </div>
-        
-          </div>
-        
         </div>
 
 
@@ -251,5 +192,121 @@
         $('#frm').attr('action','/admin/email/group/{{name}}/edit/');
       }
    </script>
+
+
+
+
+   <!-- END SHORTCUT AREA -->
+
+    <script type="text/javascript">
+      var jqgrid_data =[];
+      var temp;
+    </script>
+    {%for group in groups%}
+     <script type="text/javascript">
+     temp=moment().from("{{group.published_at}}");
+      jqgrid_data.push({"name":"<a href='/admin/email/group/{{group.id}}/view/'>{{group.name}}</a>","published_at":temp,"action":"<a href='/admin/email/group/{{group.name}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/group/{{group.name}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
+     </script>
+     {%endfor%}
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        pageSetUp();
+
+        jQuery("#jqgrid").jqGrid({
+          data : jqgrid_data,
+          datatype : "local",
+          colNames : ['Name','Published', 'Actions'],
+          colModel : [{
+            name : 'name',
+            index : 'name',
+            editable : false
+          },{
+            name : 'published_at',
+            index : 'published_at',
+            editable : false
+          },{
+            name : 'action',
+            index : 'action',
+            editable : false
+          }],
+          rowList: [],        // disable page size dropdown
+            pgbuttons: false,     // disable page control like next, back button
+            pgtext: null,         // disable pager text like 'Page 0 of 10'
+            // viewrecords: false    // disable current view record text like 'View 1-10 of 100'
+          viewrecords : true,
+          rowNum:10000,
+          sortorder : "asc",
+          gridComplete : function() {
+            var ids = jQuery("#jqgrid").jqGrid('getDataIDs');
+            
+          },
+          editurl : "/",
+          caption : "Group Info",
+          multiselect : false,
+          autowidth : true,
+          height: 3000,
+
+        });
+        jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
+          edit : false,
+          add : false,
+          del : true
+        });
+        jQuery("#jqgrid").jqGrid('inlineNav', "#pjqgrid");
+        /* Add tooltips */
+        $('.navtable .ui-pg-button').tooltip({
+          container : 'body'
+        });
+
+        jQuery("#m1").click(function() {
+          var s;
+          s = jQuery("#jqgrid").jqGrid('getGridParam', 'selarrrow');
+          alert(s);
+        });
+        jQuery("#m1s").click(function() {
+          jQuery("#jqgrid").jqGrid('setSelection', "13");
+        });
+
+        // remove classes
+        $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+        $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+        $(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+        $(".ui-jqgrid-pager").removeClass("ui-state-default");
+        $(".ui-jqgrid").removeClass("ui-widget-content");
+
+        // add classes
+        $(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+        $(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+        $(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+        $(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+        $(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+        $(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+        $(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+        $(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+        $(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+        $(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+        $(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+        $(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+        $(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+        $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+        $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+
+      })
+
+      $(window).on('resize.jqGrid', function() {
+        $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
+      })
+
+    </script>
+
 
 {% include 'admin/footer.html' %}

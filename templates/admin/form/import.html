@@ -1,12 +1,71 @@
-{% include '/admin/header.html' %} 
-    <!-- END NAVIGATION -->
-    <!-- MAIN PANEL -->
+{% include 'admin/header.html' %}
+<script type="text/javascript">
+  var temp;
+  function addEmailGroup(email_id,group_id){
+    var dt=[];
+    dt[0]=parseInt(email_id);
+    dt[1]=parseInt(group_id);
+    $.ajax({
+         type: "POST",
+         async: false,
+         url: "/admin/checkemail/"+email_id+"/"+group_id+"/add",
+         data: {json_str:JSON.stringify(dt)},
+         success: function(msg){
+          console.log('add success:'+msg);
+         },
+         error:function(msg){
+          console.log(msg+"");
+         }
+         // dataType: "json"
+      });
+  }
+  function removeEmailGroup(email_id,group_id){
+    var dt=[];
+    dt[0]=parseInt(email_id);
+    dt[1]=parseInt(group_id);
+    $.ajax({
+         type: "POST",
+         async: false,
+         url: "/admin/checkemail/"+email_id+"/"+group_id+"/remove",
+         data: {json_str:JSON.stringify(dt)},
+         success: function(msg){
+          console.log('remove success:'+msg);
+         },
+         error:function(msg){
+          console.log(msg+"");
+         }
+         // dataType: "json"
+      });
+  }
+</script>
+   <!-- MAIN PANEL -->
     <div id="main" role="main">
 
       <!-- RIBBON -->
       <div id="ribbon">
 
-        <span class="ribbon-button-alignment"> <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true"> <i class="fa fa-refresh"></i> </span> </span>
+        <span class="ribbon-button-alignment"> 
+          <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+            <i class="fa fa-refresh"></i>
+          </span> 
+        </span>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+          <li>Home</li><li>Import CSV</li>
+        </ol>
+        <!-- end breadcrumb -->
+
+        <!-- You can also add more buttons to the
+        ribbon for further usability
+
+        Example below:
+
+        <span class="ribbon-button-alignment pull-right">
+        <span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+        <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+        <span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+        </span> -->
 
       </div>
       <!-- END RIBBON -->
@@ -14,161 +73,318 @@
       <!-- MAIN CONTENT -->
       <div id="content">
 
-
-        <!-- row -->
-        <div class="row">
-
-         
-          </a>
-          <!-- col -->
-          <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <h1 class="page-title txt-color-blueDark"><!-- PAGE HEADER --><i class="fa-fw fa fa-home"></i> Import CSV</h1>
-          </div>
-          <!-- end col -->
-
-          <!-- right side of the page with the sparkline graphs -->
-          <!-- col -->
-          <form action="/admin/import/" method="POST"  enctype="multipart/form-data">
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-              <!-- sparks --><br/>
-              <input type="file" name="contact_file" id="contact_file"/>
-            </div>
-            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-              <!-- sparks --><br/>
-              <select class="form-control" id="category_id" name="category_id">
-                {%for group in groups%}
-                 <option value="{{group.id}}">{{group.name}}</option>
-                {%endfor%}
-              </select>
-            </div>
-            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 pull-right"><br/>
-                <button type="submit" class="btn btn-primary">   
-                  Upload
-                </button>
-            </div>
-           </form>
-            <!-- end sparks -->
-          <!-- end col -->
-        </div>
-        <div class="row">
-          <center>
-          Click <a href="https://www.google.com/contacts/u/0/?cplus=0#contacts" target="_blank">This link </a> to export your contact file from your email.
-          </center>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                  {% for message in messages %}
-                    <div class="alert"> 
-                      {{ message }}
-                    </div>
-                  {% endfor %}
-                {% endif %}
-            {% endwith %}
-          </div>
-
-        </div>
-        <!-- widget grid -->
-        <section id="widget-grid" class="">
+        <div class="inbox-nav-bar no-content-padding">
         
-          <!-- row -->
-          <div class="row">
+          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Import contact &nbsp;
+            <span class="btn-group">
+              <a href="#" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span class="caret single"></span></a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/admin/email">Compose</a>
+                </li>
+                <li>
+                  <a href="/admin/email/group">Group</a>
+                </li>
+                <li>
+                  <a href="/admin/mail">Contact</a>
+                </li>
+                <li>
+                  <a href="/admin/import">Import contact</a>
+                </li>
+                <li>
+                  <a href="/admin/email/sending">
+                    {%if email_to_send==0 %}
+                   No email sending 
+                {%elif email_to_send==1%}
+                  {{email_to_send}} sending email ... 
+                {%else%}
+                  {{email_to_send}} sending emails ... 
+                {%endif%}
+                  </a>
+                </li>
+              </ul>
+            </span>
+          </h1>
+          <div class="inbox-checkbox-triggered">
+        
+            <div class="btn-group"> 
+            </div>
+        
+          </div>
+          <div class="btn-group inbox">
+            <form action="/admin/import/" method="POST"  enctype="multipart/form-data">
+            <div class="col-md-5" style="margin-bottom:5px;">
+                <input type="file" name="contact_file" id="contact_file" required />
+              </div>
+              <div class="col-md-5" style="margin-bottom:5px;">
+                <select class="form-control" id="category_id" name="category_id">
+                {%for group in groups%}
+                 <option value="{{group.id}}">{{group.firstname}}</option>
+                {%endfor%}
+              </select>  
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-primary" placeholder="Group ..." type="submit">
+                <i class="fa fa-upload"></i> &nbsp;
+                Upload&nbsp;
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="hidden-sm hidden-md col-sm-12 clear-fix"></div>
+        
+        <div id="inbox-content" class="inbox-body no-content-padding">
+        
+          <div class="inbox-side-bar">
+        
+            <a href="/admin/email"  class="btn btn-primary btn-block"> <strong>Compose</strong> </a>
+        
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/email/group/"> Group </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/mail/"> Contact </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/import/"> Import contact </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/email/sending">
+                {%if email_to_send==0 %}
+                   No email sending 
+                {%elif email_to_send==1%}
+                  {{email_to_send}} sending email ... 
+                {%else%}
+                  {{email_to_send}} sending emails ... 
+                {%endif%}
+                </a>
+              </li>
+            </ul>
+        
+          </div>
+          <!-- <div class="table-wrap custom-scroll animated fast fadeInRight"> -->
+            <!-- ajax will fill this area -->
+            <!-- LOADING... -->
+            <!--jqgrid table-->
+            <div class="table-wrap custom-scroll animated fast fadeInRight clear-fix">
+          
+             <section id="widget-grid" class="col-sm-12">
 
-            <!-- NEW WIDGET START -->
-            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- row -->
+                <div class="row">
 
-              <table id="jqgrid"></table>
-              <center>
-                <ul class="pagination pagination-sm">
-                {% if pagin > 1 %}
-                  {% if pagin < 8 %}
-                    {% for page in range(1,pagin+1) %}
-                      {% if page == current_pagin %}
+                  <!-- NEW WIDGET START -->
+                  <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                         {% for message in messages %}
+                          <tr id="msg29">
+                            <div class="col-md-12 col-xs-12 alert">
+                              {{ message }}
+                            </div>
+                           </tr>
+                       {% endfor %}
+                      {% endif %}
+                     {% endwith %}
+                    <table id="jqgrid" class="col-xs-12"></table>
+                    <center>
+                      <ul class="pagination pagination-sm">
+                      {% if pagin > 1 %}
+                        {% if pagin < 8 %}
+                          {% for page in range(1,pagin+1) %}
+                            {% if page == current_pagin %}
+                              <li class="active">
+                                <a href="/admin/import/{{page}}">
+                                  {{page}}
+                                </a>
+                              </li>
+                            {%else%}
+                              <li>
+                                <a href="/admin/import/{{page}}">
+                                  {{page}}
+                                </a>
+                              </li>
+                            {%endif%}
+                        {%endfor%}
+                      </ul>
+                    {%else %}
+                      <li class="{%if current_pagin==1 %}active{%endif%}">
+                        <a href="/admin/import/1">1</a>
+                      </li>
+                      <li class="{%if current_pagin==2 %}active{%endif%}">
+                        <a href="/admin/import/2">2</a>
+                      </li>
+                      <li class="{%if current_pagin==3 %}active{%endif%}">
+                        <a href="/admin/import/3">3</a>
+                      </li>
+                      <li class="{%if current_pagin==4 %}active{%endif%}">
+                        <a href="/admin/import/4">4</a>
+                      </li>
+                      <li>
+                        <a href="#">...</a>
+                      </li>
+                      {% for page in range(pagin-4,pagin+1) %}
+                        {% if current_pagin == page%}
                         <li class="active">
                           <a href="/admin/import/{{page}}">
                             {{page}}
                           </a>
-                        </li>
-                      {%else%}
+                          </li>
+                       {%else%}
                         <li>
                           <a href="/admin/import/{{page}}">
                             {{page}}
                           </a>
-                        </li>
-                      {%endif%}
-                  {%endfor%}
-                </ul>
-              {%else %}
-                <li class="{%if current_pagin==1 %}active{%endif%}">
-                  <a href="/admin/import/1">1</a>
-                </li>
-                <li class="{%if current_pagin==2 %}active{%endif%}">
-                  <a href="/admin/import/2">2</a>
-                </li>
-                <li class="{%if current_pagin==3 %}active{%endif%}">
-                  <a href="/admin/import/3">3</a>
-                </li>
-                <li class="{%if current_pagin==4 %}active{%endif%}">
-                  <a href="/admin/import/4">4</a>
-                </li>
-                <li>
-                  <a href="#">...</a>
-                </li>
-                {% for page in range(pagin-4,pagin+1) %}
-                  {% if current_pagin == page%}
-                  <li class="active">
-                    <a href="/admin/import/{{page}}">
-                      {{page}}
-                    </a>
-                    </li>
-                 {%else%}
-                  <li>
-                    <a href="/admin/import/{{page}}">
-                      {{page}}
-                    </a>
-                    </li>
-                 {%endif%}
-                {%endfor%}
-              {%endif%}
-            {%endif%}
-            </ul>
-            </center>
-              <div id="pjqgrid"></div>
+                          </li>
+                       {%endif%}
+                      {%endfor%}
+                    {%endif%}
+                  {%endif%}
+                  </ul>
+                  </center>
+                    <div id="pjqgrid"></div>
 
-              <br>
-              <a href="javascript:void(0)" id="m1"></a>
-              <br>
-              <a href="javascript:void(0)" id="m1s"></a>
+                    <br>
+                    <a href="javascript:void(0)" id="m1"></a>
+                    <br>
+                    <a href="javascript:void(0)" id="m1s"></a>
 
-            </article>
-            <!-- WIDGET END -->
+                  </article>
+                  <!-- WIDGET END -->
 
-          </div>
+                </div>
 
-          <!-- end row -->
+                <!-- end row -->
 
-        </section>
-        <!-- end widget grid -->
+              </section>
+              
+            </div>
+            <!--End jqgrid table-->
 
       </div>
       <!-- END MAIN CONTENT -->
-
+      </div>
     </div>
     <!-- END MAIN PANEL -->
-
-   
-
-    <!-- PAGE FOOTER -->
-
-    <!-- END SHORTCUT AREA -->
-    <script type="text/javascript">
+    <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
+    <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
+   <script type="text/javascript">
+     if("{{name}}"!=''){
+        $('input[name="name"]').attr('value',"{{name|safe}}")
+        $('#frm').attr('action','/admin/email/group/{{name}}/edit/');
+      }
+   </script>
+<script type="text/javascript">
       var jqgrid_data =[];
+      var temp;
     </script>
      {% for email in emails %}
      <script type="text/javascript">
-      jqgrid_data.push({"firstname":"{{email.firstname}}","lastname":"{{email.lastname}}","email":"{{email.email}}","action":"<a href='/admin/mail/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/mail/{{email.id}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
+      temp=moment().from("{{email.published_at}}");
+      jqgrid_data.push({"firstname":'<a href="#" title="Set Group" data-toggle="modal" data-target="#myModal_{{email.id}}">{{email.firstname}}</a>',"lastname":"{{email.lastname}}","email":"{{email.email}}",'published_at':temp,"action":"<a href='/admin/mail/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/mail/{{email.id}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
      </script>
+     <!-- pop up modal group email-->
+      <div class="modal" id="myModal_{{email.id}}" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"></button>
+              <label><b>{{email.name}} </b> &nbsp; - {{email.email}}</label><br>
+              
+            </div>
+            <div class="modal-body">
+                <form>
+
+                  {%for group in groups%}
+                    <div class="checkbox groups group_{{group.id}}">
+                    <h5>
+                    <label><input type="checkbox" name="groups" id="group_{{group.id}}" value="{{group.id}}" class="group_{{email.id}}">
+                      {{group.name}}
+                    </label>
+                    </h5>
+                  </div>
+                <script type="text/javascript">
+                  //Tick check box
+                  $.ajax({
+                   type: "GET",
+                   async: false,
+                   url: "/admin/checkemail/{{email.id}}/{{group.id}}/check",
+                   success: function(msg){
+                    if(msg.status==true){
+                      $('.group_{{email.id}}[value="{{group.id}}"]').attr("checked", true);
+                    }
+                    },
+                   error:function(msg){
+                    console.log(msg);
+                   }
+               });
+                </script>
+                    {%endfor%}
+
+                    <button class="btn btn-info pull-right btn_{{email.id}}" style="margin-top:-20px;" type="button">Save</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--end pop up modal group email-->
+      <script type="text/javascript">
+        var group_id;
+        $(".btn_{{email.id}}").click(function(){
+          $(".group_{{email.id}}").each(function(){
+            group_id=$(this).val();
+            if($(this).is(':checked'))
+              {
+                //check if not save then save new in emailgroup
+                $.ajax({
+                     type: "GET",
+                     async: false,
+                     url: "/admin/checkemail/{{email.id}}/"+group_id+"/check",
+                     success: function(msg){
+                      console.log('>>>>'+msg.status);
+                      if(msg.status==false){
+                        //not exists then save new
+                        addEmailGroup("{{email.id}}",group_id);
+
+                      }
+                      },
+                     error:function(msg){
+                      console.log(msg);
+                     }
+                 });
+            }
+            else{
+              //check if already save then remove it
+              $.ajax({
+                   type: "GET",
+                   async: false,
+                   url: "/admin/checkemail/{{email.id}}/"+group_id+"/check",
+                   success: function(msg){
+                    console.log(msg.status);
+                    if(msg.status==true){
+                      //not exists then save new
+                      removeEmailGroup("{{email.id}}",group_id);
+
+                    }
+                    },
+                   error:function(msg){
+                    console.log(msg);
+                   }
+                   // dataType: "json"
+                });
+            }
+          });
+          $(".close").click();
+        });
+      </script>
      {%endfor%}
 
     <script type="text/javascript">
@@ -178,7 +394,7 @@
         jQuery("#jqgrid").jqGrid({
           data : jqgrid_data,
           datatype : "local",
-          colNames : ['First Name','Last Name','Email', 'Actions'],
+          colNames : ['First Name','Last Name','Email',"Published", 'Actions'],
           colModel : [{
             name : 'firstname',
             index : 'lastname',
@@ -190,6 +406,10 @@
           }, {
             name : 'email',
             index : 'email',
+            editable : false
+          }, {
+            name : 'published_at',
+            index : 'published_at',
             editable : false
           }, {
             name : 'action',
@@ -276,9 +496,11 @@
       })
 
       $(window).on('resize.jqGrid', function() {
-        $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
+        // $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
       })
 
-    </script>
+      //remove jqgrid height
 
-{% include '/admin/footer.html' %} 
+
+    </script>
+{% include 'admin/footer.html' %}
