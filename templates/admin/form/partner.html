@@ -208,6 +208,7 @@
      $('#url').attr('value',"{{partner.url}}"); 
      feature_image="{{partner.feature_image}}";
      $(".txt_temp_image").attr('value',feature_image);
+     $("#frm").attr('action','/admin/partner/edit/{{partner.slug}}/');
   });
 </script>
 {% endfor %}
