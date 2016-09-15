@@ -1130,6 +1130,7 @@ sched = Scheduler()
 @auth.login_required
 def importContact(pagination=1):
 	count = 0
+	email_to_send = EmailList.query.count()
 	emails=Email.query.order_by(Email.id.desc()).limit(limit).offset(int(int(int(pagination)-1)*limit))
 	pagin=math.ceil((Email.query.count())/limit)
 	if(math.ceil(Email.query.count())%limit != 0 ):
@@ -1137,7 +1138,7 @@ def importContact(pagination=1):
 	# emails=Email.query.order_by(Email.id.desc())
 	groups = Group.query.all()
 	if request.method == 'GET':
-		return render_template('admin/form/import.html',current_pagin=int(pagination),pagin=int(pagin),count=count,groups=groups,emails=emails)
+		return render_template('admin/form/import.html',email_to_send=email_to_send,current_pagin=int(pagination),pagin=int(pagin),count=count,groups=groups,emails=emails)
 	else:
 		#add upload and add new email list
 		now = str(datetime.now())

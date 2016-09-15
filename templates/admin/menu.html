@@ -9,9 +9,16 @@
 	padding: 5px;
 	width: 100%;
 }
-
+.menu_box{
+    width:100%;
+    height: 35px;
+    background-color: #99ccff;
+    padding:10px;
+    border-radius: 2px;
+    cursor: pointer;
+    line-height: 20px;
+}
 </style>
-
 
 
 
@@ -79,42 +86,38 @@
                                 <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
                                     <header>
                                         <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                                        <h2>Menu</h2>
                                     </header>
-                                    <div class="row">
-                                    	<div class="col-xs-12 col-sm-4 col-lg-4">
+                                    <div class="row" style="padding-bottom:10px;">
+                                    	<div class="col-xs-12 col-sm-6 col-lg-6">
                                     		<h2 class="page-title txt-color-blueDark">
                                     		<center>SELECT CATEGORIES</center>
                                     		</h2>
 	                                    	<form role="form" name="frmcategory" id="category">
 							        	 	{%for category in cats%}
-										    <div class="">
-										     	<label class="checkbox1 btn btn-default">
-												    <div >
-													    <input style="margin-top:0px;" {%if category.is_menu %} checked {%endif%} type="checkbox" value="{{category.id}}">
-													     {{category.name}}
-											    	</div>
-											    </label>
+										    <div class="col-xs-12 col-sm-6 col-md-6 menu-box">
+										     	<div class="menu_box">
+												    <input style="margin-top:0px;" {%if category.is_menu %} checked {%endif%} type="checkbox" value="{{category.id}}" name="category_box" id="category">
+												     {{category.name}}
+											    </div>
 										    </div>
 										    {%endfor%}
 										  </form>
 										</div>
 
-										<div class="col-xs-12 col-sm-8 col-lg-8">
+										<div class="col-xs-12 col-sm-6 col-lg-6">
 												<h2 class="page-title txt-color-blueDark">
 												<center>SELECT PAGES</center>
 												</h2>
 												<form role="form" name="frmpage" id="page">
 												    {%for page in ps %}
-												    <div class="checkbox col-xs-12 col-sm-6 col-md-6">
-												      <label class="btn btn-default">
-												      <div class="checkbx">
-												      <input  style="margin-top:0px;" {%if page.is_menu %} checked {%endif%} type="checkbox" value="{{page.id}}">
-												      	{{page.title}}
-												      </div>
-												      </label>
+												     <div class="col-xs-12 col-sm-6 col-md-6 menu-box">
+                                                        <div class="menu_box">
+        												    <input  style="margin-top:0px;" {%if page.is_menu %} checked {%endif%} type="checkbox" value="{{page.id}}" name="category_box" id="page"> {{page.title}}     
+                                                        </div>   
 												    </div>
 												    {%endfor%}
+
+                                                    
 												</form>
 										</div>
                                     </div>
@@ -133,46 +136,31 @@
  </div>
         <!-- END MAIN PANEL -->
 
-<script>
-	//save and update data 
-	$("#category input").change(function(){
-		//alert($(this).val());
-		var id=$(this).val();
-		var category_check=$(this).is(':checked');
-		//egory_check=document.getElementById('1').checked;
-		//alert(id+" : "+category_check);
-		if(category_check==true)
-			category_check=1;
-		else
-			category_check=0;
-		//alert(category_check);
-		$.ajax({
+<script type="text/javascript">
+    $('.menu-box').click(function(){
+        // alert($(this).find('input[name="category_box"]').val());
+        if($(this).find('input[name="category_box"]').is(':checked')){
+            $(this).find('input[name="category_box"]').prop( "checked", false );
+        }
+        else{
+            $(this).find('input[name="category_box"]').prop( "checked", true );
+        }
+        var check_page_or_category=$(this).find('input[name="category_box"]').attr('id').trim();
+        var id=$(this).find('input[name="category_box"]').val();
+        var category_check=$(this).find('input[name="category_box"]').is(':checked');
+        if(category_check==true)
+            category_check=1;
+        else
+            category_check=0;
+        //alert(category_check);
+        $.ajax({
           type: "GET",
-          url: '/admin/menu/'+id+"/"+category_check+"/category",
+          url: '/admin/menu/'+id+"/"+category_check+"/"+check_page_or_category+"/",
           success: function(response) {
-          	//console.log(":"+response);
           }
         });
-	});
-	$("#page input").change(function(){
-		//alert($(this).val());
-		var id=$(this).val();
-		var page_check=$(this).is(':checked');
-		//egory_check=document.getElementById('1').checked;
-		//alert(id+" : "+category_check);
-		if(page_check==true)
-			page_check=1;
-		else
-			page_check=0;
-		//alert(category_check);
-		$.ajax({
-          type: "GET",
-          url: '/admin/menu/'+id+"/"+page_check+"/page",
-          success: function(response) {
-          	//console.log(":"+response);
-          }
-        });
-	});
+    });
 </script>
+
 {% include 'admin/footer.html' %} 
 <!--end menu add-->

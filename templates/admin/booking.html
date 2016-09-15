@@ -159,7 +159,7 @@
      {% for booking in bookings %}
      <script type="text/javascript">
       temp=moment().from("{{booking.published_at}}");
-      jqgrid_data.push({"name":"{{booking.name}}","published_at":temp,"email":"{{booking.email}}","phone":"{{booking.phone}}","post":"{{booking.post.title}}","detail":"{{booking.detail}}","action":"<a href='/admin/booking/delete/{{booking.name}}' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a> "});
+      jqgrid_data.push({"name":"{{booking.name}}","published_at":temp,"email":"{{booking.email}}","phone":"{{booking.phone}}","post":"<a href="" target='_blank'>{{booking.post.title}}","detail":"{{booking.detail}}","action":"<a href='/admin/booking/delete/{{booking.name}}' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a> "});
      </script>
      {%endfor%}
 
@@ -178,13 +178,16 @@
           }, {
             name : 'published_at',
             index : 'published_at',
-            editable : false
+            editable : false,
+            width: 70
           }, {
             name : 'email',
-            index : 'email'
+            index : 'email',
+            width: 100
           }, {
             name : 'phone',
-            index : 'phone'
+            index : 'phone',
+            width : 70
           }, {
             name : 'post',
             index : 'post'
@@ -193,7 +196,8 @@
             index : 'detail'
           }, {
             name : 'action',
-            index : 'action'
+            index : 'action',
+            width:60
           }],
           rowList: [],        // disable page size dropdown
             pgbuttons: false,     // disable page control like next, back button
