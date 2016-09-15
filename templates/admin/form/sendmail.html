@@ -150,10 +150,8 @@
                 </a>
               </li>
             </ul>
-        
             <div class="air air-bottom inbox-space">
         
-             
             </div>
         
           </div>
@@ -165,6 +163,7 @@
 
               </h2>
             </div>
+            <form action="/admin/email/" method="POST" id="frm" enctype="multipart/form-data" id="email-compose-form">
             <div class="col-xs-6 col-sm-3">
               <button data-loading-text="&lt;i class='fa fa-refresh fa-spin'&gt;&lt;/i&gt; &nbsp; Sending..." class="btn btn-primary btn-send pull-left" type="submit" id="send" style="clear:both;float:none" >
                     Send
@@ -183,36 +182,25 @@
                   {% endif %}
                  {% endwith %}
             <!--form email write-->
-            <form action="/admin/email/" method="POST" id="frm" enctype="multipart/form-data" id="email-compose-form">
+            
               <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
               
               <!--temp textbox-->
                 <textarea class="form-control ckeditor" id="description" name="description" style="display:none"></textarea>
-                <!--End help form-->
 
-                <!-- <div class="inbox-info-bar no-padding">
+                <div class="inbox-info-bar no-padding1">
                   <div class="row">
                     <div class="form-group">
-                      <label class="control-label col-md-1"><strong>To</strong></label>
-                      <div class="col-md-11">
-                      <input type="text" name="to" style="width:100%;height:100%;border:none;">
-
-                        <select multiple style="width:100%" class="select2" data-select-search="true">
-                          <option value="sunny.orlaf@smartadmin.com">sadi.orlaf@smartadmin.com</option>
-                          <option value="rachael.hawi@smartadmin.com">rachael.hawi@smartadmin.com</option>
-                          <option value="michael.safiel@smartadmin.com">michael.safiel@smartadmin.com</option>
-                          <option value="alex.jones@infowars.com">alex.jones@infowars.com</option>
-                          <option value="oruf.matalla@gmail.com">oruf.matalla@gmail.com</option>
-                          <option value="hr@smartadmin.com">hr@smartadmin.com</option>
-                          <option value="IT@smartadmin.com">IT@smartadmin.com</option>
-                        </select>
+                      <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
+                      <div class="col-md-5 col-xs-12">
+                        <input class="form-control" placeholder="From" type="email" name="send_from" id="send_from" value="From: {{email}}" readonly>
+                      </div>
+                      <div class="col-md-5 col-xs-12">
+                          <input class="form-control" placeholder="Reply to(Optional)" type="email" name="reply_to" id="reply_to">
                       </div>
                     </div>
                   </div>  
-                </div> -->
-                
-                
-               
+                </div>
                 <div class="inbox-info-bar no-padding1">
                   <div class="row">
                     <div class="form-group">

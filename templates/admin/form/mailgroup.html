@@ -205,7 +205,7 @@
     {%for group in groups%}
      <script type="text/javascript">
      temp=moment().from("{{group.published_at}}");
-      jqgrid_data.push({"name":"<a href='/admin/email/group/{{group.id}}/view/'>{{group.name}}</a>","published_at":temp,"action":"<a href='/admin/email/group/{{group.name}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/group/{{group.name}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
+      jqgrid_data.push({"name":"<a href='/admin/email/group/{{group.id}}/view/'>{{group.name}}</a>","published_at":temp,"action":"<a href='/admin/email/group/{{group.name}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/email/group/{{group.name}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
      </script>
      {%endfor%}
 

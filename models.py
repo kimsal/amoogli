@@ -130,6 +130,7 @@ class Post(db.Model):
     file=db.Column(db.String(255),nullable=True)
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     views = db.Column(db.Integer, nullable=True)
+    images = db.Column(db.Text,nullable=True)
     bookings=db.relationship('Booking', backref="post", lazy='dynamic')
     def to_Json(self):
         return dict(id=self.id,
@@ -142,7 +143,7 @@ class Post(db.Model):
             published_at="{}".format(self.published_at),
             view=self.view
             )
-    def __init__(self, title, description, category_id, feature_image, user_id,file='',views=0):
+    def __init__(self, title, description, category_id, feature_image, user_id,file='',views=0,images=''):
         self.title = title
         self.slug =slugify(title)
         self.description = description
@@ -150,7 +151,8 @@ class Post(db.Model):
         self.category_id = category_id
         self.file=file,
         self.user_id = user_id
-        self.views=views
+        self.views=views,
+        self.images=images
     def add(post):
         db.session.add(post)
         return db.session.commit()
@@ -402,6 +404,7 @@ class EmailList(db.Model):
     email  = db.Column(db.String(255))
     subject = db.Column(db.String(1000))
     description = db.Column(db.Text)
+    reply_to = db.Column(db.String(255))
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.name
@@ -412,13 +415,15 @@ class EmailList(db.Model):
             name=self.name,
             email=self.email,
             subject = self.subject,
-            description = self.description
+            description = self.description,
+            reply_top = self.reply_to,
             )
-    def __init__(self,name,email,subject,description):
+    def __init__(self,name,email,subject,description,reply_to):
         self.name =name,
         self.email =email,
         self.subject = subject,
-        self.description = description
+        self.description = description,
+        self.reply_to = reply_to,
     def add(messagelist):
         db.session.add(messagelist)
         return db.session.commit()

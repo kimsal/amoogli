@@ -64,6 +64,7 @@
         
           <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Email &nbsp;
             <span class="btn-group">
+
               <a href="#" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span class="caret single"></span></a>
               <ul class="dropdown-menu">
                 <li>
@@ -92,7 +93,57 @@
               </ul>
             </span>
           </h1>
-        
+              <!--start group action-->
+              &nbsp;&nbsp;
+              <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Select All" class="btn btn-default" style="padding:3px;width:40px;">
+                 <input name="select_all" type="checkbox" style="width:15px;height:15px;" />
+              </a>
+             
+              <button class="btn btn-default"  title="Add To Group" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-folder-open fa-lg"></i>
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="myModalLabel"><i class="fa fa-share-alt"></i> Add Selected emails to group:</h4>
+                    </div>
+                    <div class="modal-body">
+                              
+                              <form>
+                                  {%for group in groups%}
+                                   <div class="input-group">
+                                    <input type="checkbox" class="" value="{{group.id}}" name="all_groups">  &nbsp;{{group.name}}
+                                  </div>
+                                  {%endfor%}
+                                    <br />
+                                    <button type="button" value="sub" name="sub" class="btn btn-primary btn-save-groups">
+                                      <i class="fa fa-share"></i>
+                                      Save
+                                    </button>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end modal -->
+
+
+              <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete" class="deletebutton btn btn-default" onclick="deleteEmail();" >
+                <strong>
+                  <i class="fa fa-trash-o fa-lg">
+                    
+                  </i>
+                </strong>
+              </a>
+              <!--End group action-->
+
         </div>
         
         <div id="inbox-content" class="inbox-body no-content-padding">
@@ -146,6 +197,9 @@
             <!-- LOADING... -->
 
             <div style="min-height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight col-sm-7">
+             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flash" style="display:none;">
+
+             </article>
              <!--Jqgrid-->
              <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     {% with messages = get_flashed_messages() %}
@@ -227,7 +281,11 @@
             <div class="" style="padding-right:5px 10px;">
                 <form class="frm form-horizontal" action="/admin/mail/" method="post">
                   <fieldset>
-                    <legend><center><b>Add Contact</b></center></legend>
+                    <legend><center><b id="label">
+
+                    Add Contact
+
+                    </b></center></legend>
                     <div class="form-group">
                       <div class="col-lg-12">
                         <input type="text" class="form-control" name="firstname" placeholder="First Name ..." type="text" required value="">
@@ -277,7 +335,7 @@
      {% for email in emails %}
      <script type="text/javascript">
       temp=moment().from("{{email.published_at}}");
-      jqgrid_data.push({"firstname":'<a href="#" title="Set Group" data-toggle="modal" data-target="#myModal_{{email.id}}">{{email.firstname}}</a>',"lastname":"{{email.lastname}}","email":"{{email.email}}",'published_at':temp,"action":"<a href='/admin/mail/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/mail/{{email.id}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
+      jqgrid_data.push({'mycheckbox':'<input type="checkbox" name="email" value="{{email.id}}" class="cbox"/>',"firstname":'<a href="#" title="Set Group" data-toggle="modal" data-target="#myModal_{{email.id}}">{{email.firstname}}</a>',"lastname":"{{email.lastname}}","email":"{{email.email}}",'published_at':temp,"action":"<a href='/admin/mail/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>  <a href='/admin/mail/{{email.id}}/edit' class='btn btn-xs btn-default'><i class='fa fa-pencil'></i></a>"});
      </script>
 
       <!-- pop up modal group email-->
@@ -384,15 +442,24 @@
         jQuery("#jqgrid").jqGrid({
           data : jqgrid_data,
           datatype : "local",
-          colNames : ['First Name','Last Name','Email',"Published", 'Actions'],
+          colNames : [' ','First Name','Last Name','Email',"Published", 'Actions'],
           colModel : [{
+             name : 'mycheckbox',
+            index : 'mycheckbox',
+            editable : false,
+            width : 20,
+            sortable:false,
+            editable:true
+          },{
             name : 'firstname',
             index : 'lastname',
-            editable : false
+            editable : false,
+            width : 100
           },{
             name : 'lastname',
             index : 'lastname',
-            editable : false
+            editable : false,
+            width: 80
           }, {
             name : 'email',
             index : 'email',
@@ -400,10 +467,12 @@
           }, {
             name : 'published_at',
             index : 'published_at',
-            editable : false
+            editable : false,
+            width:80
           }, {
             name : 'action',
-            index : 'action'
+            index : 'action',
+            width: 50
           }],
           rowList: [],        // disable page size dropdown
             pgbuttons: false,     // disable page control like next, back button
@@ -423,7 +492,7 @@
                 act : be + se + ca
               });
             }
-          },
+           },
           editurl : "/",
           caption : "Email Info",
           multiselect : false,
@@ -486,7 +555,7 @@
       })
 
       $(window).on('resize.jqGrid', function() {
-        // $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
+        $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
       })
 </script>
 {% for e in email_object %}
@@ -495,6 +564,124 @@
     $('input[name="firstname"]').attr('value',"{{e.firstname}}");
     $('input[name="lastname"]').attr('value',"{{e.lastname}}");
     $('input[name="email"]').attr('value',"{{e.email}}");
+    $('#label').html("Update Contact");
   </script>
 {% endfor %}
+<script type="text/javascript">
+  pageSetUp();
+  var arr_selected_email=[];
+  $('input[name="email"]').change(function(){
+    // alert($(this).val());
+    if(arr_selected_email.indexOf($(this).val())){
+      if($(this).is(':checked')){
+        // arr_selected_email.push($(this).val());
+      }
+      else{
+        var index= arr_selected_email.indexOf($(this).val());
+        // if(index>=0)
+          // arr_selected_email.splice(index,1);
+      }
+    }
+    // console.log(arr_selected_email);
+  });
+  $('input[name="select_all"]').change(function(){
+    if($(this).is(':checked')){
+      $('input[name="email"]').prop( "checked", true );
+      $("#jqgrid  tr.ui-widget-content").each(function(index,item){
+        arr_selected_email.push($('#jqgrid  tr.ui-widget-content:nth-child('+(index+2)+') td:nth-child(4)').html());
+      // }
+    });
+    }
+    else{
+       $('input[name="email"]').prop( "checked", false );
+       arr_selected_email=[];
+    }
+    console.log(arr_selected_email);  
+  });
+
+  function deleteEmail(){
+    $(".alert").css('display',"none");
+    var help=confirm('Are you sure?');
+    if(help==false)
+      return false;
+    var arr_email_temp=[];
+    $('input[name="email"]').each(function(){
+      if($(this).is(':checked')){
+        arr_email_temp.push($(this).val());
+      }
+    });
+    if(arr_email_temp.length>0){
+        $.ajax({
+          type: "POST",
+          url: '/admin/mail/0/delete_json/',
+          data: {'emails':arr_email_temp.join(";")},
+          success: function(response) {
+            console.log(response);
+            if(response.success=='Ok'){
+              // alert('ok');
+                $(".flash").html('<li>Email deleted successfully.</li>');
+                $(".flash").addClass('alert alert-success');
+                $(".flash").css('display',"block");
+            }
+            else{
+              // alert('not ok');
+                $(".flash").html("<li>Error in deleting emails.</li>");
+                $(".flash").addClass('alert  alert-danger');
+                $(".flash").css('display',"block");
+            }
+          }
+        });
+      $('button.close').click();
+      setTimeout(function(){ 
+        location.reload();
+      }, 1000);
+      }
+  }
+
+  //save all pop up group (selected)
+  $(".btn-save-groups").click(function(){
+    var arr_group=[];
+    var arr_email=[];
+    $('input[name="all_groups"]').each(function(){
+      if($(this).is(':checked')){
+        arr_group.push($(this).val());
+      }
+    });
+    $('input[name="email"]').each(function(){
+      if($(this).is(':checked')){
+        arr_email.push($(this).val());
+      }
+
+    });
+    console.log(arr_group);
+    if(arr_group.length>0&&arr_email.length>0){
+
+      $(".alert").css('display',"none");
+      $.ajax({
+          type: "POST",
+          url: '/admin/mail/setgroup/',
+          data: {'groups':arr_group.join(";"),'emails':arr_email.join(";")},
+          success: function(response) {
+            console.log(response);
+            if(response.success=='Ok'){
+              // alert('ok');
+                $(".flash").html('<li>Added successfully.</li>');
+                $(".flash").addClass('alert alert-success');
+                $(".flash").css('display',"block");
+            }
+            else{
+              // alert('not ok');
+                $(".flash").html("<li>Error in adding emails to groups.</li>");
+                $(".flash").addClass('alert alert-danger');
+                $(".flash").css('display',"block");
+            }
+          }
+        });
+      $('button.close').click();
+      setTimeout(function(){ 
+        location.reload();
+      }, 1000);
+    }
+  });
+</script>
 {% include 'admin/footer.html' %}

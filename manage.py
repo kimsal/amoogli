@@ -533,45 +533,88 @@ def admin_post_add(slug=""):
 	form = PostForm()
 	categories = [(c.id, c.name) for c in Category.query.order_by(Category.name).all()]
 	form.category_id.choices = categories
+	now = str(datetime.now())
+	now= now.replace(':',"",10).replace(' ','',4).replace('.','',5).replace('-','',5)
+		   		
 	if request.method == 'POST':
 		try:
 			if form.validate() == False:
-		   		flash('All fields are required.')
+		   		flash('Please try to fill form again.')
 		   		return redirect(url_for('admin_post_add'))
 		   	else:
 		   		obj=Post.query.filter_by(slug=slug)
-		   		now = str(datetime.now())
-				now= now.replace(':',"",10).replace(' ','',4).replace('.','',5).replace('-','',5)
+		   		file = request.files['file']
+		   		filedownload=secure_filename(file.filename)
+		   		
+		   		if filedownload!="":
+		   			file.save(os.path.join(app.config['UPLOAD_FOLDER_FILE'], now+"_"+filedownload))
+		   			file_download=now+"_"+filedownload
+		   		else:
+		   			file_download=''
+		   		for post in obj:
+		   			old_images=post.images
 		   		result = request.form
 				filename=str(request.form['txt_temp_image'])
-				filepdf = request.files['file']
-				filedownload=secure_filename(filepdf.filename)
+				# return filename
 				if not slug:
 		   			if file:
-		   				if filedownload!="":
-		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
-		   					file_download=now+"_"+filedownload
-		   				else:
-		   					file_download=''
-		   				temp_obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download)
-			        	status=Post.add(temp_obj)
+		   				images=''
+		   				help=1
+	   					uploaded_files = flask.request.files.getlist("other_image[]")
+		   				# return filename
+		   				for f in uploaded_files:
+		   					imagename = secure_filename(f.filename)
+		   					if imagename!="":
+			   					f.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"-"+imagename))
+			   					if help==1:
+			   						images=now+"-"+imagename
+			   					else:
+			   						images=images+"$$$$$"+(now+"-"+imagename)
+			   					help=help+1
+			   			
+		   				obj=Post(request.form['title'],request.form['description'],request.form['category_id'],filename,request.cookies.get('blog_id'),file_download,0,images)
+			        	status=Post.add(obj)
 				        if not status:
 				            flash("Post added successfully")
 				            return redirect(url_for('admin_index'))
 				        else:
-				        	flash("Fail to add post!")
+				        	flash("Fail to add post !")
 				        	return redirect(url_for('admin_post_add'))
 				elif slug:
+					# return str(request.form["image1"])
 		   			if not not file: 
-		   				# return filedownload
-		   				if filedownload == "":
-		   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],"category_id":request.form['category_id'],'description':request.form['description'],'feature_image':filename })
-		   					status = db.session.commit()
-		   				else:
-		   					# return now+"_"+filedownload
-		   					filepdf.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"_"+filedownload))
-			   				obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],'category_id':request.form['category_id'],'feature_image':filename,'file': now+"_"+filedownload})
-		   					status = db.session.commit()
+		   				images=''
+		   				help=1
+	   					uploaded_files = flask.request.files.getlist("other_image[]")
+		   				# return filename
+		   				
+		   				for f in uploaded_files:
+		   					imagename = secure_filename(f.filename)
+		   					if imagename!="":
+			   					f.save(os.path.join(app.config['UPLOAD_FOLDER'], now+"-"+imagename))
+			   					if help==1:
+			   						images=now+"-"+imagename
+			   					else:
+			   						images=images+"$$$$$"+(now+"-"+imagename)
+			   					help=help+1
+			   			if old_images!='':
+				   			if images!='':
+				   				images=old_images+"$$$$$"+images
+				   			else:
+				   				images=old_images
+			   			#keep old other images
+
+				   		for post in obj:
+				   			old_images=post.images
+				   		arr_to_remove=(request.form['all_removed_images']).split("$$$$$")
+				   		for item in arr_to_remove:
+				   			images=images.replace(item,'')
+				   		images=images.replace('$$$$$$$$$$','$$$$$')
+				   		# return images
+				   		#end keep old images
+				   		# return old_images
+	   					obj.update({"slug" : slugify(request.form['title']) , "title" : request.form['title'],'description':request.form['description'],"category_id":request.form['category_id'],'feature_image':filename,'images':images,'file':file_download })
+	   					status = db.session.commit()
 		   				if not status:
 		   					flash("Post updated successfully")
 		   					return redirect(url_for('admin_index'))
@@ -855,20 +898,32 @@ def verify_email():
 ###########SEND MAIL##############
 @app.route('/admin/email/sending')
 @app.route('/admin/email/sending/')
-@app.route('/admin/email/sending/<id>/<action>')
-@app.route('/admin/email/sending/<id>/<action>/')
+@app.route('/admin/email/sending/<id>/<action>', methods = ['GET', 'POST'])
+@app.route('/admin/email/sending/<id>/<action>/', methods = ['GET', 'POST'])
 @app.route('/admin/email/sending/<pagination>')
 @app.route('/admin/email/sending/<pagination>/')
 def sendingList(id=0,action='none',pagination=1):
 	email_to_send = EmailList.query.count()
 	if action=='delete':
 		try:
-			ob=EmailList.query.filter_by(id=id).first()
-			status = EmailList.delete(ob)
-			if not status:
-				flash("Email deleted from sending list successfully")
+			if int(id)==0:
+				try:
+					arr_email=str(request.form['emails']).split(";")
+					print str(arr_email)
+					for e in arr_email:
+						print str(e)
+						obj=EmailList.query.filter_by(id=int(e)).first()
+						status = EmailList.delete(obj)
+					return jsonify({'success':"Ok" })
+				except Exception as e:
+					return jsonify({'success':"Error:"+e.message })
 			else:
-				flash("Error in deleting email from sending list !")
+				ob=EmailList.query.filter_by(id=id).first()
+				status = EmailList.delete(ob)
+				if not status:
+					flash("Email deleted from sending list successfully")
+				else:
+					flash("Error in deleting email from sending list !")
 		except Exception as e:
 			print e.message
 	sendnigEmails = EmailList.query.limit(limit).offset(int(int(int(pagination)-1)*limit))
@@ -954,6 +1009,30 @@ def admin_mail_group(slug='',action=''):
 # 		return str(email)
 # 	return jsonify({'emails':emails})
 import collections
+@app.route('/admin/mail/setgroup/', methods = ['GET', 'POST'])
+@app.route('/admin/mail/setgroup', methods = ['GET', 'POST'])
+@auth.login_required
+def addEmailsToGroups():
+	try:
+		arr_group=str(request.form['groups']).split(";")
+		arr_email=str(request.form['emails']).split(";")
+		for grp in arr_group:
+			for e in arr_email:
+				temp = Emailgroup.query.filter_by(email_id=e).filter_by(group_id=grp)
+				# print str(temp.count())
+				if temp.count()<=0:
+					try:
+						print 'save: email='+str(e)+";group="+str(grp)
+						obj = Emailgroup(int(e),int(grp))
+						status2 = Emailgroup.add(obj)
+					except Exception as e:
+						print e.message
+
+		# return jsonify({'groups':str(request.form['groups']),'emails':str(request.form['emails'])})
+		return jsonify({'success':"Ok" })
+	except Exception as e:
+		return jsonify({'success':"error:"+e.message })
+
 @app.route('/admin/mail/<id>/group/', methods = ['GET', 'POST'])
 @app.route('/admin/mail/<id>/group', methods = ['GET', 'POST'])
 @auth.login_required
@@ -988,7 +1067,19 @@ def admin_mail(id=0,action='',pagination=1):
 	if(math.ceil(Email.query.count())%limit != 0 ):
 		pagin=int(pagin+1)
 	try:
-		if action=='edit':
+		if action=="delete_json":
+			try:
+				arr_email=str(request.form['emails']).split(";")
+				for e in arr_email:
+					try:
+						obj=Email.query.filter_by(id=int(e)).first()
+						status = Email.delete(obj)
+					except Exception as e:
+						print e.message
+				return jsonify({'success':"Ok" })
+			except Exception as e:
+				return jsonify({'success':"Error:"+e.message})
+		elif action=='edit':
 			if request.method=='GET':
 				email=Email.query.filter_by(id=id)
 				return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,email_object=email,groups=groups,emails=emails)
@@ -1065,36 +1156,38 @@ def importContact(pagination=1):
 				data=config.split('\n')
 				help2=1
 				for all_rows in data:
-					try:
-						data_row=all_rows.split(",")
-						contact_email = data_row[28]
-						# return str(len(data_row))
-						firstname = data_row[1]
-						lastname=data_row[3]
-						if firstname=="":
-							firstname=data_row[0]
-						if firstname=="":
-							firstname = contact_email.split("@")[0]
-						if contact_email!="":
-							obj=Email.query.filter_by(email=contact_email).limit(1)
-							if obj.count()<=0:
-								obj=Email(contact_email,firstname,lastname)
-		   						status=Email.add(obj)
-		   						count = count + 1
-		   						if not status:
-									#if success,add user to default group
-									temp = Email.query.filter_by(email=contact_email)
-									for tmp in temp:
-										obj = Emailgroup(tmp.id,group_id)
-										status2 = Emailgroup.add(obj)
-							# print "===>"+str(help2)+":"+contact_email+" : "+firstname+":"+lastname+":"+str(group_id)+"-->"
-							help2 = help2 + 1
-						# else:
-						# 	print "============================="
+					if help2>1:
+						try:
+							data_row=all_rows.split(",")
+							contact_email = data_row[28].replace("\r",'');
+							# return str(len(data_row))
+							firstname = data_row[1]
+							lastname=data_row[3]
+							if firstname=="":
+								firstname=data_row[0]
+							if firstname=="":
+								firstname = contact_email.split("@")[0]
+							if contact_email!="":
+								obj=Email.query.filter_by(email=contact_email).limit(1)
+								if obj.count()<=0:
+									obj=Email(contact_email,firstname,lastname)
+			   						status=Email.add(obj)
+			   						count = count + 1
+			   						if not status:
+										#if success,add user to default group
+										temp = Email.query.filter_by(email=contact_email)
+										for tmp in temp:
+											obj = Emailgroup(tmp.id,group_id)
+											status2 = Emailgroup.add(obj)
+								# print "===>"+str(help2)+":"+contact_email+" : "+firstname+":"+lastname+":"+str(group_id)+"-->"
+								
+							# else:
+							# 	print "============================="
 
-					except Exception as e:
-						set_error=0
-						print e.message
+						except Exception as e:
+							set_error=0
+							print e.message
+					help2 = help2 + 1
 			if count ==0:
 				flash("No email added")
 			elif count == 1:
@@ -1128,10 +1221,9 @@ def sendEmail():
 					
 					subject_send=subject_send.replace("{{email}}",ob.email)
 					description_send = description_send.replace("{{email}}",ob.email)
-					msg = Message(subject_send,sender=(send_name,email),recipients=[ob.email])
+					msg = Message(subject_send,sender=(send_name,email),recipients=[ob.email],reply_to=ob.reply_to)
 					message_string=str(description_send)
 					msg.html = message_string
-					# .reply_to
 					mail.send(msg)	
 					#remove email from email list after send
 					EmailList.delete(ob)
@@ -1154,7 +1246,7 @@ def admin_email():
 	email_to_send = EmailList.query.count()
 	if request.method=="GET":
 		groups=Group.query.order_by(Group.id.desc())
-		return render_template("admin/form/sendmail.html",email_to_send=email_to_send,groups=groups)
+		return render_template("admin/form/sendmail.html",email=email,password=pwd,email_to_send=email_to_send,groups=groups)
 	else:
 		global subject
 		global description
@@ -1163,7 +1255,11 @@ def admin_email():
 		sched = Scheduler()
 		subject = request.form['subject']
 		description = request.form['description']
+		reply_to = request.form['reply_to']
 		groups = request.form.getlist('groups')
+		# return 'dd'
+		if reply_to=="":
+			reply_to = email
 		for group in groups:
 			print str(group)+"========="
 			group_send.append(int(group))
@@ -1176,18 +1272,18 @@ def admin_email():
 					try:
 						help=EmailList.query.filter_by(email=t.email)
 						if help.count()<=0:
-							temp_object=EmailList(t.firstname,t.email,subject,description)
+							temp_object=EmailList(t.firstname,t.email,subject,description,reply_to)
 							EmailList.add(temp_object)
 						# else:
 						# 	print "Email already exists."
 					except Exception as e:
 						print e.message
 		email_to_send = EmailList.query.count()
-		sched.add_interval_job(sendEmail, seconds=120) #120
+		sched.add_interval_job(sendEmail, seconds=120) #120 seconds
 		sched.start()
 		flash("Your Email will be sent successfully.")
 		groups = Group.query.all()
-		return render_template("admin/form/sendmail.html",email_to_send=email_to_send,groups=groups)
+		return render_template("admin/form/sendmail.html",email=email,password=pwd,email_to_send=email_to_send,groups=groups)
 
 @app.route('/admin/earn')
 @app.route('/admin/earn/')

@@ -27,8 +27,9 @@ manager.add_command('db', MigrateCommand)
 #template is the url of selected template 
 ALLOWED_EXTENSIONS = set(['pdf','csv','docx','zip','rar','jpg'])
 #upload url for feature images
-app.config['UPLOAD_FOLDER'] = 'static/files/'
+app.config['UPLOAD_FOLDER'] = 'static/images/images/'
 app.config['UPLOAD_FOLDER_CONTACT']= "static/files/contacts/"
+app.config['UPLOAD_FOLDER_FILE']= "static/files/"
 expire_date = datetime.now()
 expire_date = expire_date + timedelta(days=90)
 

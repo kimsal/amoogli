@@ -67,7 +67,21 @@
             </span>
           </h1>
           <div class="inbox-checkbox-triggered">
-        
+          <!--start group action-->
+              &nbsp;&nbsp;
+              <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Select All" class="btn btn-default" style="padding:3px;width:40px;">
+                 <input name="select_all" type="checkbox" style="width:15px;height:15px;" />
+              </a>
+
+
+              <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete" class="deletebutton btn btn-default" onclick="deleteEmail();" >
+                <strong>
+                  <i class="fa fa-trash-o fa-lg">
+                    
+                  </i>
+                </strong>
+              </a>
+              <!--End group action-->
             <div class="btn-group">
              <!--  <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Mark Important" class="btn btn-default"><strong><i class="fa fa-exclamation fa-lg text-danger"></i></strong></a>
               <a href="javascript:void(0);" rel="tooltip" title="" data-placement="bottom" data-original-title="Move to folder" class="btn btn-default"><strong><i class="fa fa-folder-open fa-lg"></i></strong></a>
@@ -260,7 +274,7 @@
      {% for email in emails %}
      <script type="text/javascript">
       temp=moment().from("{{email.published_at}}");
-      jqgrid_data.push({"name":"{{email.name}}","email":"{{email.email}}",'published_at':temp,"action":"<a href='/admin/email/sending/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>"});
+      jqgrid_data.push({'mycheckbox':'<input type="checkbox" name="email" value="{{email.id}}" class="cbox"/>',"name":"{{email.name}}","email":"{{email.email}}",'reply_to':"{{email.reply_to}}",'published_at':temp,"action":"<a href='/admin/email/sending/{{email.id}}/delete' onclick='return confirm(\"Are you sure ?\")' class='btn btn-xs btn-default'><i class='fa fa-trash-o' style='color:red;'></i></a>"});
      </script>
 
       <!-- pop up modal group email-->
@@ -318,22 +332,34 @@
         jQuery("#jqgrid").jqGrid({
           data : jqgrid_data,
           datatype : "local",
-          colNames : ['Name','Email',"Published", 'Actions'],
+          colNames : ["",'Name','Email','Reply To','Published','Actions'],
           colModel : [{
+            name : 'mycheckbox',
+            index : 'mycheckbox',
+            width : 20
+          },{
             name : 'name',
             index : 'name',
-            editable : false
+            editable : false,
+            width : 100
           }, {
             name : 'email',
             index : 'email',
             editable : false
           }, {
+            name : 'reply_to',
+            index : 'reply_to',
+            editable : false
+          
+          }, {
             name : 'published_at',
             index : 'published_at',
-            editable : false
+            editable : false,
+            width : 50,
           }, {
             name : 'action',
-            index : 'action'
+            index : 'action',
+            width : 20,
           }],
           rowList: [],        // disable page size dropdown
             pgbuttons: false,     // disable page control like next, back button
@@ -355,7 +381,7 @@
             }
           },
           editurl : "/",
-          caption : "Email Info",
+          caption : "Sending Info",
           multiselect : false,
           autowidth : true,
           height: 3000,
@@ -425,10 +451,64 @@
     <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
     <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
    <script type="text/javascript">
+   pageSetUp();
      if("{{name}}"!=''){
         $('input[name="name"]').attr('value',"{{name|safe}}")
         $('#frm').attr('action','/admin/email/group/{{name}}/edit/');
       }
+      $('input[name="select_all"]').change(function(){
+        if($(this).is(':checked')){
+          $('input[name="email"]').prop( "checked", true );
+          $("#jqgrid  tr.ui-widget-content").each(function(index,item){
+            arr_selected_email.push($('#jqgrid  tr.ui-widget-content:nth-child('+(index+2)+') td:nth-child(4)').html());
+          // }
+        });
+        }
+        else{
+           $('input[name="email"]').prop( "checked", false );
+           arr_selected_email=[];
+        }
+        console.log(arr_selected_email);  
+      });
+
+    function deleteEmail(){
+      $(".alert").css('display',"none");
+      var help=confirm('Are you sure?');
+      if(help==false)
+        return false;
+      var arr_email_temp=[];
+      $('input[name="email"]').each(function(){
+        if($(this).is(':checked')){
+          arr_email_temp.push($(this).val());
+        }
+      });
+      if(arr_email_temp.length>0){
+          $.ajax({
+            type: "POST",
+            url: '/admin/email/sending/0/delete/',
+            data: {'emails':arr_email_temp.join(";")},
+            success: function(response) {
+              console.log(response);
+              if(response.success=='Ok'){
+                // alert('ok');
+                  $(".flash").html('<li>Sending email deleted successfully.</li>');
+                  $(".flash").addClass('alert alert-success');
+                  $(".flash").css('display',"block");
+              }
+              else{
+                // alert('not ok');
+                  $(".flash").html("<li>Error in deleting Sending emails.</li>");
+                  $(".flash").addClass('alert  alert-danger');
+                  $(".flash").css('display',"block");
+              }
+            }
+          });
+        $('button.close').click();
+        setTimeout(function(){ 
+          location.reload();
+        }, 1000);
+        }
+    }
    </script>
 
 {% include 'admin/footer.html' %}

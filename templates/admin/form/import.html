@@ -4,6 +4,7 @@
   function addEmailGroup(email_id,group_id){
     var dt=[];
     dt[0]=parseInt(email_id);
+  
     dt[1]=parseInt(group_id);
     $.ajax({
          type: "POST",
@@ -94,12 +95,12 @@
                 <li>
                   <a href="/admin/email/sending">
                     {%if email_to_send==0 %}
-                   No email sending 
-                {%elif email_to_send==1%}
-                  {{email_to_send}} sending email ... 
-                {%else%}
-                  {{email_to_send}} sending emails ... 
-                {%endif%}
+                       No email sending 
+                    {%elif email_to_send==1%}
+                      {{email_to_send}} sending email ... 
+                    {%else%}
+                      {{email_to_send}} sending emails ... 
+                    {%endif%}
                   </a>
                 </li>
               </ul>
@@ -119,7 +120,7 @@
               <div class="col-md-5" style="margin-bottom:5px;">
                 <select class="form-control" id="category_id" name="category_id">
                 {%for group in groups%}
-                 <option value="{{group.id}}">{{group.firstname}}</option>
+                 <option value="{{group.id}}">{{group.name}}</option>
                 {%endfor%}
               </select>  
               </div>
@@ -168,6 +169,16 @@
                 </a>
               </li>
             </ul>
+            
+        
+            <div class="air air-bottom inbox-space">
+        
+             <!--  <strong>{{email_to_send}} email </strong> sending ...
+
+              <div class="progress progress-micro">
+                <div class="progress-bar progress-primary" style="width: 34%;"></div>
+              </div> -->
+            </div>
         
           </div>
           <!-- <div class="table-wrap custom-scroll animated fast fadeInRight"> -->
