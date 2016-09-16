@@ -1203,7 +1203,7 @@ def sendEmail():
 	with app.app_context():
 		random_time = randint(0,240)
 		print '======>>> time to send = '+str((int(120+random_time))/60)
-		time.sleep(random_time)
+		# time.sleep(random_time)
 		global email_count
 		global subject
 		global description
@@ -1213,6 +1213,16 @@ def sendEmail():
 			email_count=email_count+1
 			for ob in obj:
 				#send email
+				app.config.update(
+					DEBUG=True,
+					#EMAIL SETTINGS
+					MAIL_SERVER='smtp.gmail.com',
+					MAIL_PORT=465,
+					MAIL_USE_SSL=True,
+					MAIL_USERNAME = ob.sending_email,
+					MAIL_PASSWORD = ob.sending_password
+					)
+				mail=Mail(app)
 				print ob.name
 				try:
 					description = ob.description
@@ -1222,14 +1232,14 @@ def sendEmail():
 					
 					subject_send=subject_send.replace("{{email}}",ob.email)
 					description_send = description_send.replace("{{email}}",ob.email)
-					msg = Message(subject_send,sender=(send_name,email),recipients=[ob.email],reply_to=ob.reply_to)
+					msg = Message(subject_send,sender=(ob.sending_name,ob.sending_email),recipients=[ob.email],reply_to=ob.reply_to)
 					message_string=str(description_send)
 					msg.html = message_string
 					mail.send(msg)	
 					#remove email from email list after send
 					EmailList.delete(ob)
 				except Exception as e:
-					print e.message
+					print "Error: "+e.message
 		else:
 			# Shutdown your cron thread if the web process is stopped
 			sched.shutdown(wait=False)
@@ -1247,7 +1257,7 @@ def admin_email():
 	email_to_send = EmailList.query.count()
 	if request.method=="GET":
 		groups=Group.query.order_by(Group.id.desc())
-		return render_template("admin/form/sendmail.html",email=email,password=pwd,email_to_send=email_to_send,groups=groups)
+		return render_template("admin/form/sendmail.html",name=send_name,email=email,password=pwd,email_to_send=email_to_send,groups=groups)
 	else:
 		global subject
 		global description
@@ -1258,6 +1268,9 @@ def admin_email():
 		description = request.form['description']
 		reply_to = request.form['reply_to']
 		groups = request.form.getlist('groups')
+		sending_email= request.form['send_from']
+		sending_password= request.form['password']
+		sending_name= request.form['name']
 		# return 'dd'
 		if reply_to=="":
 			reply_to = email
@@ -1273,14 +1286,14 @@ def admin_email():
 					try:
 						help=EmailList.query.filter_by(email=t.email)
 						if help.count()<=0:
-							temp_object=EmailList(t.firstname,t.email,subject,description,reply_to)
+							temp_object = EmailList(t.firstname,t.email,subject,description,reply_to,sending_email,sending_password,sending_name)
 							EmailList.add(temp_object)
 						# else:
 						# 	print "Email already exists."
 					except Exception as e:
 						print e.message
 		email_to_send = EmailList.query.count()
-		sched.add_interval_job(sendEmail, seconds=120) #120 seconds
+		sched.add_interval_job(sendEmail, seconds=1) #120 seconds
 		sched.start()
 		flash("Your Email will be sent successfully.")
 		groups = Group.query.all()

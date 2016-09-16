@@ -192,10 +192,26 @@
                   <div class="row">
                     <div class="form-group">
                       <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
-                      <div class="col-md-5 col-xs-12">
-                        <input class="form-control" placeholder="From" type="email" name="send_from" id="send_from" value="From: {{email}}" readonly>
+                      <div class="" style="margin-top:7px;float:left;">
+                        From: 
                       </div>
                       <div class="col-md-5 col-xs-12">
+                        <input class="form-control" placeholder="From" type="email" name="send_from" id="send_from" value="{{email}}">
+                      </div>
+                      <div class="col-md-3 col-xs-12">
+                          <input class="form-control" placeholder="Password" type="password" name="password" id="password" value="{{password}}">
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+                <div class="inbox-info-bar no-padding1">
+                  <div class="row">
+                    <div class="form-group">
+                      <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
+                      <div class="col-md-xs-12 col-md-5">
+                        <input class="form-control" placeholder="Sender Name" type="text" name="name" id="name" value="{{name}}">
+                      </div>
+                       <div class="col-md-5 col-xs-12">
                           <input class="form-control" placeholder="Reply to(Optional)" type="email" name="reply_to" id="reply_to">
                       </div>
                     </div>
@@ -205,13 +221,12 @@
                   <div class="row">
                     <div class="form-group">
                       <label class="control-label col-md-1"><strong><!-- Subject --></strong></label>
-                      <div class="col-md-11">
+                      <div class="col-md-xs-11">
                         <input class="form-control" placeholder="Email Subject" type="text" name="subject" id="subject">
                       </div>
                     </div>
-                  </div>  
+                  </div>
                 </div>
-
                 <div class="inbox-message no-padding">
                   <div id="emailbody">
                       <br><br><br><br><br>Thanks,<br><strong>Amoogli Team</strong><br><br><small><br> No. 17, St. 604, 12152 Phnom Penh<br><i class="fa fa-phone"> (855) 77 504 106</i></small><br>    
@@ -345,6 +360,13 @@
 
     <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
     <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
-   
+   <script type="text/javascript">
+     $("#password").click(function(){
+      if($(this).attr('type')=='password')
+        $(this).attr('type','text')
+      else
+        $(this).attr('type','password')
+     });
+   </script>
 
 {% include 'admin/footer.html' %}

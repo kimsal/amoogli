@@ -221,13 +221,13 @@
                           {% for page in range(1,pagin+1) %}
                             {% if page == current_pagin %}
                               <li class="active">
-                                <a href="/admin/import/{{page}}">
+                                <a href="/admin/mail/{{page}}">
                                   {{page}}
                                 </a>
                               </li>
                             {%else%}
                               <li>
-                                <a href="/admin/import/{{page}}">
+                                <a href="/admin/mail/{{page}}">
                                   {{page}}
                                 </a>
                               </li>
@@ -236,16 +236,16 @@
                       </ul>
                     {%else %}
                       <li class="{%if current_pagin==1 %}active{%endif%}">
-                        <a href="/admin/import/1">1</a>
+                        <a href="/admin/mail/1">1</a>
                       </li>
                       <li class="{%if current_pagin==2 %}active{%endif%}">
-                        <a href="/admin/import/2">2</a>
+                        <a href="/admin/mail/2">2</a>
                       </li>
                       <li class="{%if current_pagin==3 %}active{%endif%}">
-                        <a href="/admin/import/3">3</a>
+                        <a href="/admin/mail/3">3</a>
                       </li>
                       <li class="{%if current_pagin==4 %}active{%endif%}">
-                        <a href="/admin/import/4">4</a>
+                        <a href="/admin/mail/4">4</a>
                       </li>
                       <li>
                         <a href="#">...</a>
@@ -253,13 +253,13 @@
                       {% for page in range(pagin-4,pagin+1) %}
                         {% if current_pagin == page%}
                         <li class="active">
-                          <a href="/admin/import/{{page}}">
+                          <a href="/admin/mail/{{page}}">
                             {{page}}
                           </a>
                           </li>
                        {%else%}
                         <li>
-                          <a href="/admin/import/{{page}}">
+                          <a href="/admin/mail/{{page}}">
                             {{page}}
                           </a>
                           </li>

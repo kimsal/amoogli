@@ -405,6 +405,9 @@ class EmailList(db.Model):
     subject = db.Column(db.String(1000))
     description = db.Column(db.Text)
     reply_to = db.Column(db.String(255))
+    sending_email = db.Column(db.String(255))
+    sending_password = db.Column(db.String(255))
+    sending_name    = db.Column(db.String(255))
     published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
     def __str__(self):
         return self.name
@@ -417,13 +420,19 @@ class EmailList(db.Model):
             subject = self.subject,
             description = self.description,
             reply_top = self.reply_to,
+            sending_email=self.sending_email,
+            sending_password=self.sending_password,
+            sending_name=self.sending_name
             )
-    def __init__(self,name,email,subject,description,reply_to):
+    def __init__(self,name,email,subject,description,reply_to,sending_email,sending_password,sending_name):
         self.name =name,
         self.email =email,
         self.subject = subject,
         self.description = description,
         self.reply_to = reply_to,
+        self.sending_email=sending_email,
+        self.sending_password=sending_password,
+        self.sending_name=sending_name
     def add(messagelist):
         db.session.add(messagelist)
         return db.session.commit()
