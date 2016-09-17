@@ -1293,7 +1293,7 @@ def admin_email():
 					except Exception as e:
 						print e.message
 		email_to_send = EmailList.query.count()
-		sched.add_interval_job(sendEmail, seconds=1) #120 seconds
+		sched.add_interval_job(sendEmail, seconds=10) #120 seconds
 		sched.start()
 		flash("Your Email will be sent successfully.")
 		groups = Group.query.all()
