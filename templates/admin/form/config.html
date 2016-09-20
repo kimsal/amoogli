@@ -1,0 +1,241 @@
+{% include 'admin/header.html' %}
+<script type="text/javascript">
+  var temp;
+  function addEmailGroup(email_id,group_id){
+    var dt=[];
+    dt[0]=parseInt(email_id);
+    dt[1]=parseInt(group_id);
+    $.ajax({
+         type: "POST",
+         async: false,
+         url: "/admin/checkemail/"+email_id+"/"+group_id+"/add",
+         data: {json_str:JSON.stringify(dt)},
+         success: function(msg){
+          console.log('add success:'+msg);
+         },
+         error:function(msg){
+          console.log(msg+"");
+         }
+         // dataType: "json"
+      });
+  }
+  function removeEmailGroup(email_id,group_id){
+    var dt=[];
+    dt[0]=parseInt(email_id);
+    dt[1]=parseInt(group_id);
+    $.ajax({
+         type: "POST",
+         async: false,
+         url: "/admin/checkemail/"+email_id+"/"+group_id+"/remove",
+         data: {json_str:JSON.stringify(dt)},
+         success: function(msg){
+          console.log('remove success:'+msg);
+         },
+         error:function(msg){
+          console.log(msg+"");
+         }
+         // dataType: "json"
+      });
+  }
+</script>
+   <!-- MAIN PANEL -->
+    <div id="main" role="main">
+      <!-- RIBBON -->
+      <div id="ribbon">
+
+        <span class="ribbon-button-alignment"> 
+          <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+            <i class="fa fa-refresh"></i>
+          </span> 
+        </span>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+          <li>Home</li><li>Email</li>
+        </ol>
+
+      </div>
+      <!-- END RIBBON -->
+
+      <!-- MAIN CONTENT -->
+      <div id="content">
+
+        <div class="inbox-nav-bar no-content-padding">
+        
+          <h1 class="page-title txt-color-blueDark hidden-tablet"><i class="fa fa-fw fa-inbox"></i> Email &nbsp;
+            <span class="btn-group">
+
+              <a href="#" data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"><span class="caret single"></span></a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/admin/email">Compose</a>
+                </li>
+                 <li>
+                  <a href="/admin/config">Configure email</a>
+                </li>
+                <li>
+                  <a href="/admin/email/group">Group</a>
+                </li>
+                <li>
+                  <a href="/admin/mail">Contact</a>
+                </li>
+                <li>
+                  <a href="/admin/import">Import contact</a>
+                </li>
+                <li>
+                  <a href="/admin/email/sending">
+                    {%if email_to_send==0 %}
+                       No email sending 
+                    {%elif email_to_send==1%}
+                      {{email_to_send}} sending email ... 
+                    {%else%}
+                      {{email_to_send}} sending emails ... 
+                    {%endif%}
+                  </a>
+                </li>
+              </ul>
+            </span>
+          </h1>
+              <!--End group action-->
+
+        </div>
+        
+        <div id="inbox-content" class="inbox-body no-content-padding">
+        
+          <div class="inbox-side-bar">
+        
+            <a href="/admin/email"  class="btn btn-primary btn-block"> <strong>Compose</strong> </a>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/config/"> Configure email </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/email/group/"> Group </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/mail/"> Contact </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/import/"> Import contact </a>
+              </li>
+            </ul>
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/email/sending">
+                {%if email_to_send==0 %}
+                   No email sending 
+                {%elif email_to_send==1%}
+                  {{email_to_send}} sending email ... 
+                {%else%}
+                  {{email_to_send}} sending emails ... 
+                {%endif%}
+                </a>
+              </li>
+            </ul>
+            
+        
+            <div class="air air-bottom inbox-space">
+        
+             <!--  <strong>{{email_to_send}} email </strong> sending ...
+
+              <div class="progress progress-micro">
+                <div class="progress-bar progress-primary" style="width: 34%;"></div>
+              </div> -->
+            </div>
+        
+          </div>
+          <!-- <div class="table-wrap custom-scroll animated fast fadeInRight"> -->
+            <!-- ajax will fill this area -->
+            <!-- LOADING... -->
+
+            <div style="min-height: 503px; opacity: 1;" class="table-wrap custom-scroll animated fast fadeInRight col-sm-5 col-xs-12">
+               <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flash" style="display:none;">
+
+               </article>
+               <!--Jqgrid-->
+               <article class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
+                      {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                           {% for message in messages %}
+                            <tr id="msg29">
+                              <div class="col-md-12 col-xs-12 alert">
+                                {{ message }}
+                              </div>
+                             </tr>
+                         {% endfor %}
+                        {% endif %}
+                       {% endwith %}
+                         <form class="form-horizontal" action="/admin/config/" method="POST" id="frm" enctype="multipart/form-data">
+                           
+                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin:0px;">
+                              <div class="form-group">
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <input type="text" name="email" class="form-control" placeholder="Email" value="{{email}}"/>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <input type="password" name="password" class="form-control" placeholder="Email Password" value="{{password}}"/>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <input type="text" name="name" class="form-control" placeholder="Name" value="{{name}}"/>
+                                  </div>
+                              </div>
+                              <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="col-sm-12 col-lg-12 col-md-12">
+                                      <div class="btn-group pull-right btnsub">         
+                                        <button class="btn btn-sm btn-primary" type="reset">
+                                          <i class="fa fa-times"></i> Cancel
+                                        </button>          
+                                      </div>
+                                      <div class="btn-group pull-right btnsub">   
+                                        <button class="btn btn-sm btn-success btn-save" type="submit">
+                                          <i class="fa fa-check"></i> Save
+                                        </button>    
+                                      </div>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="col-xs-12 col-sm-7 col-md-7 col-lg-7" style="margin:0px;">
+
+                            </article>
+                          </form>
+                </article>
+            </div>
+            <div class="col-xs-12 col-sm-4" style="padding-right:5px 10px;margin-left:10px;">
+                <h2><b>What are these information?</b></h2>
+                <ul>
+                  <li><b>Email</b> is the email which you will use to send email.</li>
+                  <li><b>Password</b> is the real password of your email that you entered.</li>
+                  <li><b>Name</b> is the name that will be the email sender name.</li>
+                </ul>
+                <h2><b>Note:</b></h2>
+                  <p>Before sending your email, you have to make sure that you have turned on <a href="https://www.google.com/settings/security/lesssecureapps" target="_blank"><b>Less secure apps</b></a>  and <a href="" target="_blank"><b>Allow access to your Google account</b>.</a></p>
+
+            </div>
+        </div>
+
+
+      </div>
+      <!-- END MAIN CONTENT -->
+
+    </div>
+    <!-- END MAIN PANEL -->
+ <!-- END MAIN PANEL -->
+    <script src="/statiac/admin/js/plugin/summernote/summernote.min.js"></script>
+    <script src="/statiac/adminjs/plugin/delete-table-row/delete-table-row.min.js"></script>
+   <style type="text/css">
+     ul li{
+      list-style: disc;
+     }
+   </style>
+{% include 'admin/footer.html' %}

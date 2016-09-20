@@ -22,14 +22,17 @@ config=""
 email=''
 password=''
 send_name=''
-with open('config.txt','r') as f:
-	config=str(f.read())
-	data=config.split('\n')
-	template=data[0].split('"')[1]
-	limit=int(data[1].split('"')[1])
-	email=data[2].split('"')[1]
-	pwd=data[3].split('"')[1]
-	send_name=data[4].split('"')[1]
+try:
+	with open('config.txt','r') as f:
+		config=str(f.read())
+		data=config.split('\n')
+		template=data[0].split('"')[1]
+		limit=int(data[1].split('"')[1])
+		email=data[2].split('"')[1]
+		pwd=data[3].split('"')[1]
+		send_name=data[4].split('"')[1]
+except Exception as e:
+	print e.message
 ########## End Configuration ############
 #### send mail ####
 app.config.update(
@@ -37,6 +40,7 @@ app.config.update(
 	#EMAIL SETTINGS
 	MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
+	MAIL_USE_TLS = False,
 	MAIL_USE_SSL=True,
 	MAIL_USERNAME = email,
 	MAIL_PASSWORD = pwd
@@ -72,6 +76,30 @@ def download(name=''):
                      mimetype='text/csv',
                      attachment_filename=name,
                      as_attachment=True)
+@app.route('/admin/config', methods=['POST', 'GET'])
+@app.route('/admin/config/', methods=['POST', 'GET'])
+def config():
+	global email
+	global pwd
+	global send_name
+	global template
+	global limit
+	if request.method == 'GET':
+		return render_template("admin/form/config.html",name=send_name,email=email,password=pwd)
+	else:
+		try:
+			email = request.form['email']
+			send_name=request.form['name']
+			pwd = request.form['password']
+			
+			dataToSave = 'Template="'+template+'";\nlimit="'+str(limit)+'";\nemail="'+email+'";\npassword="'+pwd+'";\nname="'+send_name+'";\n'
+			file=open("config.txt","w")
+			file.write(dataToSave)
+			flash("Configuratin saved successfully")
+		except Exception as e:
+			flash(e.message)
+			return render_template(url_for("config"))
+		return redirect(url_for("config"))
 @app.route('/admin/login', methods=['POST', 'GET'])
 @app.route('/admin/login/', methods=['POST', 'GET'])
 def admin_login():
@@ -797,6 +825,7 @@ def admin_choose_template(new_template):
 		flash("Template changed successfully.")
 	except Exception as e:
 		flash(str(e.message))
+		return redirect(url_for("config"))
 	return redirect(url_for('admin_index'))
 @app.route('/admin/limit')
 @app.route('/admin/limit/')
@@ -1103,7 +1132,16 @@ def admin_mail(id=0,action='',pagination=1):
 				flash("Error in deleting email !")
 				return redirect(url_for('admin_mail'))
 		elif request.method=="GET":
-			return render_template("admin/form/maillist.html",current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,groups=groups,emails=emails)
+			search=''
+			if request.args.has_key('q'):
+				search=(str(request.args['q']))#.split()
+				search=search.replace(" ",'+')
+				emails=Email.query.filter((Email.firstname).match("'%"+search+"%'")).order_by(Email.id.desc()).all()
+				
+				pagin=math.ceil((Email.query.filter((Email.firstname).match("'%"+search+"%'")).count())/limit)
+				if(math.ceil(Email.query.filter((Email.firstname).match("'%"+search+"%'")).count())%limit != 0 ):
+					pagin=int(pagin+1)
+			return render_template("admin/form/maillist.html",search=search,current_pagin=int(pagination),pagin=int(pagin),email_to_send=email_to_send,groups=groups,emails=emails)
 		else:
 			obj=Email(request.form['email'],request.form['firstname'],request.form['lastname'])
 	   		status=Email.add(obj)
@@ -1203,7 +1241,7 @@ def sendEmail():
 	with app.app_context():
 		random_time = randint(0,240)
 		print '======>>> time to send = '+str((int(120+random_time))/60)
-		# time.sleep(random_time)
+		time.sleep(random_time)
 		global email_count
 		global subject
 		global description
@@ -1293,7 +1331,7 @@ def admin_email():
 					except Exception as e:
 						print e.message
 		email_to_send = EmailList.query.count()
-		sched.add_interval_job(sendEmail, seconds=10) #120 seconds
+		sched.add_interval_job(sendEmail, seconds=120) #120 seconds
 		sched.start()
 		flash("Your Email will be sent successfully.")
 		groups = Group.query.all()

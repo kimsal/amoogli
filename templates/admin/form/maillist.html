@@ -70,6 +70,9 @@
                 <li>
                   <a href="/admin/email">Compose</a>
                 </li>
+                 <li>
+                  <a href="/admin/config">Configure email</a>
+                </li>
                 <li>
                   <a href="/admin/email/group">Group</a>
                 </li>
@@ -143,7 +146,10 @@
                 </strong>
               </a>
               <!--End group action-->
-
+              <form class="frm form-horizontal pull-right" action="/admin/mail/" method="get">
+                <input type="text" name="q" placeholder="Search Email..." class="" style="display:inline;height:33px;padding:5px 10px;" value="{{search}}" required>
+                <input type="submit" name="" value="Search" class="btn btn-primary" >
+              </form>
         </div>
         
         <div id="inbox-content" class="inbox-body no-content-padding">
@@ -151,7 +157,11 @@
           <div class="inbox-side-bar">
         
             <a href="/admin/email"  class="btn btn-primary btn-block"> <strong>Compose</strong> </a>
-        
+            <ul class="inbox-menu-lg">
+              <li class="active">
+                <a class="inbox-load" href="/admin/config/"> Configure email </a>
+              </li>
+            </ul>
             <ul class="inbox-menu-lg">
               <li class="active">
                 <a class="inbox-load" href="/admin/email/group/"> Group </a>
