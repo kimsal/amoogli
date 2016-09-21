@@ -5,13 +5,6 @@ migrate database:
 	python models.py db migrate
 	python models.py db upgrade
 
-
-
-
-
-
-
-
 For developer:
 https://github.com/flask-admin/flask-admin
 http://flask-admin.readthedocs.io/en/latest/introduction/#working-with-the-built-in-templates
@@ -31,16 +24,15 @@ python models.py db migrate
 python models.py db upgrade
 
 #admin:
+![Alt text](/static/admin/img/logo.png)
+For more info please visit our website at [Amoogli.com](http://amoogli.com/).
+
 sudo pip install passlib
 sudo pip install flask_httpauth
 sudo pip install bottle
 sudo pip install flask_mail
 
-
 ############################################
-
-
-
 
 Url to learn:
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xviii-deployment-on-the-heroku-cloud
