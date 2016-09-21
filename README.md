@@ -1,24 +1,9 @@
 ![Alt text](/static/admin/img/logo.png)
-[Amoogli](http://amoogli.com/) is a blockchain-based web-publishing and communication platform where anyone can earn rewards.
+[Amoogli](http://amoogli.com/) is a blockchain-based web-publishing and communication platform where anyone can earn rewards. Amoogli web builder is compatable with [https://www.postgresql.org/](Posqlresql) database
 For more info please visit our website at [Amoogli.com](http://amoogli.com/).
-# Blog
-migrate database:
-	 
-	python models.py db init
-	 
-	python models.py db migrate
-	 
-	python models.py db upgrade
-	 
-
-For developer:
-[https://github.com/flask-admin/flask-admin](https://github.com/flask-admin/flask-admin)
-
-[http://flask-admin.readthedocs.io/en/latest/](http://flask-admin.readthedocs.io/en/latest/)
-
 ---------------------------------------------
 
-#Install plugin or environment:
+## 🙌Install plugin or environment:
  	
 	pip install flaskckeditor
 	 
@@ -38,7 +23,7 @@ For developer:
 	
 	sudo pip install flask_mail
 	
-#migrate database:
+## 🙌 Migrate database:
 	
 	python models.py db init
 	
@@ -50,11 +35,11 @@ For developer:
 
 ############################################
 
-Url to learn:
-http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xviii-deployment-on-the-heroku-cloud
+[https://github.com/flask-admin/flask-admin](https://github.com/flask-admin/flask-admin)
 
-ckeditor:
-https://github.com/Still-not-satisfied-projects/flask-ckeditor/tree/master/examples/app
+[http://flask-admin.readthedocs.io/en/latest/](http://flask-admin.readthedocs.io/en/latest/)
+
+http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xviii-deployment-on-the-heroku-cloud
 
 +LOGIN: http://codereview.stackexchange.com/questions/110679/simple-login-system-using-python-flask-and-mysql
 
