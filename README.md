@@ -1,36 +1,52 @@
-# blog
+![Alt text](/static/admin/img/logo.png)
+[Amoogli](http://amoogli.com/) is a blockchain-based web-publishing and communication platform where anyone can earn rewards.
+For more info please visit our website at [Amoogli.com](http://amoogli.com/).
+# Blog
 migrate database:
-	connect database in database.py
+	 ```
 	python models.py db init
+	 ```
 	python models.py db migrate
+	 ```
 	python models.py db upgrade
+	 ```
 
 For developer:
-https://github.com/flask-admin/flask-admin
-http://flask-admin.readthedocs.io/en/latest/introduction/#working-with-the-built-in-templates
+[https://github.com/flask-admin/flask-admin](https://github.com/flask-admin/flask-admin)
+
+[http://flask-admin.readthedocs.io/en/latest/](http://flask-admin.readthedocs.io/en/latest/)
+
 ---------------------------------------------
-#git clone git@github.com:flask-admin/flask-admin.git
-//pip install flask-restful
-############################################
-pip install flaskckeditor
-sudo pip install slugify
-python models.py db init
-sudo pip install flask_sijax
-sudo pip install  flask_restful
 
+#Install plugin or environment:
+ 	```
+	pip install flaskckeditor
+	 ```
+	sudo pip install slugify
+	 ```
+	python models.py db init
+	 ```
+	sudo pip install flask_sijax
+	 ```
+	sudo pip install  flask_restful
+	 ```
+	sudo pip install passlib
+	```
+	sudo pip install flask_httpauth
+	```
+	sudo pip install bottle
+	```
+	sudo pip install flask_mail
+	```
 #migrate database:
-python models.py db init
-python models.py db migrate
-python models.py db upgrade
-
-#admin:
-![Alt text](/static/admin/img/logo.png)
-For more info please visit our website at [Amoogli.com](http://amoogli.com/).
-
-sudo pip install passlib
-sudo pip install flask_httpauth
-sudo pip install bottle
-sudo pip install flask_mail
+	```
+	python models.py db init
+	```
+	python models.py db migrate
+	```
+	python models.py db upgrade
+	```
+#Admin:
 
 ############################################
 
@@ -39,20 +55,7 @@ http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xviii-deploymen
 
 ckeditor:
 https://github.com/Still-not-satisfied-projects/flask-ckeditor/tree/master/examples/app
+
 +LOGIN: http://codereview.stackexchange.com/questions/110679/simple-login-system-using-python-flask-and-mysql
+
 +password encrypt: http://blog.miguelgrinberg.com/post/restful-authentication-with-flask
-
-
-NOTE (must delete after it works):
-from .forms import CKEditorForm
-
-	@app.route('/ckupload/', methods=['POST', 'OPTIONS'])
-	def ckupload():
-	    """file/img upload interface"""
-	    form = CKEditorForm()
-	    response = form.upload(endpoint=app)
-	    return response
-
-
-URL:
-	http://flask.pocoo.org/snippets/85/
