@@ -3,13 +3,13 @@
 For more info please visit our website at [Amoogli.com](http://amoogli.com/).
 # Blog
 migrate database:
-	 ```
+	 
 	python models.py db init
-	 ```
+	 
 	python models.py db migrate
-	 ```
+	 
 	python models.py db upgrade
-	 ```
+	 
 
 For developer:
 [https://github.com/flask-admin/flask-admin](https://github.com/flask-admin/flask-admin)
@@ -19,34 +19,34 @@ For developer:
 ---------------------------------------------
 
 #Install plugin or environment:
- 	```
+ 	
 	pip install flaskckeditor
-	 ```
+	 
 	sudo pip install slugify
-	 ```
+	 
 	python models.py db init
-	 ```
+	 
 	sudo pip install flask_sijax
-	 ```
+	 
 	sudo pip install  flask_restful
-	 ```
+	 
 	sudo pip install passlib
-	```
+	
 	sudo pip install flask_httpauth
-	```
+	
 	sudo pip install bottle
-	```
+	
 	sudo pip install flask_mail
-	```
+	
 #migrate database:
-	```
+	
 	python models.py db init
-	```
+	
 	python models.py db migrate
-	```
+	
 	python models.py db upgrade
-	```
-#Admin:
+	
+#Admin reference:
 
 ############################################
 
