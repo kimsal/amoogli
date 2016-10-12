@@ -1,6 +1,6 @@
 ![Alt text](/static/admin/img/logo.png)
 [Amoogli](http://amoogli.com/) is a blockchain-based web-publishing and communication platform where anyone can earn rewards. Amoogli web builder is compatable with [Postgresql](https://www.postgresql.org/) database
-For more info please visit our website at [Amoogli.com](http://amoogli.com/).
+Application build for Amoogli as an example. We also provide value added service, please visit [Amoogli.com](http://amoogli.com/).
 ---------------------------------------------
 
 ## 🙌Install plugin or environment:

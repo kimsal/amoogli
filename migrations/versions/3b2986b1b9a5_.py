@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: f4537464691a
+Revision ID: 3b2986b1b9a5
 Revises: None
-Create Date: 2016-09-04 17:12:23.057696
+Create Date: 2016-10-10 21:58:37.765444
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'f4537464691a'
+revision = '3b2986b1b9a5'
 down_revision = None
 
 from alembic import op
@@ -36,7 +36,8 @@ def upgrade():
     op.create_table('email',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=True),
-    sa.Column('name', sa.String(length=255), nullable=True),
+    sa.Column('firstname', sa.String(length=255), nullable=True),
+    sa.Column('lastname', sa.String(length=255), nullable=True),
     sa.Column('published_at', sa.TIMESTAMP(), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
@@ -47,6 +48,22 @@ def upgrade():
     sa.Column('email', sa.String(length=255), nullable=True),
     sa.Column('subject', sa.String(length=1000), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('reply_to', sa.String(length=255), nullable=True),
+    sa.Column('sending_email', sa.String(length=255), nullable=True),
+    sa.Column('sending_password', sa.String(length=255), nullable=True),
+    sa.Column('sending_name', sa.String(length=255), nullable=True),
+    sa.Column('published_at', sa.TIMESTAMP(), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('email_sent',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('send_to', sa.String(length=150), nullable=True),
+    sa.Column('subject', sa.String(length=1000), nullable=True),
+    sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('reply_to', sa.String(length=255), nullable=True),
+    sa.Column('sending_email', sa.String(length=255), nullable=True),
+    sa.Column('sending_name', sa.String(length=255), nullable=True),
+    sa.Column('published_at', sa.TIMESTAMP(), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('group',
@@ -128,6 +145,7 @@ def upgrade():
     sa.Column('file', sa.String(length=255), nullable=True),
     sa.Column('published_at', sa.TIMESTAMP(), server_default=sa.text(u'CURRENT_TIMESTAMP'), nullable=True),
     sa.Column('views', sa.Integer(), nullable=True),
+    sa.Column('images', sa.Text(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user_member.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -160,6 +178,7 @@ def downgrade():
     op.drop_table('page')
     op.drop_table('member')
     op.drop_table('group')
+    op.drop_table('email_sent')
     op.drop_table('email_list')
     op.drop_table('email')
     op.drop_table('contact')

@@ -149,9 +149,9 @@ class Post(db.Model):
         self.description = description
         self.feature_image = feature_image
         self.category_id = category_id
-        self.file=file,
+        self.file=file
         self.user_id = user_id
-        self.views=views,
+        self.views=views
         self.images=images
     def add(post):
         db.session.add(post)
@@ -287,8 +287,8 @@ class Contact(db.Model):
             email=self.email
             )
     def __init__(self,firstname,lastname,email):
-        self.firstname =firstname,
-        self.lastname =lastname,
+        self.firstname =firstname
+        self.lastname =lastname
         self.email =email
     def add(contact):
         db.session.add(contact)
@@ -319,11 +319,11 @@ class Booking(db.Model):
             detail=self.detail
             )
     def __init__(self,name,email,phone,post_id,amount=1,detail=''):
-        self.name =name,
-        self.email =email,
-        self.phone =phone,
-        self.amount=amount,
-        self.post_id=post_id,
+        self.name =name
+        self.email =email
+        self.phone =phone
+        self.amount=amount
+        self.post_id=post_id
         self.detail=detail  
     def add(booking):
         db.session.add(booking)
@@ -331,6 +331,7 @@ class Booking(db.Model):
     def delete(booking):
         db.session.delete(booking)
         return db.session.commit()
+
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title  = db.Column(db.String(500))
@@ -356,12 +357,12 @@ class Event(db.Model):
             feature_image=self.feature_image
             )
     def __init__(self,title,description,date,feature_image,user_id,views=0):
-        self.title = title,
-        self.slug = slugify(title),
-        self.description = description,
-        self.date = date,
-        self.views=views,
-        self.user_id=user_id,
+        self.title = title
+        self.slug = slugify(title)
+        self.description = description
+        self.date = date
+        self.views=views
+        self.user_id=user_id
         self.feature_image=feature_image
     def add(event):
         db.session.add(event)
@@ -388,9 +389,9 @@ class Partner(db.Model):
             feature_image=self.feature_image
             )
     def __init__(self,name,url,feature_image):
-        self.name =name,
-        self.slug = slugify(name),
-        self.url =url,
+        self.name =name
+        self.slug = slugify(name)
+        self.url =url
         self.feature_image =feature_image
     def add(partner):
         db.session.add(partner)
@@ -425,14 +426,50 @@ class EmailList(db.Model):
             sending_name=self.sending_name
             )
     def __init__(self,name,email,subject,description,reply_to,sending_email,sending_password,sending_name):
-        self.name =name,
-        self.email =email,
+        self.name =name
+        self.email =email
+        self.subject = subject
+        self.description = description
+        self.reply_to = reply_to
+        self.sending_email=sending_email
+        self.sending_password=sending_password
+        self.sending_name=sending_name
+    def add(messagelist):
+        db.session.add(messagelist)
+        return db.session.commit()
+    def delete(messagelist):
+        db.session.delete(messagelist)
+        return db.session.commit()
+class EmailSent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    send_to = db.Column(db.String(150))
+    subject = db.Column(db.String(1000))
+    description = db.Column(db.Text)
+    reply_to = db.Column(db.String(255))
+    sending_email = db.Column(db.String(255))
+    sending_name    = db.Column(db.String(255))
+    published_at=db.Column(db.TIMESTAMP,server_default=db.func.current_timestamp())
+    def __str__(self):
+        return self.name
+    # def update(self):
+    #     return session_commit()    
+    def to_Json(self):
+        return dict(id=self.id,
+            send_to = self.send_to,
+            subject = self.subject,
+            description = self.description,
+            reply_top = self.reply_to,
+            sending_email=self.sending_email,
+            sending_name=self.sending_name,
+            user_id  = self.user_id
+            )
+    def __init__(self,send_to,subject,description,reply_to,sending_email,sending_name):
+        self.send_to= send_to,
         self.subject = subject,
         self.description = description,
         self.reply_to = reply_to,
         self.sending_email=sending_email,
-        self.sending_password=sending_password,
-        self.sending_name=sending_name
+        self.sending_name=sending_name, 
     def add(messagelist):
         db.session.add(messagelist)
         return db.session.commit()
@@ -441,7 +478,7 @@ class EmailList(db.Model):
         return db.session.commit()
 if __name__ == '__main__':
     app.secret_key = SECRET_KEY
-    app.config['DEBUG'] = True
+    # app.config['DEBUG'] = True
     # app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     manager.run()
